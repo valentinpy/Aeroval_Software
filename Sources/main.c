@@ -28,97 +28,56 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "derivative.h"
+#include "misc/derivative.h"
+#include "misc/def.h"
 
-#include "def.h"
+#include "modules/mCpu.h"
+#include "modules/mLeds.h"
 
-#include "mCpu.h"
-#include "mLeds.h"
-#include "mHleds.h"
-#include "mDelay.h"
-#include "mSwitches.h"
-#include "mAd.h"
-#include "mRS232.h"
-#include "iFtm.h"
-#include "mMotors.h"
-#include "mServos.h"
-#include "mReceiver.h"
+#include "tasks/gAltitudeSensors.h"
+#include "tasks/gAttitudeSensors.h"
+#include "tasks/gFlightCompute.h"
+#include "tasks/gLight.h"
+#include "tasks/gMonitoring.h"
+#include "tasks/gMotors.h"
+#include "tasks/gReceiver.h"
 
-int main(void)
+void main(void)
 {
-	//Setups
-
+	//Non specific modules initialization
 	mCpu_Setup();
 	mLeds_Setup();
-	mHleds_Setup();
-	mDelay_Setup();
-	mSwitches_Setup();
-	mAd_Setup();
-	mRs232_Setup();
-	mServos_Setup();
-	mMotors_Setup();
-	mReceiver_Setup();
 
-	//wait after setup
-	mLeds_AllOff();
-	UInt16 aDelayBoot = mDelay_GetDelay(kPit0, 2000);
+	//Tasks initialization
+	gAltitudeSensors_Setup();
+	gAttitudeSensors_Setup();
+	gFlightCompute_Setup();
+	gLight_Setup();
+	gMonitoring_Setup();
+	gMonitoring_Setup();
+	gReceiver_Setup();
+
+	//Wait 1seconds after setup
+	UInt16 aDelayBoot = mDelay_GetDelay(kPit0, 1000);
 	while(mDelay_IsDelayDone(kPit0, aDelayBoot)==false);
 	mLeds_AllOn();
-
-
-	float value = 0;
-	UInt8 tmp0;
-	UInt8 tmp3;
-	UInt8 tmp4;
-	UInt16 getchannel = 0;
-	UInt16 motorsend=0;
-
-	UInt16 aDelay = mDelay_GetDelay(kPit0, 250);
 
 	//Main loop
 	while(1)
 	{
-		//Get some infos
-		value = mAd_readBattVoltage();
-		value = mAd_readCurrent();
-		value = mAd_readSonars(kSonar0);
-		value = mAd_readSonars(kSonar1);
-		value = mAd_readSonars(kSonar2);
-		value = mAd_readSonars(kSonar3);
-		value = mAd_readSonars(kSonar4);
-		value = mAd_readSonars(kSonar5);
+		//Get inputs
+		gAttitudeSensors_Run();
+		gReceiver_Run();
+		gAltitudeSensors_Run();
 
-		getchannel=mReceiver_GetChannel(kReceiverChannel0);
-		motorsend = getchannel-1000;
-		mMotors_SetAllMotors(motorsend);
+		//Compute
+		gFlightCompute_Run();
 
-		//serial communication
-		if(tmp0!=0)
-		{
-			mRs232_WriteChar(kUart3USB, tmp0);
-		}
-
-
-		//Is alive (leds toggle + uart)
-		if(mDelay_IsDelayDone(kPit0, aDelay))
-		{
-			mRs232_WriteString(kUart3USB, "\r\nIs alive");
-
-			mDelay_ReStart(kPit0, aDelay, 250);
-			mLeds_AllToggle();
-
-
-			//send to motors
-			//			if(motorsend<1000)
-			//			{
-			//				motorsend+=25;
-			//			}
-			//			else
-			//			{
-			//				motorsend=0;
-			//			}
-		}
-
+		//Export outputs
+		gMotors_Run();
+		gLight_Run();
 	}
-	return 0;
+
+	//Never happens (infinite loop above)
+	return;
 }
