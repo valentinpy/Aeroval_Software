@@ -38,12 +38,17 @@ void mHleds_AllToggle()
 	iDio_TogglePort(kPortA, kMaskHledsAll);
 }
 
+//Toggle one led
+void mHleds_Toggle(HledMaskEnum aGetMask)
+{
+	IoMaskEnum aSendMask = ((aGetMask & 0xF)<<24);
+	iDio_TogglePort(kPortA, aSendMask);
+}
+
 //set/clear a mask of Leds
 // aGetMask is a 4 bits mask. 0x0 => no leds, 0xf => 4 leds,...
 void mHleds_Write(HledMaskEnum aGetMask, HledStateEnum aState)
 {
 	IoMaskEnum aSendMask = ((aGetMask & 0xF)<<24);
-
-
 	iDio_SetPort(kPortA, aSendMask, aState);
 }

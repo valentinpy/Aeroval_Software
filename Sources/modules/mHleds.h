@@ -43,6 +43,9 @@ void mHleds_AllOff();
 //Toggle all leds
 void mHleds_AllToggle();
 
+//Toggle one led
+void mHleds_Toggle(HledMaskEnum aGetMask);
+
 //set/clear a mask of Leds
 // aGetMask is a 4 bits mask. 0x0 => no leds, 0xf => 4 leds,...
 void mHleds_Write(HledMaskEnum aMask, HledStateEnum aState);

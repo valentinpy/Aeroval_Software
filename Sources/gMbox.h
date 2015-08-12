@@ -24,7 +24,10 @@ extern gAltitudeSensorsStruct gAltitudeSensors;
 //-----------------------------------------------------------------------------
 typedef struct
 {
-	//TODO implement
+	float aHeading;
+	float aPitch;
+	float aRoll;
+	UInt16 aTimeStamp;
 } gAttitudeSensorsStruct;
 extern gAttitudeSensorsStruct gAttitudeSensors;
 
@@ -42,7 +45,8 @@ extern gFlightComputeStruct gFlightCompute;
 //-----------------------------------------------------------------------------
 typedef struct
 {
-	//TODO implement
+	Int16 aDelay2Hz;
+	Int16 aDelay5Hz;
 } gLightStruct;
 extern gLightStruct gLight;
 
@@ -51,7 +55,9 @@ extern gLightStruct gLight;
 //-----------------------------------------------------------------------------
 typedef struct
 {
-	//TODO implement
+	Int16 aDelay5Hz;
+	char aDataString[kMonitoringStringLength];
+
 } gMonitoringStruct;
 extern gMonitoringStruct gMonitoring;
 

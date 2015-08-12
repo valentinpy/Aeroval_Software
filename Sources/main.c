@@ -33,6 +33,7 @@
 
 #include "modules/mCpu.h"
 #include "modules/mLeds.h"
+#include "modules/mDelay.h"
 
 #include "tasks/gAltitudeSensors.h"
 #include "tasks/gAttitudeSensors.h"
@@ -46,6 +47,7 @@ void main(void)
 {
 	//Non specific modules initialization
 	mCpu_Setup();
+	mDelay_Setup();
 	mLeds_Setup();
 
 	//Tasks initialization
@@ -54,12 +56,15 @@ void main(void)
 	gFlightCompute_Setup();
 	gLight_Setup();
 	gMonitoring_Setup();
-	gMonitoring_Setup();
 	gReceiver_Setup();
+	gMotors_Setup();
 
 	//Wait 1seconds after setup
 	UInt16 aDelayBoot = mDelay_GetDelay(kPit0, 1000);
 	while(mDelay_IsDelayDone(kPit0, aDelayBoot)==false);
+	//mDelay_DelayRelease(kPit0, aDelayBoot);
+	mDelay_ReStart(kPit0, aDelayBoot, 10);
+
 	mLeds_AllOn();
 
 	//Main loop
@@ -76,6 +81,13 @@ void main(void)
 		//Export outputs
 		gMotors_Run();
 		gLight_Run();
+
+		//Monitoring
+		gMonitoring_Run();
+
+		//Slow down!
+		while(mDelay_IsDelayDone(kPit0, aDelayBoot)==false);
+		mDelay_ReStart(kPit0, aDelayBoot, 10);
 	}
 
 	//Never happens (infinite loop above)

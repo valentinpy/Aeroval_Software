@@ -13,7 +13,17 @@
 //-----------------------------------
 void gLight_Setup()
 {
-	//TODO implement
+	//Configure LEDS and High-LEDS
+	mLeds_Setup();
+	mHleds_Setup();
+
+	//Shut down lights
+	mLeds_AllOff();
+	mHleds_AllOff();
+
+	//Get delays for 2 slow speed loops (human visible blink)
+	gLight.aDelay2Hz = mDelay_GetDelay(kPit0, 250);
+	gLight.aDelay5Hz = mDelay_GetDelay(kPit0, 100);
 }
 
 //-----------------------------------
@@ -21,5 +31,55 @@ void gLight_Setup()
 //-----------------------------------
 void gLight_Run()
 {
-	//TODO implement
+
+	// 2Hz loop
+	if(mDelay_IsDelayDone(kPit0, gLight.aDelay2Hz)==true)
+	{
+		mDelay_ReStart(kPit0, gLight.aDelay2Hz, 250);
+
+		mLeds_AllToggle();
+	}
+
+	// 5Hz loop
+	if(mDelay_IsDelayDone(kPit0, gLight.aDelay5Hz)==true)
+	{
+		mDelay_ReStart(kPit0, gLight.aDelay5Hz, 100);
+
+		//Roll
+		if(gAttitudeSensors.aRoll<-0.09)
+		{
+			mHleds_Toggle(kMaskHled0);
+			mHleds_Write(kMaskHled1, kHledOn);
+		}
+		else if (gAttitudeSensors.aRoll>0.09)
+		{
+			mHleds_Toggle(kMaskHled1);
+			mHleds_Write(kMaskHled0, kHledOn);
+		}
+		else
+		{
+			mHleds_Write(kMaskHled0, kHledOn);
+			mHleds_Write(kMaskHled1, kHledOn);
+		}
+
+
+		//Pitch
+		if(gAttitudeSensors.aPitch<-0.09)
+		{
+			mHleds_Toggle(kMaskHled2);
+			mHleds_Write(kMaskHled3, kHledOn);
+		}
+		else if (gAttitudeSensors.aPitch>0.09)
+		{
+			mHleds_Toggle(kMaskHled3);
+			mHleds_Write(kMaskHled2, kHledOn);
+		}
+		else
+		{
+			mHleds_Write(kMaskHled2, kHledOn);
+			mHleds_Write(kMaskHled3, kHledOn);
+		}
+
+
+	}
 }

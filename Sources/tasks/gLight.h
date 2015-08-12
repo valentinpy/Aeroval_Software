@@ -10,7 +10,9 @@
 
 #include "../modules/mHleds.h"
 #include "../gMbox.h"
-
+#include "../modules/mDelay.h"
+#include "../modules/mLeds.h"
+#include "../modules/mHleds.h"
 
 //-----------------------------------
 // Light (LED strips) inialisation

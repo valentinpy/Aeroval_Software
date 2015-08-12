@@ -61,7 +61,7 @@ typedef unsigned short 			Word;
 #define kClockCpukHz 	100000 // 100MHz
 #define kClockBuskHz	50000 // 50MHz
 
-#endif /* DEF_H_ */
+#define kMonitoringStringLength	20
 
 
 //------------------------------------------------------------
@@ -72,3 +72,5 @@ typedef unsigned short 			Word;
 
 // Disable maskable interrupts
 #define DisableInterrupts __asm(" CPSID i");
+
+#endif /* DEF_H_ */
