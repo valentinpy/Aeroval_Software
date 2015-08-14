@@ -42,6 +42,7 @@
 #include "tasks/gMonitoring.h"
 #include "tasks/gMotors.h"
 #include "tasks/gReceiver.h"
+#include "tasks/gMiscSensors.h"
 
 void main(void)
 {
@@ -58,6 +59,7 @@ void main(void)
 	gMonitoring_Setup();
 	gReceiver_Setup();
 	gMotors_Setup();
+	gMiscSensors_Setup();
 
 	//Wait 1seconds after setup
 	UInt16 aDelayBoot = mDelay_GetDelay(kPit0, 1000);
@@ -74,6 +76,7 @@ void main(void)
 		gAttitudeSensors_Run();
 		gReceiver_Run();
 		gAltitudeSensors_Run();
+		gMiscSensors_Run();
 
 		//Compute
 		gFlightCompute_Run();

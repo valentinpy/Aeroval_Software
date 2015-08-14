@@ -1,6 +1,6 @@
 /*
 ------------------------------------------------------------
-Copyright 2003-2015 Haute école ARC Ingéniérie, Switzerland.
+Copyright 2003-2015 Haute ï¿½cole ARC Ingï¿½niï¿½rie, Switzerland.
 All rights reserved.
 ------------------------------------------------------------
 File name : 		mRs232.c
@@ -67,6 +67,29 @@ void mRs232_WriteString(UartEnum uart, char *aDataPtr)
 	}
 }
 
+//-----------------------------------------------------------------------------
+// String send (fixed size)
+// The transmission is size defined
+// *aDataPtr	: string address
+// uart			: which UART to use
+// aSize		: length of the frame (bytes)
+//-----------------------------------------------------------------------------
+void mRs232_WriteStringFixedSize(UartEnum uart, char *aDataPtr, UInt16 aSize)
+{
+	// Send char until NULL char
+	UInt16 i;
+	for(i=0; i<aSize; i++)
+	{
+		// Wait end of transmit
+		while(!iUart_GetStatus(uart,kSciTransmitComplete));
+
+		// Write data
+		iUart_SetData(uart,*aDataPtr);
+
+		// Next char
+		aDataPtr++;
+	}
+}
 
 //-----------------------------------------------------------------------------
 // Byte send
@@ -93,13 +116,13 @@ bool mRs232_ReadDataFromBuffer(UartEnum uart, UInt8 *aBytePtr)
 {
 	bool aRet=false;
 
-	// Contrôle si le buffer est vide
+	// Contrï¿½le si le buffer est vide
 	aRet=iUart_IsBufferEmpty(uart);
 
 	// Si le buffer n'est pas vide --> lecture d'un byte
 	if(false==aRet)
 	{
-		// Lecture d'un byte du buffer de réception
+		// Lecture d'un byte du buffer de rï¿½ception
 		*aBytePtr=iUart_GetCharFromBuffer(uart);
 	}
 	else

@@ -104,7 +104,7 @@ typedef struct{
 	float Pitch;
 } EM7180_DataStruct;
 
-
+//-------------------------------------------------------------------
 // Basic setup of the sensor
 //-------------------------------------------------------------------
 void mEm7180_Setup(void);
@@ -119,14 +119,11 @@ void mEm7180_Open(void);
 //-------------------------------------------------------------------
 void mEm7180_Close(void);
 
-bool mEm7180_SetData8(EM7180_Reg_Enum aReg,UInt8 aVal);
-UInt8 mEm7180_GetData8(EM7180_Reg_Enum aReg);
-void mEm7180_GetQuaternions(EM7180_DataStruct *aResultStruct);
+//-------------------------------------------------------------------
+// Read heading, pitch, roll and timestamp
+// *aResultStruct: pointer over a structure which in which the values are stored (QX, QY, QZ, QTime)
+//-------------------------------------------------------------------
 void mEm7180_GetEuler(EM7180_DataStruct *aResultStruct);
-
-
-
-
 
 
 #endif /* SOURCES_MEM7180_H_ */

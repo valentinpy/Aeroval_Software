@@ -12,7 +12,8 @@
 //-----------------------------------
 void gMotors_Setup()
 {
-	//TODO implement
+	mMotors_Setup();
+	mMotors_StopAll();
 }
 
 //-----------------------------------
@@ -20,5 +21,5 @@ void gMotors_Setup()
 //-----------------------------------
 void gMotors_Run()
 {
-	//TODO implement
+	mMotors_SetAllMotors(150);
 }

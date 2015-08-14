@@ -45,41 +45,47 @@ void gLight_Run()
 	{
 		mDelay_ReStart(kPit0, gLight.aDelay5Hz, 100);
 
-		//Roll
-		if(gAttitudeSensors.aRoll<-0.09)
+		if(gMiscSensors.aBatteryVoltage_mV > kBatLevelWarning)
 		{
-			mHleds_Toggle(kMaskHled0);
-			mHleds_Write(kMaskHled1, kHledOn);
-		}
-		else if (gAttitudeSensors.aRoll>0.09)
-		{
-			mHleds_Toggle(kMaskHled1);
-			mHleds_Write(kMaskHled0, kHledOn);
+			//Roll
+			if(gAttitudeSensors.aRoll_rad<-0.09)
+			{
+				mHleds_Toggle(kMaskHled0);
+				mHleds_Write(kMaskHled1, kHledOn);
+			}
+			else if (gAttitudeSensors.aRoll_rad>0.09)
+			{
+				mHleds_Toggle(kMaskHled1);
+				mHleds_Write(kMaskHled0, kHledOn);
+			}
+			else
+			{
+				mHleds_Write(kMaskHled0, kHledOn);
+				mHleds_Write(kMaskHled1, kHledOn);
+			}
+
+
+			//Pitch
+			if(gAttitudeSensors.aPitch_rad<-0.09)
+			{
+				mHleds_Toggle(kMaskHled2);
+				mHleds_Write(kMaskHled3, kHledOn);
+			}
+			else if (gAttitudeSensors.aPitch_rad>0.09)
+			{
+				mHleds_Toggle(kMaskHled3);
+				mHleds_Write(kMaskHled2, kHledOn);
+			}
+			else
+			{
+				mHleds_Write(kMaskHled2, kHledOn);
+				mHleds_Write(kMaskHled3, kHledOn);
+			}
 		}
 		else
 		{
-			mHleds_Write(kMaskHled0, kHledOn);
-			mHleds_Write(kMaskHled1, kHledOn);
+			mHleds_AllToggle();
 		}
-
-
-		//Pitch
-		if(gAttitudeSensors.aPitch<-0.09)
-		{
-			mHleds_Toggle(kMaskHled2);
-			mHleds_Write(kMaskHled3, kHledOn);
-		}
-		else if (gAttitudeSensors.aPitch>0.09)
-		{
-			mHleds_Toggle(kMaskHled3);
-			mHleds_Write(kMaskHled2, kHledOn);
-		}
-		else
-		{
-			mHleds_Write(kMaskHled2, kHledOn);
-			mHleds_Write(kMaskHled3, kHledOn);
-		}
-
 
 	}
 }

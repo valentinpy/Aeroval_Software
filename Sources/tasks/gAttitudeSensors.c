@@ -18,10 +18,15 @@ void gAttitudeSensors_Setup()
 	mEm7180_Open();
 
 	//Initialize variables
-	gAttitudeSensors.aHeading = 0.0;
-	gAttitudeSensors.aPitch = 	0.0;
-	gAttitudeSensors.aRoll = 	0.0;
+	gAttitudeSensors.aHeading_rad = 0.0;
+	gAttitudeSensors.aPitch_rad   =	0.0;
+	gAttitudeSensors.aRoll_rad 	  = 0.0;
 
+	gAttitudeSensors.aHeading_mrad = 0;
+	gAttitudeSensors.aPitch_mrad   = 0;
+	gAttitudeSensors.aRoll_mrad    = 0;
+
+	gAttitudeSensors.aTimeStamp = 0;
 }
 
 //-----------------------------------
@@ -32,11 +37,16 @@ void gAttitudeSensors_Run()
 	EM7180_DataStruct aDataResult;
 
 	//Get values from sensor
-	mEm7180_GetQuaternions(&aDataResult);
+	mEm7180_GetEuler(&aDataResult);
 
 	//Copy into mailbox
-	gAttitudeSensors.aHeading = aDataResult.QX.f;
-	gAttitudeSensors.aPitch = 	aDataResult.QZ.f;
-	gAttitudeSensors.aRoll = 	aDataResult.QY.f;
+	gAttitudeSensors.aHeading_rad = aDataResult.QX.f;
+	gAttitudeSensors.aPitch_rad = 	aDataResult.QZ.f;
+	gAttitudeSensors.aRoll_rad = 	aDataResult.QY.f;
+
+	gAttitudeSensors.aHeading_mrad = (Int16) (1000* aDataResult.QX.f);
+	gAttitudeSensors.aPitch_mrad   = (Int16) (1000* aDataResult.QY.f);
+	gAttitudeSensors.aRoll_mrad    = (Int16) (1000* aDataResult.QZ.f);
+
 	gAttitudeSensors.aTimeStamp = aDataResult.QTime;
 }

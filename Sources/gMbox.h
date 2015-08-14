@@ -15,7 +15,8 @@
 //-----------------------------------------------------------------------------
 typedef struct
 {
-	//TODO implement
+	UInt16 aSonarValues[6];
+	UInt16 aBaroValue;
 } gAltitudeSensorsStruct;
 extern gAltitudeSensorsStruct gAltitudeSensors;
 
@@ -24,10 +25,16 @@ extern gAltitudeSensorsStruct gAltitudeSensors;
 //-----------------------------------------------------------------------------
 typedef struct
 {
-	float aHeading;
-	float aPitch;
-	float aRoll;
+	float aHeading_rad;
+	float aPitch_rad;
+	float aRoll_rad;
+
+	Int16 aHeading_mrad;
+	Int16 aPitch_mrad;
+	Int16 aRoll_mrad;
+
 	UInt16 aTimeStamp;
+
 } gAttitudeSensorsStruct;
 extern gAttitudeSensorsStruct gAttitudeSensors;
 
@@ -36,7 +43,7 @@ extern gAttitudeSensorsStruct gAttitudeSensors;
 //-----------------------------------------------------------------------------
 typedef struct
 {
-	//TODO implement
+	UInt8 aState;
 } gFlightComputeStruct;
 extern gFlightComputeStruct gFlightCompute;
 
@@ -55,7 +62,7 @@ extern gLightStruct gLight;
 //-----------------------------------------------------------------------------
 typedef struct
 {
-	Int16 aDelay5Hz;
+	Int16 aDelay;
 	char aDataString[kMonitoringStringLength];
 
 } gMonitoringStruct;
@@ -66,7 +73,8 @@ extern gMonitoringStruct gMonitoring;
 //-----------------------------------------------------------------------------
 typedef struct
 {
-	//TODO implement
+	UInt16 aMotorsValues[8];
+	UInt16 aServosValues[8];
 } gMotorsStruct;
 extern gMotorsStruct gMotors;
 
@@ -75,9 +83,20 @@ extern gMotorsStruct gMotors;
 //-----------------------------------------------------------------------------
 typedef struct
 {
-	//TODO implement
+	UInt16 aChannels[8];
 } gReceiverStruct;
 extern gReceiverStruct gReceiver ;
+
+//-----------------------------------------------------------------------------
+// gMiscSensors mailbox
+//-----------------------------------------------------------------------------
+typedef struct
+{
+	UInt16 aBatteryVoltage_mV;
+	UInt16 aBatteryCurrent_A;
+	UInt16 aBatteryUsedCapacity_mAh;
+} gMiscSensorsStruct;
+extern gMiscSensorsStruct gMiscSensors ;
 
 
 #endif /* SOURCES_GMBOX_H_ */

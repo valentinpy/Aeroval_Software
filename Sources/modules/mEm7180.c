@@ -8,8 +8,34 @@
 
 #include "mEm7180.h"
 
-#define PI 3.141592653
+//-----------------------------------------------------------------------------------
+//Static prototypes
+//-----------------------------------------------------------------------------------
 
+//-------------------------------------------------------------------
+// Send a byte to Em7180 over I2C
+// aReg: register to write into
+// aVal: value to write in aReg
+// return: true: write successful, false: error when writing
+//-------------------------------------------------------------------
+static bool mEm7180_SetData8(EM7180_Reg_Enum aReg,UInt8 aVal);
+
+//-------------------------------------------------------------------
+// Read a byte from Em7180 over I2C
+// aReg: register to read
+// return: value of the register aReg
+//-------------------------------------------------------------------
+static UInt8 mEm7180_GetData8(EM7180_Reg_Enum aReg);
+
+
+
+//-----------------------------------------------------------------------------------
+// Functions
+//-----------------------------------------------------------------------------------
+
+//-------------------------------------------------------------------
+// Basic setup of the sensor
+//-------------------------------------------------------------------
 void mEm7180_Setup()
 {
 	iI2C_Config();
@@ -50,20 +76,29 @@ void mEm7180_Setup()
 	mEm7180_SetData8(EnableEvents, 0x07);
 }
 
+//-------------------------------------------------------------------
+// Run sensor algorithm
+//-------------------------------------------------------------------
 void mEm7180_Open()
 {
 	// Enable run Sentral sensor algorithm
 	mEm7180_SetData8(HostControl, 0x01);
 }
 
+//-------------------------------------------------------------------
+// Stop sensor algorithm
+//-------------------------------------------------------------------
 void mEm7180_Close()
 {
 	// Disable run Sentral sensor algorithm
 	mEm7180_SetData8(HostControl, 0x00);
 }
 
-//TODO test
-void mEm7180_GetQuaternions(EM7180_DataStruct *aResultStruct)
+//-------------------------------------------------------------------
+// Read heading, pitch, roll and timestamp
+// *aResultStruct: pointer over a structure which in which the values are stored (QX, QY, QZ, QTime)
+//-------------------------------------------------------------------
+void mEm7180_GetEuler(EM7180_DataStruct *aResultStruct)
 {
 	//X
 	(aResultStruct)->QX.s[0] = mEm7180_GetData8(0x0);
@@ -88,6 +123,7 @@ void mEm7180_GetQuaternions(EM7180_DataStruct *aResultStruct)
 	//*(aQuaeternionsTab+2) = (mEm7180_GetData8(0x8)) + (mEm7180_GetData8(0x9)<<8) + (mEm7180_GetData8(0xA)<<16) + (mEm7180_GetData8(0xB)<<24);
 
 	//W
+	//TODO remove qw?
 	(aResultStruct)->QW.s[0] = mEm7180_GetData8(0xC);
 	(aResultStruct)->QW.s[1] = mEm7180_GetData8(0xD);
 	(aResultStruct)->QW.s[2] = mEm7180_GetData8(0xE);
@@ -99,64 +135,13 @@ void mEm7180_GetQuaternions(EM7180_DataStruct *aResultStruct)
 
 }
 
-
-//TODO test
-void mEm7180_GetEuler(EM7180_DataStruct *aResultStruct)
-{
-//	float test = 0;
-//	float heading = 0;
-//	float attitude = 0;
-//	float bank = 0;
-//
-//	//Get timestamp (when has the measure been released, useful for integration,... check datasheet of em7180/sentral to convert in ms if required)
-//	*aTimeStamp = (UInt16) ((mEm7180_GetData8(0x10)) + (mEm7180_GetData8(0x10)<<8));
-//
-//	//TODO caster en UIn16 avant le shift ?
-//	//Get quaternions
-//	float qx = (float) ((mEm7180_GetData8(0x0)) + (mEm7180_GetData8(0x1)<<8) + (mEm7180_GetData8(0x2)<<16) + (mEm7180_GetData8(0x3)<<24));
-//	float qy = (float) ((mEm7180_GetData8(0x4)) + (mEm7180_GetData8(0x5)<<8) + (mEm7180_GetData8(0x6)<<16) + (mEm7180_GetData8(0x7)<<24));
-//	float qz = (float) ((mEm7180_GetData8(0x8)) + (mEm7180_GetData8(0x9)<<8) + (mEm7180_GetData8(0xA)<<16) + (mEm7180_GetData8(0xB)<<24));
-//	float qw = (float) ((mEm7180_GetData8(0xC)) + (mEm7180_GetData8(0xD)<<8) + (mEm7180_GetData8(0xE)<<16) + (mEm7180_GetData8(0xF)<<24));
-
-	//Convert quaternions to Euler
-
-	//Test if singularities
-//	test = qx*qy + qz*qw;
-//	if (test > 0.499) { // singularity at north pole
-//		heading = 2 * atan2(qx,qw);
-//		attitude = PI/2;
-//		bank = 0;
-//	}
-//	else if (test < -0.499) { // singularity at south pole
-//		heading = -2 * atan2(qx,qw);
-//		attitude = - PI/2;
-//		bank = 0;
-//	}
-//	else
-//	{
-//		//Compute qx^2,qy^2,qz^2
-//		double sqx = qx*qx;
-//		double sqy = qy*qy;
-//		double sqz = qz*qz;
-//		double sqw = qw*qw;
-//		double norm2 = sqx + sqy + sqz + sqw;
-//		//Convert
-//		heading = atan2(2*qy*qw-2*qx*qz , 1 - 2*sqy - 2*sqz);
-//		attitude = asin(2*test);
-//		bank = atan2(2*qx*qw-2*qy*qz , 1 - 2*sqx - 2*sqz);
-////	}
-//	//Store
-//	*(aEulerTab+0) = heading;
-//	*(aEulerTab+1) = attitude;
-//	*(aEulerTab+2) = bank;
-}
 //-----------------------------------------------------------------------------
 // Lecture d'un registre 8 bits du capteur EM7180
 // aReg:    le registre que l'on veut lire (son adresse)
 // aData:   l'adresse du variable dans laquelle on écrit le contenu du registre
 // retour : true --> lecture OK, false --> lecture KO
 //-----------------------------------------------------------------------------
-UInt8 mEm7180_GetData8(EM7180_Reg_Enum aReg)
+static UInt8 mEm7180_GetData8(EM7180_Reg_Enum aReg)
 {
 	bool aNoAck=false;
 
@@ -264,13 +249,13 @@ UInt8 mEm7180_GetData8(EM7180_Reg_Enum aReg)
 }
 
 
-//-----------------------------------------------------------------------------
-// Ecriture d'un registre 8 bits du capteur EM7180
-// aReg:    le registre que l'on veut écrire (adresse)
-// aData:   le contenu du registre
-// retour : true --> lecture OK, false --> lecture KO
-//-----------------------------------------------------------------------------
-bool mEm7180_SetData8(EM7180_Reg_Enum aReg,UInt8 aVal)
+//-------------------------------------------------------------------
+// Send a byte to Em7180 over I2C
+// aReg: register to write into
+// aVal: value to write in aReg
+// return: true: write successful, false: error when writing
+//-------------------------------------------------------------------
+static bool mEm7180_SetData8(EM7180_Reg_Enum aReg,UInt8 aVal)
 {
 	bool aNoAck=false;
 

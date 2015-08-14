@@ -39,6 +39,14 @@ void mRs232_Setup(void);
 //-----------------------------------------------------------------------------
 void mRs232_WriteString(UartEnum uart, char *aDataPtr);
 
+//-----------------------------------------------------------------------------
+// String send (fixed size)
+// The transmission is size defined
+// *aDataPtr	: string address
+// uart			: which UART to use
+// aSize		: length of the frame (bytes)
+//-----------------------------------------------------------------------------
+void mRs232_WriteStringFixedSize(UartEnum uart, char *aDataPtr, UInt16 aSize);
 
 //-----------------------------------------------------------------------------
 // Byte send

@@ -61,8 +61,11 @@ typedef unsigned short 			Word;
 #define kClockCpukHz 	100000 // 100MHz
 #define kClockBuskHz	50000 // 50MHz
 
-#define kMonitoringStringLength	20
+//Monitoring
+#define kMonitoringStringLength	69
 
+//Battery
+#define kBatLevelWarning (10800)	//Low level battery threshold
 
 //------------------------------------------------------------
 // Macros
