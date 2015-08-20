@@ -61,11 +61,10 @@ void main(void)
 	gMotors_Setup();
 	gMiscSensors_Setup();
 
-	//Wait 1seconds after setup
+	//Wait 1second after setup
 	UInt16 aDelayBoot = mDelay_GetDelay(kPit0, 1000);
 	while(mDelay_IsDelayDone(kPit0, aDelayBoot)==false);
-	//mDelay_DelayRelease(kPit0, aDelayBoot);
-	mDelay_ReStart(kPit0, aDelayBoot, 10);
+	mDelay_DelayRelease(kPit0, aDelayBoot);
 
 	mLeds_AllOn();
 
@@ -88,9 +87,6 @@ void main(void)
 		//Monitoring
 		gMonitoring_Run();
 
-		//Slow down!
-		while(mDelay_IsDelayDone(kPit0, aDelayBoot)==false);
-		mDelay_ReStart(kPit0, aDelayBoot, 10);
 	}
 
 	//Never happens (infinite loop above)

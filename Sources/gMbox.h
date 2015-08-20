@@ -38,12 +38,22 @@ typedef struct
 } gAttitudeSensorsStruct;
 extern gAttitudeSensorsStruct gAttitudeSensors;
 
+
+// State enum
+typedef enum
+{
+	kArmed,
+	kDisarmed
+}StateEnum;
+
 //-----------------------------------------------------------------------------
 // gFlightCompute mailbox
 //-----------------------------------------------------------------------------
 typedef struct
 {
-	UInt8 aState;
+	StateEnum aState;
+
+	UInt16 aMotorsOuptut[8];
 } gFlightComputeStruct;
 extern gFlightComputeStruct gFlightCompute;
 

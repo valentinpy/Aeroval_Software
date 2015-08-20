@@ -9,29 +9,6 @@
 
 #include "iPit.h"
 
-// Maximum delay number to use together
-#define kCounterNumber 10
-
-#define PIT0IRQ	48
-#define PIT1IRQ	49
-#define PIT2IRQ	50
-#define PIT3IRQ	51
-
-// Delay struct
-typedef struct
-{
-	UInt16 Counter;
-	bool isFree;
-	bool DelayDone;
-} CounterStruct;
-
-typedef struct
-{
-	CounterStruct CounterTab[kCounterNumber];
-} DlyStruct;
-
-static DlyStruct sDly[3];
-
 //------------------------------------------------------------
 // PIT setup
 // aPit					: which PIT (0 to 3)
@@ -202,13 +179,14 @@ void iPit_InitDelay(PitEnum aPit)
 {
 	UInt16 i = 0;
 
-	for (i = 0; i < kCounterNumber; i++)
+	for (i = 0; i < kNbDelays; i++)
 	{
 		sDly[aPit].CounterTab[i].DelayDone = false;
 		sDly[aPit].CounterTab[i].Counter = 0;
 		sDly[aPit].CounterTab[i].isFree = true;
 	}
 }
+
 //------------------------------------------------------------
 // Get and setup a delay
 // aPit		: which PIT
@@ -225,12 +203,12 @@ Int16 iPit_GetDelay(PitEnum aPit, UInt16 aDelay)
 
 	// Find and configure a free delay
 	for (i = 0;
-			(i < kCounterNumber) && (false == sDly[aPit].CounterTab[i].isFree);
+			(i < kNbDelays) && (false == sDly[aPit].CounterTab[i].isFree);
 			i++, aDelayNb = i)
 		;
 
 	// Check if a delay was found
-	if ((i == kCounterNumber) && (false == sDly[aPit].CounterTab[i - 1].isFree))
+	if ((i == kNbDelays) && (false == sDly[aPit].CounterTab[i - 1].isFree))
 		aDelayNb = -1;
 	else
 	{
@@ -295,7 +273,7 @@ void PIT0_IRQHandler(void)
 	aTmp=PIT_CVAL0;
 
 	// Counter update
-	for(i=0;i<kCounterNumber;i++)
+	for(i=0;i<kNbDelays;i++)
 	{
 		if((false==sDly[kPit0].CounterTab[i].isFree)&&(sDly[kPit0].CounterTab[i].Counter>0))
 			sDly[kPit0].CounterTab[i].Counter--;
@@ -321,7 +299,7 @@ void PIT1_IRQHandler(void)
 	aTmp = PIT_CVAL1 ;
 
 	// Counter update
-	for (i = 0; i < kCounterNumber; i++)
+	for (i = 0; i < kNbDelays; i++)
 	{
 		if ((false == sDly[kPit1].CounterTab[i].isFree)
 				&& (sDly[kPit1].CounterTab[i].Counter > 0))
@@ -349,7 +327,7 @@ void PIT2_IRQHandler(void)
 	aTmp = PIT_CVAL2 ;
 
 	// Counter update
-	for (i = 0; i < kCounterNumber; i++)
+	for (i = 0; i < kNbDelays; i++)
 	{
 		if ((false == sDly[kPit2].CounterTab[i].isFree)
 				&& (sDly[kPit2].CounterTab[i].Counter > 0))
@@ -377,7 +355,7 @@ void PIT3_IRQHandler(void)
 	aTmp = PIT_CVAL3 ;
 
 	// Counter update
-	for (i = 0; i < kCounterNumber; i++)
+	for (i = 0; i < kNbDelays; i++)
 	{
 		if ((false == sDly[kPit3].CounterTab[i].isFree)
 				&& (sDly[kPit3].CounterTab[i].Counter > 0))

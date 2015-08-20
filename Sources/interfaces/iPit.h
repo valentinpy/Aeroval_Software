@@ -13,11 +13,35 @@
 #include "../misc/def.h"
 #include "MK64F12.h"
 
+// Maximum delay number
+#define kNbDelays 	20
+
+#define PIT0IRQ	48
+#define PIT1IRQ	49
+#define PIT2IRQ	50
+#define PIT3IRQ	51
+
+
 // PIT enum
 typedef enum
 {
 	kPit0 = 0, kPit1 = 1, kPit2 = 2, kPit3 = 3
 } PitEnum;
+
+// Delay struct
+typedef struct
+{
+	UInt16 Counter;
+	bool isFree;
+	bool DelayDone;
+} CounterStruct;
+
+typedef struct
+{
+	CounterStruct CounterTab[kNbDelays];
+} DlyStruct;
+
+static DlyStruct sDly[3];
 
 
 //------------------------------------------------------------

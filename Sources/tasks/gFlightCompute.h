@@ -10,6 +10,7 @@
 
 #include "../misc/def.h"
 #include "../gMbox.h"
+#include "../modules/mReceiver.h"
 
 
 //-----------------------------------

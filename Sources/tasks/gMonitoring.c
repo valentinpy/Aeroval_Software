@@ -106,6 +106,7 @@ void gMonitoring_Run()
 		gMonitoring.aDataString[66] = (gMiscSensors.aBatteryUsedCapacity_mAh >> 8);
 		gMonitoring.aDataString[67] = (gMiscSensors.aBatteryUsedCapacity_mAh & 0xFF);
 		gMonitoring.aDataString[68] = (gFlightCompute.aState);
+		gMonitoring.aDataString[69] = 0;
 
 		//Avoid NULL char
 		/*

@@ -1,6 +1,6 @@
 /*
 ------------------------------------------------------------
-Copyright 2003-2015 Haute école ARC Ingéniérie, Switzerland. 
+Copyright 2003-2015 Haute ï¿½cole ARC Ingï¿½niï¿½rie, Switzerland. 
 All rights reserved.
 ------------------------------------------------------------
 File name : 		mDelay.c	
@@ -38,7 +38,7 @@ void mDelay_Setup(void)
 	//iPit_InitDelay(kPit1);
 	//iPit_InitDelay(kPit2);
 	//iPit_InitDelay(kPit3);
-		
+
 	//Start PIT0
 	iPit_StartPit(kPit0);
 	//iPit_StartPit(kPit1);
