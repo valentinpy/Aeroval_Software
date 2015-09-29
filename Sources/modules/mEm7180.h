@@ -13,6 +13,7 @@
 #include "mDelay.h"
 #include "math.h"
 
+// Addresses of registers
 #define EM7180_ADDR_W 			0x50
 #define EM7180_ADDR_R			0x51
 #define SetupValue_MagRate 		0x1E
@@ -20,7 +21,7 @@
 #define SetupValue_GyroRate 	0x14
 
 //--------------------------------------------------
-// Enumération de l'adresse des registres 8 bits du capteur
+// Enum of addresses of registers from sensor (8 bits registers => base address)
 //--------------------------------------------------
 typedef enum{
 	//TODO check if correct
@@ -70,16 +71,16 @@ typedef enum{
 } EM7180_Reg_Enum;
 
 //--------------------------------------------------
-// Union pour convertir 4 byte en float
-//--------------------------------------------------
-
+// Union to convert 4 bytes in float
+// TODO find a better way to achieve this
+//-------------------------------------------------
 typedef union _data {
   float f;
   char  s[4];
 } floatcharUnion;
 
 //--------------------------------------------------
-// Définition du type structure de données lorsqu'on lit toute les données du capteur
+// Struct of datas read from sensor
 //--------------------------------------------------
 typedef struct{
 	floatcharUnion QX;
@@ -121,7 +122,7 @@ void mEm7180_Close(void);
 
 //-------------------------------------------------------------------
 // Read heading, pitch, roll and timestamp
-// *aResultStruct: pointer over a structure which in which the values are stored (QX, QY, QZ, QTime)
+// *aResultStruct: pointer over a structure of type EM7180_DataStruct in which the values are stored (QX, QY, QZ, QTime)
 //-------------------------------------------------------------------
 void mEm7180_GetEuler(EM7180_DataStruct *aResultStruct);
 

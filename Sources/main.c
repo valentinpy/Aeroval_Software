@@ -66,6 +66,7 @@ void main(void)
 	while(mDelay_IsDelayDone(kPit0, aDelayBoot)==false);
 	mDelay_DelayRelease(kPit0, aDelayBoot);
 
+	//Indicate that programme is ready.
 	mLeds_AllOn();
 
 	//Main loop

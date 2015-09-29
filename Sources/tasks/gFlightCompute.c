@@ -9,6 +9,13 @@
 #include "gFlightCompute.h"
 
 //-----------------------------------
+// Static functions
+// TODO comment
+//-----------------------------------
+static void gFlightCompute_PID();
+static void gFlightCompute_MotorMix(Int16 aThrottle, Int16 aPIDPitchOutput, Int16 aPIDRollOutput, Int16 aPIDYawOutput);
+
+//-----------------------------------
 // Flight controller (regulation,..) initialization
 //-----------------------------------
 void gFlightCompute_Setup()
@@ -22,7 +29,7 @@ void gFlightCompute_Setup()
 	UInt8 i = 0;
 	for (i=0; i<8; i++)
 	{
-		gFlightCompute.aMotorsOuptut[i] = 0;
+		gFlightCompute.aMotorsOutput[i] = 0;
 	}
 }
 
@@ -41,16 +48,58 @@ void gFlightCompute_Run()
 		gFlightCompute.aState = kArmed;
 	}
 
-	//TESTS
-	gFlightCompute.aMotorsOuptut[0] = gReceiver.aChannels[0];
-	gFlightCompute.aMotorsOuptut[1] = gReceiver.aChannels[1];
-	gFlightCompute.aMotorsOuptut[2] = gReceiver.aChannels[2];
-	gFlightCompute.aMotorsOuptut[3] = gReceiver.aChannels[3];
-
-	gFlightCompute.aMotorsOuptut[4] = gReceiver.aChannels[4];
-	gFlightCompute.aMotorsOuptut[5] = gReceiver.aChannels[5];
-	gFlightCompute.aMotorsOuptut[6] = gReceiver.aChannels[6];
-	gFlightCompute.aMotorsOuptut[7] = gReceiver.aChannels[7];
+	//Call regulation for roll axis
 
 
+	//Call regulation for pitch axis
+
+	//Call regulation for yaw axis
+
+	//Call motor mix
+
+}
+
+static void gFlightCompute_PID()
+{
+
+}
+
+static void gFlightCompute_MotorMix(Int16 aThrottle, Int16 aPIDPitchOutput, Int16 aPIDRollOutput, Int16 aPIDYawOutput)
+{
+	//4 motors, X configuration
+	// Motor 0: Front right, counter-clockwise
+	// Motor 1: Rear right, clockwise
+	// Motor 2: Rear left, counter-clockwise
+	// Motor 3: Front left, clockwise
+
+	Int16 aMotorsOutput[NUMBER_OF_MOTORS];
+
+#if defined(MOTORMIX_X4)
+
+	//Calculate outputs
+	aMotorsOutput[0] = aThrottle + aPIDPitchOutput + aPIDRollOutput + aPIDYawOutput;
+	aMotorsOutput[1] = aThrottle - aPIDPitchOutput + aPIDRollOutput - aPIDYawOutput;
+	aMotorsOutput[2] = aThrottle - aPIDPitchOutput - aPIDRollOutput + aPIDYawOutput;
+	aMotorsOutput[3] = aThrottle + aPIDPitchOutput - aPIDRollOutput - aPIDYawOutput;
+
+#else
+#error "Bad motor mix configuration"
+#endif
+
+	//Constrain and export to mailbox
+	for (int i=0; i<NUMBER_OF_MOTORS; i++)
+	{
+		if(aMotorsOutput[i]<MOTOR_IDLE_VALUE)
+		{
+			gFlightCompute.aMotorsOutput[i] = MOTOR_IDLE_VALUE;
+		}
+		else if (aMotorsOutput[i]>MOTOR_MAX_VALUE)
+		{
+			gFlightCompute.aMotorsOutput[i] = MOTOR_MAX_VALUE;
+		}
+		else
+		{
+			gFlightCompute.aMotorsOutput[i] = aMotorsOutput[i];
+		}
+	}
 }

@@ -22,6 +22,7 @@ void gMiscSensors_Run()
 {
 	//Get battery voltage
 	gMiscSensors.aBatteryVoltage_mV = (UInt16)(1000 * mAd_readBattVoltage());
+	//TODO store/check battery warning in mailbox
 }
 
 

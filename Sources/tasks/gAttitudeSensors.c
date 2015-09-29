@@ -18,14 +18,18 @@ void gAttitudeSensors_Setup()
 	mEm7180_Open();
 
 	//Initialize variables
+
+	//floats
 	gAttitudeSensors.aHeading_rad = 0.0;
 	gAttitudeSensors.aPitch_rad   =	0.0;
 	gAttitudeSensors.aRoll_rad 	  = 0.0;
 
+	//milli-int
 	gAttitudeSensors.aHeading_mrad = 0;
 	gAttitudeSensors.aPitch_mrad   = 0;
 	gAttitudeSensors.aRoll_mrad    = 0;
 
+	//int
 	gAttitudeSensors.aTimeStamp = 0;
 }
 
@@ -34,6 +38,7 @@ void gAttitudeSensors_Setup()
 //-----------------------------------
 void gAttitudeSensors_Run()
 {
+	//Struct to stock data into
 	EM7180_DataStruct aDataResult;
 
 	//Get values from sensor

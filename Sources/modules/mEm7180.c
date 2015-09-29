@@ -38,21 +38,26 @@ static UInt8 mEm7180_GetData8(EM7180_Reg_Enum aReg);
 //-------------------------------------------------------------------
 void mEm7180_Setup()
 {
+	//Configure I2C bus
 	iI2C_Config();
 	iI2C_Enable(kI2c0);
 
-	// Reset hardware du module
+	// Hardware reset of EM7180 module
 	mEm7180_SetData8(ResetReq, 0x01);
-	// Wait pour le reset
+
+	// Wait for reset
 	UInt16 aDelay = mDelay_GetDelay(kPit0, 100);
 	while(mDelay_IsDelayDone(kPit0, aDelay)==false);
 	mDelay_DelayRelease(kPit0, aDelay);
 
 	// Check EEPROM detected by SENTRAL
 	while(FALSE == (0x01 & mEm7180_GetData8(SentralStatus)));
+
 	// Check Configuration file uploaded from EEPROM to SENTRAL
 	while(FALSE == (0x01 & (mEm7180_GetData8(SentralStatus) >> 1)));
+
 	// Check if upload has successfull finished (CRC = OK)
+	//TODO WTF?
 	if(FALSE == (0x01 & (mEm7180_GetData8(SentralStatus) >> 2)))
 	{
 		//mRs232_SendString("[Sentral / INFO]	Configuration file successfully uploaded!\r\n");
@@ -69,7 +74,8 @@ void mEm7180_Setup()
 	// Set GyroRate register to 150Hz
 	mEm7180_SetData8(GyroRate, 0x0F);
 	// Set QRateDivisor to 1 (Related to GyroRate -> 150Hz / QRateDivisor)
-	mEm7180_SetData8(QRateDivisor, 0x01); // -> env 75 Hz (en fait, je dirais plutot 150Hz, ça divise par 1, pas par 2 (?))
+	//TODO improve output rate to allow faster regulation.
+	mEm7180_SetData8(QRateDivisor, 0x01); //TODO -> env 75 Hz (en fait, je dirais plutot 150Hz, ça divise par 1, pas par 2 (?))
 	//Set AlgorithmControl register (enable heading, pitch and roll)
 	mEm7180_SetData8(AlgorithmControl, 0x06);
 	// Set EnableEvent register (enable interrupt when: reset, error, new quaternion available)
@@ -97,9 +103,48 @@ void mEm7180_Close()
 //-------------------------------------------------------------------
 // Read heading, pitch, roll and timestamp
 // *aResultStruct: pointer over a structure which in which the values are stored (QX, QY, QZ, QTime)
+// TODO add return value to detect problems during flight
 //-------------------------------------------------------------------
 void mEm7180_GetEuler(EM7180_DataStruct *aResultStruct)
 {
+	//TODO handle error:
+	/*
+	  Exemple of code to implement:
+
+	  Check event status register, way to chech data ready by polling rather than interrupt
+	  uint8_t eventStatus = readByte(EM7180_ADDRESS, EM7180_EventStatus); // reading clears the register
+
+	   // Check for errors
+	  if(eventStatus & 0x02) { // error detected, what is it?
+
+	  uint8_t errorStatus = readByte(EM7180_ADDRESS, EM7180_ErrorRegister);
+	  if(!errorStatus) {
+	  Serial.print(" EM7180 sensor status = "); Serial.println(errorStatus);
+	  if(errorStatus & 0x11) Serial.print("Magnetometer failure!");
+	  if(errorStatus & 0x12) Serial.print("Accelerometer failure!");
+	  if(errorStatus & 0x14) Serial.print("Gyro failure!");
+	  if(errorStatus & 0x21) Serial.print("Magnetometer initialization failure!");
+	  if(errorStatus & 0x22) Serial.print("Accelerometer initialization failure!");
+	  if(errorStatus & 0x24) Serial.print("Gyro initialization failure!");
+	  if(errorStatus & 0x30) Serial.print("Math error!");
+	  if(errorStatus & 0x80) Serial.print("Invalid sample rate!");
+	 */
+
+	//TODO read only if new data available:
+	/*
+	 Exemple of code to implement:
+	 if no errors, see if new data is ready
+  	 if(eventStatus & 0x10) { // new acceleration data available
+	 readSENtralAccelData(accelCount);
+
+	// Now we'll calculate the accleration value into actual g's
+	ax = (float)accelCount[0]*0.000488;  // get actual g value
+	ay = (float)accelCount[1]*0.000488;
+	az = (float)accelCount[2]*0.000488;
+  }
+
+	 */
+
 	//X
 	(aResultStruct)->QX.s[0] = mEm7180_GetData8(0x0);
 	(aResultStruct)->QX.s[1] = mEm7180_GetData8(0x1);
@@ -136,10 +181,9 @@ void mEm7180_GetEuler(EM7180_DataStruct *aResultStruct)
 }
 
 //-----------------------------------------------------------------------------
-// Lecture d'un registre 8 bits du capteur EM7180
-// aReg:    le registre que l'on veut lire (son adresse)
-// aData:   l'adresse du variable dans laquelle on écrit le contenu du registre
-// retour : true --> lecture OK, false --> lecture KO
+// Read one register (8 bits) from sensor (EM7180)
+// aReg:    Address of the register we wnat to read
+// Return:	Value of the requested register
 //-----------------------------------------------------------------------------
 static UInt8 mEm7180_GetData8(EM7180_Reg_Enum aReg)
 {
@@ -263,6 +307,7 @@ static bool mEm7180_SetData8(EM7180_Reg_Enum aReg,UInt8 aVal)
 	iI2C_SetAckMode(kI2c0, kNoAck);
 
 	// Attend que le bus soit libre
+	//FIXME can hand here. WTF
 	while(true==iI2C_ReadStatus(kI2c0, kBUSY));
 
 	//-----------------------------------------------------------------------------

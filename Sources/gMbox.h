@@ -9,6 +9,7 @@
 #define SOURCES_GMBOX_H_
 
 #include "misc/def.h"
+#include "userDefined.h"
 
 //-----------------------------------------------------------------------------
 // gAltitudeSensors mailbox
@@ -53,7 +54,7 @@ typedef struct
 {
 	StateEnum aState;
 
-	UInt16 aMotorsOuptut[8];
+	UInt16 aMotorsOutput[8];
 } gFlightComputeStruct;
 extern gFlightComputeStruct gFlightCompute;
 
@@ -84,7 +85,7 @@ extern gMonitoringStruct gMonitoring;
 typedef struct
 {
 	UInt16 aMotorsValues[8];
-	UInt16 aServosValues[8];
+	UInt16 aServosValues[4];
 } gMotorsStruct;
 extern gMotorsStruct gMotors;
 

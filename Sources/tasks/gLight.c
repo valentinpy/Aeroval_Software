@@ -9,7 +9,7 @@
 #include "gLight.h"
 
 //-----------------------------------
-// Light (LED strips) inialisation
+// Light (LED strips) initialisation
 //-----------------------------------
 void gLight_Setup()
 {
@@ -37,14 +37,18 @@ void gLight_Run()
 	{
 		mDelay_ReStart(kPit0, gLight.aDelay2Hz, 250);
 
+		//TODO implement LEDS
+		//Blink, as nothing else is implemented yet
 		mLeds_AllToggle();
 	}
 
-	// 5Hz loop
+	// 5Hz loop (10Hz?) //TODO fix frequency
 	if(mDelay_IsDelayDone(kPit0, gLight.aDelay5Hz)==true)
 	{
 		mDelay_ReStart(kPit0, gLight.aDelay5Hz, 100);
 
+		//If battery voltage is sufficient, blink to indicate orientation.
+		//TODO store/check battery warning in mailbox
 		if(gMiscSensors.aBatteryVoltage_mV > kBatLevelWarning)
 		{
 			//Roll
@@ -64,7 +68,6 @@ void gLight_Run()
 				mHleds_Write(kMaskHled1, kHledOn);
 			}
 
-
 			//Pitch
 			if(gAttitudeSensors.aPitch_rad<-0.09)
 			{
@@ -82,6 +85,8 @@ void gLight_Run()
 				mHleds_Write(kMaskHled3, kHledOn);
 			}
 		}
+
+		//Battery is low, blink all leds to indicate.
 		else
 		{
 			mHleds_AllToggle();

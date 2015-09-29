@@ -108,17 +108,6 @@ void gMonitoring_Run()
 		gMonitoring.aDataString[68] = (gFlightCompute.aState);
 		gMonitoring.aDataString[69] = 0;
 
-		//Avoid NULL char
-		/*
-		UInt8 i;
-		for(i=0; i<kMonitoringStringLength; i++)
-		{
-			if (gMonitoring.aDataString[i]==0)
-			{
-				gMonitoring.aDataString[i]='0';
-			}
-		}*/
-
 		//String is NULL terminated
 		gMonitoring.aDataString[kMonitoringStringLength-1] = '\0';
 

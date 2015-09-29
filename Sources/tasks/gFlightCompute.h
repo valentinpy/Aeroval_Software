@@ -8,6 +8,7 @@
 #ifndef SOURCES_TASKS_GFLIGHTCOMPUTE_H_
 #define SOURCES_TASKS_GFLIGHTCOMPUTE_H_
 
+#include "userDefined.h"
 #include "../misc/def.h"
 #include "../gMbox.h"
 #include "../modules/mReceiver.h"
