@@ -310,7 +310,10 @@ __isr_vector:
     .long 0xFFFFFFFF
     .long 0xFFFFFFFF
     .long 0xFFFFFFFF
-    .long 0xFFFFFFFE
+    .long 0xFFFFF9FE 	//FOPT: Disable NMI & EZPORT
+    					//https://community.freescale.com/thread/310241
+    					//https://community.freescale.com/thread/332195
+    					//Fixes the freeze on boot is PWM_IN_1 = GND
 
     .text
     .thumb
