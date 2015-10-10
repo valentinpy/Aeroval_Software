@@ -16,7 +16,7 @@
 
 
 #define kUart0BaudRate 115200
-#define kUart3BaudRate 115200
+#define kUart3BaudRate 921600
 #define kUart4BaudRate 115200
 
 
