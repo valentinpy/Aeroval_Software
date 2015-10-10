@@ -307,7 +307,6 @@ static bool mEm7180_SetData8(EM7180_Reg_Enum aReg,UInt8 aVal)
 	iI2C_SetAckMode(kI2c0, kNoAck);
 
 	// Attend que le bus soit libre
-	//FIXME can hand here. WTF
 	while(true==iI2C_ReadStatus(kI2c0, kBUSY));
 
 	//-----------------------------------------------------------------------------

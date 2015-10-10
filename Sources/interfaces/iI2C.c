@@ -17,6 +17,32 @@ Description dans le fichier iI2C.h
 //------------------------------------------------------------
 void iI2C_Config(void)
 {
+	//Send >8 clocks pulses to relesase the bus if the cpu crashed half-way through I2C communication
+
+	//I2C0 & I2C2: SCL -> GPIO, output
+	PORTA_PCR12&=(~PORT_PCR_MUX_MASK);
+	PORTA_PCR12|=PORT_PCR_MUX(1);
+
+	PORTE_PCR24&=(~PORT_PCR_MUX_MASK);
+	PORTE_PCR24|=PORT_PCR_MUX(1);
+
+	GPIOA_PDDR |= (0x1<<12);
+	GPIOE_PDDR |= (0x1<<24);
+
+	UInt8 i=0;
+	for (i=0; i<20; i++)
+	{
+		//Toggles outputs
+		GPIOA_PTOR |= (0x1<<12);
+		GPIOE_PTOR |= (0x1<<24);
+		UInt8 j=0;
+
+		//Small delay
+		for(j=0; j<0x8F; j++)
+		{
+			__asm("NOP");
+		}
+	}
 
 	// I2C 0 & 2 clock enable
 	// System Clock Gating Control Register 1&4 (SIM_SCGC1/SIM_SCGC4)
