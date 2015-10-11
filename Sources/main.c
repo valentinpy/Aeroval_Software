@@ -50,6 +50,7 @@ void main(void)
 	mCpu_Setup();
 	mDelay_Setup();
 	mLeds_Setup();
+	mGpio_Setup();
 
 	//Tasks initialization
 	gAltitudeSensors_Setup();
@@ -87,6 +88,8 @@ void main(void)
 
 		//Monitoring
 		gMonitoring_Run();
+
+		mGpio_AllToggle();
 
 	}
 
