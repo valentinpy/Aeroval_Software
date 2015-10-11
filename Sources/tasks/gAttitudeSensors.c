@@ -49,9 +49,15 @@ void gAttitudeSensors_Run()
 	gAttitudeSensors.aPitch_rad = 	aDataResult.QZ.f;
 	gAttitudeSensors.aRoll_rad = 	aDataResult.QY.f;
 
+	//Copy in milli-radians (int16, signed)
 	gAttitudeSensors.aHeading_mrad = (Int16) (1000* aDataResult.QX.f);
 	gAttitudeSensors.aPitch_mrad   = (Int16) (1000* aDataResult.QY.f);
 	gAttitudeSensors.aRoll_mrad    = (Int16) (1000* aDataResult.QZ.f);
 
+	//Add offset
+	gAttitudeSensors.aPitch_mrad   += gFlightCompute.aPitch_mrad_offset;
+	gAttitudeSensors.aRoll_mrad    += gFlightCompute.aRoll_mrad_offset;
+
+	//Store time
 	gAttitudeSensors.aTimeStamp = aDataResult.QTime;
 }

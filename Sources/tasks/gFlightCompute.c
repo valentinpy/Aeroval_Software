@@ -14,6 +14,7 @@
 //-----------------------------------
 static void gFlightCompute_PID();
 static void gFlightCompute_MotorMix(Int16 aThrottle, Int16 aPIDPitchOutput, Int16 aPIDRollOutput, Int16 aPIDYawOutput);
+//static void gFlightCompute_ProcessUserAction()
 
 //-----------------------------------
 // Flight controller (regulation,..) initialization
@@ -21,6 +22,11 @@ static void gFlightCompute_MotorMix(Int16 aThrottle, Int16 aPIDPitchOutput, Int1
 void gFlightCompute_Setup()
 {
 	//TODO implement (init state,...)
+
+	//Init attitude offset
+	//offset to apply to attitude
+	gFlightCompute.aPitch_mrad_offset		= 0;
+	gFlightCompute.aRoll_mrad_offset		= 0;
 
 	//Init state of motors
 	gFlightCompute.aState = kDisarmed;
@@ -47,6 +53,28 @@ void gFlightCompute_Run()
 	{
 		gFlightCompute.aState = kArmed;
 	}
+
+	//Check controls and state to calibrate the attitude sensor
+	if(
+			(gReceiver.aChannels[kReceiverThrottle] < kReceiverMIN) &&
+			(gReceiver.aChannels[kReceiverYaw] < kReceiverMIN) &&
+			(gReceiver.aChannels[kReceiverPitch] < kReceiverMIN) &&
+			(gReceiver.aChannels[kReceiverRoll] > kReceiverMAX) &&
+			(gFlightCompute.aState == kDisarmed)
+	)
+	{
+		gFlightCompute.aPitch_mrad_offset 	-= gAttitudeSensors.aPitch_mrad;
+		gFlightCompute.aRoll_mrad_offset	-= gAttitudeSensors.aRoll_mrad;
+	}
+
+
+	//Test
+	gFlightCompute.aMotorsOutput[0] = MOTOR_IDLE_VALUE;
+	gFlightCompute.aMotorsOutput[1] = MOTOR_IDLE_VALUE;
+	gFlightCompute.aMotorsOutput[2] = MOTOR_IDLE_VALUE;
+	gFlightCompute.aMotorsOutput[3] = MOTOR_IDLE_VALUE;
+
+
 
 	//Call regulation for roll axis
 

@@ -54,6 +54,9 @@ typedef struct
 {
 	StateEnum aState;
 
+	Int16 aPitch_mrad_offset;
+	Int16 aRoll_mrad_offset;
+
 	UInt16 aMotorsOutput[8];
 } gFlightComputeStruct;
 extern gFlightComputeStruct gFlightCompute;
