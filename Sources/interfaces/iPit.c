@@ -9,13 +9,24 @@
 
 #include "iPit.h"
 
+UInt32 sTicker100Us[kNbTickers100Us];
+
+
 //------------------------------------------------------------
 // PIT setup
 // aPit					: which PIT (0 to 3)
 // aPeriodeMs  	: PIT period in ms
 //------------------------------------------------------------
-void iPit_Config(PitEnum aPit, UInt16 aPeriodeMs)
+void iPit_Config(PitEnum aPit, UInt16 aPeriodeUs)
 {
+	//Initialize tickers to 0
+	int i;
+	for(i=0; i< kNbTickers100Us; i++)
+	{
+		sTicker100Us[i]=0;
+	}
+
+	//Config PIT
 	static UInt32 aTmp = 0;
 
 	// Enable du clock du p�riph�rique PIT
@@ -30,7 +41,7 @@ void iPit_Config(PitEnum aPit, UInt16 aPeriodeMs)
 	{
 		// Counting value to do the delay
 		// Counting Value=Delay Time/(1/Core clock)
-		aTmp = ((aPeriodeMs / (1 / kClockBus)) * 1000) - 1;
+		aTmp = ((aPeriodeUs / (1 / kClockBus))) - 1;
 
 		// Timer Load Value Register (PIT_LDVALn)
 		PIT_LDVAL0 =aTmp;
@@ -55,7 +66,7 @@ void iPit_Config(PitEnum aPit, UInt16 aPeriodeMs)
 	{
 		// Counting value to do the delay
 		// Counting Value=Delay Time/(1/Core clock)
-		aTmp = ((aPeriodeMs / (1 / kClockBus)) * 1000) - 1;
+		aTmp = ((aPeriodeUs / (1 / kClockBus))) - 1;
 
 		// Timer Load Value Register (PIT_LDVALn)
 		PIT_LDVAL1=aTmp;
@@ -83,7 +94,7 @@ void iPit_Config(PitEnum aPit, UInt16 aPeriodeMs)
 	{
 		// Counting value to do the delay
 		// Counting Value=Delay Time/(1/Core clock)
-		aTmp = ((aPeriodeMs / (1 / kClockBus)) * 1000) - 1;
+		aTmp = ((aPeriodeUs / (1 / kClockBus))) - 1;
 
 		// Timer Load Value Register (PIT_LDVALn)
 		PIT_LDVAL2=aTmp;
@@ -108,7 +119,7 @@ void iPit_Config(PitEnum aPit, UInt16 aPeriodeMs)
 	{
 		// Counting value to do the delay
 		// Counting Value=Delay Time/(1/Core clock)
-		aTmp = ((aPeriodeMs / (1 / kClockBus)) * 1000) - 1;
+		aTmp = ((aPeriodeUs / (1 / kClockBus))) - 1;
 
 		// Timer Load Value Register (PIT_LDVALn)
 		PIT_LDVAL3=aTmp;
@@ -299,15 +310,9 @@ void PIT1_IRQHandler(void)
 	aTmp = PIT_CVAL1 ;
 
 	// Counter update
-	for (i = 0; i < kNbDelays; i++)
+	for (i = 0; i < kNbTickers100Us; i++)
 	{
-		if ((false == sDly[kPit1].CounterTab[i].isFree)
-				&& (sDly[kPit1].CounterTab[i].Counter > 0))
-			sDly[kPit1].CounterTab[i].Counter--;
-
-		if ((false == sDly[kPit1].CounterTab[i].isFree)
-				&& (sDly[kPit1].CounterTab[i].Counter == 0))
-			sDly[kPit1].CounterTab[i].DelayDone = true;
+		sTicker100Us[i]++;
 	}
 }
 

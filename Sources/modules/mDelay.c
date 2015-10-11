@@ -15,11 +15,11 @@ This file provides all the necessary functions to interract with delays.
 
 #include "mDelay.h"
 
-//periods of pit interrupts [ms]
-#define kPit0Per 1
+//periods of pit interrupts [us]
+#define kPit0Per 1000
 #define kPit1Per 100
-#define kPit2Per 100
-#define kPit3Per 100
+#define kPit2Per 1000
+#define kPit3Per 1000
 
 //-----------------------------------------------------------------------------
 // Delay module setup
@@ -35,13 +35,13 @@ void mDelay_Setup(void)
 
 	// PIT delays structure setup
 	iPit_InitDelay(kPit0);
-	//iPit_InitDelay(kPit1);
+	iPit_InitDelay(kPit1);
 	//iPit_InitDelay(kPit2);
 	//iPit_InitDelay(kPit3);
 
 	//Start PIT0
 	iPit_StartPit(kPit0);
-	//iPit_StartPit(kPit1);
+	iPit_StartPit(kPit1);
 	//iPit_StartPit(kPit2);
 	//iPit_StartPit(kPit3);
 }

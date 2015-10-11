@@ -14,7 +14,8 @@
 #include "MK64F12.h"
 
 // Maximum delay number
-#define kNbDelays 	20
+#define kNbDelays 			20
+#define kNbTickers100Us		3
 
 #define PIT0IRQ	48
 #define PIT1IRQ	49
@@ -42,6 +43,7 @@ typedef struct
 } DlyStruct;
 
 static DlyStruct sDly[3];
+extern UInt32 sTicker100Us[kNbTickers100Us];
 
 
 //------------------------------------------------------------
@@ -49,7 +51,7 @@ static DlyStruct sDly[3];
 // aPit					: which PIT (0 to 3)
 // aPeriodeMs  	: PIT period in ms
 //------------------------------------------------------------
-void iPit_Config(PitEnum aPit,UInt16 aPeriodeMs);
+void iPit_Config(PitEnum aPit,UInt16 aPeriodeUs);
 
 //------------------------------------------------------------
 // Start Pit
