@@ -34,11 +34,13 @@ void gMonitoring_Run()
 	//loop
 	if(mDelay_IsDelayDone(kPit0, gMonitoring.aDelay)==true)
 	{
+
 		mDelay_ReStart(kPit0, gMonitoring.aDelay, 25);
 
 		//Generate string
 		gMonitoring.aDataString[0] = 'L';
 		gMonitoring.aDataString[1] = ':';
+
 		gMonitoring.aDataString[2] = (gAttitudeSensors.aHeading_mrad >> 8);
 		gMonitoring.aDataString[3] = (gAttitudeSensors.aHeading_mrad & 0xFF);
 		gMonitoring.aDataString[4] = (gAttitudeSensors.aPitch_mrad >> 8);
@@ -110,8 +112,29 @@ void gMonitoring_Run()
 
 		//String is NULL terminated
 		gMonitoring.aDataString[kMonitoringStringLength-1] = '\0';
+		int i;
+		for (i=2; i<kMonitoringStringLength-1; i++) //2..68
+		{
+			//Avoid a "L:"
+			if((gMonitoring.aDataString[i] == 'L') && (gMonitoring.aDataString[i+1]==':'))
+			{
+				gMonitoring.aDataString[i] == 255;
+			}
+
+			//Avoid a \r\n
+			if((gMonitoring.aDataString[i] == '\r') && (gMonitoring.aDataString[i+1]=='\n'))
+			{
+				gMonitoring.aDataString[i] == 255;
+			}
+		}
+
 
 		//Transmit datas
 		mRs232_WriteStringFixedSize(kUart3USB, gMonitoring.aDataString, kMonitoringStringLength);
+
+		//Tests
+		mRs232_WriteStringFixedSize(kUart4Aux, gMonitoring.aDataString, kMonitoringStringLength);
+
+
 	}
 }
