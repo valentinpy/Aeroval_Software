@@ -6,12 +6,13 @@
 *.exe
 *.o
 *.so
+*.elf
+*.srec
 
 # Misc #
 ##################
 *.d
 *.mk
-*.elf
 *.xml
 *.map
 *.prefs
