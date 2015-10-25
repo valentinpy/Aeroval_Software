@@ -58,6 +58,31 @@
 
 
 //------------------------------------------------------------------------
+//----------------------- Flight parameters ------------------------------
+//------------------------------------------------------------------------
+
+//PID Roll
+#define kPIDRoll_Kp		1
+#define kPIDRoll_Ki		0
+#define kPIDRoll_Kd		0
+
+//PID Roll
+#define kPIDPitch_Kp	1
+#define kPIDPitch_Ki	0
+#define kPIDPitch_Kd	0
+
+//PID Yaw
+#define kPIDYaw_Kp		1
+#define kPIDYaw_Ki		0
+#define kPIDYaw_Kd		0
+
+//Convert time measured be receiver module to an angle.
+//Used to convert roll & pitch commands to angle for PID
+//Currently limit between -45;+45° => -1000*pi/4; +1000*pi/4
+#define kReceiverMaxAngle_mrad	(Int16)(785)
+#define kReceiverUsTomrad		(float)1.57
+
+//------------------------------------------------------------------------
 //------------------------- DO NOT MANUALLY MODIFY BELOW -----------------
 //------------------------------------------------------------------------
 

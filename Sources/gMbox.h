@@ -43,8 +43,8 @@ extern gAttitudeSensorsStruct gAttitudeSensors;
 // State enum
 typedef enum
 {
-	kArmed,
-	kDisarmed
+	kDisarmed,
+	kArmed
 }StateEnum;
 
 //-----------------------------------------------------------------------------
@@ -74,6 +74,14 @@ extern gLightStruct gLight;
 //-----------------------------------------------------------------------------
 // gMonitoring mailbox
 //-----------------------------------------------------------------------------
+typedef enum
+{
+	kTerminalDisarm,
+	kTerminalArm,
+	kTerminalCalibrate,
+
+} TerminalActionEnum;
+
 typedef struct
 {
 	Int16 aDelay;
@@ -98,6 +106,7 @@ extern gMotorsStruct gMotors;
 typedef struct
 {
 	UInt16 aChannels[8];
+	Int16 aChannels_mrad[8];
 } gReceiverStruct;
 extern gReceiverStruct gReceiver ;
 

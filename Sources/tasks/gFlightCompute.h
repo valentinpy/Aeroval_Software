@@ -12,6 +12,24 @@
 #include "../misc/def.h"
 #include "../gMbox.h"
 #include "../modules/mReceiver.h"
+#include "../modules/mDelay.h"
+
+//enum that contains the PID data variables
+typedef enum {
+	kPIDRoll,
+	kPIDPitch,
+	kPIDYaw
+} sPIDenum;
+
+//Struct that contains the PID datas for each PID
+typedef struct {
+	Int16 aKp, aKi, aKd;
+	Int16 aPreviousError;
+	Int16 aIntegral;
+	UInt16 aPreviousTime;
+} PIDdata;
+PIDdata sPID [3];
+
 
 
 //-----------------------------------
