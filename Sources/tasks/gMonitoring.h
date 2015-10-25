@@ -11,6 +11,8 @@
 #include "../modules/mRS232.h"
 #include "../gMbox.h"
 #include "../modules/mDelay.h"
+#include "../modules/mSwitches.h"
+
 #include "string.h"
 #include "stdlib.h"
 #include "stdio.h"

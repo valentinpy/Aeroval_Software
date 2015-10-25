@@ -12,10 +12,23 @@
 
 #define kMaskSwitchesAll 0xC001F80
 
+// Switch mask
+typedef enum {
+	kMaskSwitch0 = 0x1,
+	kMaskSwitch1 = 0x2,
+	kMaskSwitch2 = 0x4,
+	kMaskSwitch3 = 0x8,
+	kMaskSwitch4 = 0x10,
+	kMaskSwitch5 = 0x20,
+	kMaskSwitch6 = 0x40,
+	kMaskSwitch7 = 0x80,
+	kMaskSwitchAll = 0xFF
+} SwitchesMaskEnum;
+
 //Setup switches
 void mSwitches_Setup();
 
 //Get Switches
-UInt8 mSwitches_Get();
+UInt8 mSwitches_Get(SwitchesMaskEnum aMask);
 
 #endif /* SOURCES_MSWITCHES_H_ */

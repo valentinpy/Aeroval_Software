@@ -21,17 +21,18 @@ void mSwitches_Setup()
 	iDio_PinConfig(kPortE, kPin27, kAlternate1);
 
 	//set direction: input
-	iDio_SetPortDirection(kPortB, kMaskSwitchesAll, kIoInput);
+	iDio_SetPortDirection(kPortB, 0xC001F80, kIoInput);
 
 }
 
 //Get Switches
-UInt8 mSwitches_Get()
+UInt8 mSwitches_Get(SwitchesMaskEnum aMask)
 {
 	UInt32 aPortE = iDio_GetPortE();
 	UInt32 aRet = 0;
 	aRet |= ((aPortE>>7) & 0x3F); //SW0-5
 	aRet |= ((aPortE>>21) & 0x40); //SW6
 	aRet |= ((aPortE >>19) & 0x80); //SW7
+	aRet &= aMask;
 	return (UInt8) aRet;
 }

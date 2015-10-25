@@ -34,6 +34,8 @@
 #include "modules/mCpu.h"
 #include "modules/mLeds.h"
 #include "modules/mDelay.h"
+#include "modules/mGpio.h"
+#include "modules/mSwitches.h"
 
 #include "tasks/gAltitudeSensors.h"
 #include "tasks/gAttitudeSensors.h"
@@ -51,6 +53,7 @@ void main(void)
 	mDelay_Setup();
 	mLeds_Setup();
 	mGpio_Setup();
+	mSwitches_Setup();
 
 	//Tasks initialization
 	gAltitudeSensors_Setup();
@@ -67,7 +70,7 @@ void main(void)
 	while(mDelay_IsDelayDone(kPit0, aDelayBoot)==false);
 	mDelay_DelayRelease(kPit0, aDelayBoot);
 
-	//Indicate that programme is ready.
+	//Indicate that programm is ready.
 	mLeds_AllOn();
 
 	//Main loop
@@ -88,8 +91,6 @@ void main(void)
 
 		//Monitoring
 		gMonitoring_Run();
-
-		mGpio_AllToggle();
 
 	}
 
