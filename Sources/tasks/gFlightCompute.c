@@ -68,11 +68,10 @@ void gFlightCompute_Run()
 	if((gReceiver.aChannels[kReceiverThrottle] < kReceiverMIN) && (gReceiver.aChannels[kReceiverYaw] < kReceiverMIN))
 	{
 		gFlightCompute.aState = kDisarmed;
-
-		gFlightCompute_ResetPID(sPID);
 	}
 	else if((gReceiver.aChannels[kReceiverThrottle] < kReceiverMIN) && (gReceiver.aChannels[kReceiverYaw] > kReceiverMAX))
 	{
+		gFlightCompute_ResetPID(sPID);
 		gFlightCompute.aState = kArmed;
 	}
 
@@ -105,7 +104,7 @@ void gFlightCompute_Run()
 
 	//Call regulation for yaw axis
 	Int16 aPIDYawOutput=0;
-	aPIDYawOutput = gReceiver.aChannels_mrad[kReceiverYaw]/3;
+	aPIDYawOutput = gReceiver.aChannels_mrad[kReceiverYaw]/2;
 	//TODO implement
 
 	//Call motor mix
@@ -139,7 +138,7 @@ static void gFlightCompute_PID(Int16* aOutput, PIDdata* aPIDstruct, Int16 aTarge
 	//TODO constrain time if abnormal ?
 
 	//Compute error
-	aError = aTarget - aMeasured;
+	aError = (aTarget - aMeasured);
 
 	//Compute separate terms
 	aProportional = aError * aPIDstruct->aKp;
@@ -162,13 +161,11 @@ static void gFlightCompute_MotorMix(Int16 aThrottle, Int16 aPIDPitchOutput, Int1
 	// Motor 2: Rear left, counter-clockwise
 	// Motor 3: Front left, clockwise
 #if defined(MOTORMIX_X4)
-
 	//Calculate outputs
-	aOutput[0] = aThrottle + aPIDPitchOutput + aPIDRollOutput + aPIDYawOutput;
-	aOutput[1] = aThrottle - aPIDPitchOutput + aPIDRollOutput - aPIDYawOutput;
-	aOutput[2] = aThrottle - aPIDPitchOutput - aPIDRollOutput + aPIDYawOutput;
-	aOutput[3] = aThrottle + aPIDPitchOutput - aPIDRollOutput - aPIDYawOutput;
-
+	aOutput[0] = aThrottle + aPIDPitchOutput - aPIDRollOutput + aPIDYawOutput;
+	aOutput[1] = aThrottle - aPIDPitchOutput - aPIDRollOutput - aPIDYawOutput;
+	aOutput[2] = aThrottle - aPIDPitchOutput + aPIDRollOutput + aPIDYawOutput;
+	aOutput[3] = aThrottle + aPIDPitchOutput + aPIDRollOutput - aPIDYawOutput;
 #else
 #error "Bad motor mix configuration"
 #endif
