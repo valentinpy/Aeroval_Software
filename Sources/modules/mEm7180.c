@@ -67,15 +67,14 @@ void mEm7180_Setup()
 		//mRs232_SendString("[Sentral / ERROR]	Failed to upload configuration file!\r\n");
 	}
 
-	// Set MagRate register to 100Hz
-	mEm7180_SetData8(MagRate, 0x64);
-	// Set AccelRate register to 100Hz
-	mEm7180_SetData8(AccelRate, 0x0A);
-	// Set GyroRate register to 150Hz
-	mEm7180_SetData8(GyroRate, 0x0F);
-	// Set QRateDivisor to 1 (Related to GyroRate -> 150Hz / QRateDivisor)
-	//TODO improve output rate to allow faster regulation.
-	mEm7180_SetData8(QRateDivisor, 0x01); //TODO -> env 75 Hz (en fait, je dirais plutot 150Hz, ça divise par 1, pas par 2 (?))
+	// Set MagRate register to 200Hz
+	mEm7180_SetData8(MagRate, 0xC8);
+	// Set AccelRate register to 200Hz
+	mEm7180_SetData8(AccelRate, 0x14);
+	// Set GyroRate register to 300Hz
+	mEm7180_SetData8(GyroRate, 0x1E);
+	// Set QRateDivisor to 1 (Related to GyroRate -> 1300Hz / QRateDivisor)
+	mEm7180_SetData8(QRateDivisor, 0x01);
 	//Set AlgorithmControl register (enable heading, pitch and roll)
 	mEm7180_SetData8(AlgorithmControl, 0x06);
 	// Set EnableEvent register (enable interrupt when: reset, error, new quaternion available)
@@ -178,6 +177,8 @@ void mEm7180_GetEuler(EM7180_DataStruct *aResultStruct)
 	//Timestamp
 	aResultStruct->QTime = (mEm7180_GetData8(0x10)) + (mEm7180_GetData8(0x10)<<8);
 
+	//Read events
+	(aResultStruct)->Event = mEm7180_GetData8(0x35);
 }
 
 //-----------------------------------------------------------------------------

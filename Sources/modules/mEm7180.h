@@ -103,6 +103,7 @@ typedef struct{
 	float Heading;
 	float Roll;
 	float Pitch;
+	UInt16 Event;
 } EM7180_DataStruct;
 
 //-------------------------------------------------------------------

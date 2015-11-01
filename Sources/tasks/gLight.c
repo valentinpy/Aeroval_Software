@@ -35,7 +35,7 @@ void gLight_Run()
 	// 2Hz loop
 	if(mDelay_IsDelayDone(kPit0, gLight.aDelay2Hz)==true)
 	{
-		mDelay_ReStart(kPit0, gLight.aDelay2Hz, 250);
+		mDelay_ReStart(kPit0, gLight.aDelay2Hz, 100);
 
 		//TODO implement LEDS
 		//Blink, as nothing else is implemented yet

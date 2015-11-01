@@ -36,14 +36,13 @@ void gMonitoring_Run()
 	if(mDelay_IsDelayDone(kPit0, gMonitoring.aDelay)==true)
 	{
 
-		mDelay_ReStart(kPit0, gMonitoring.aDelay, 25);
+		mDelay_ReStart(kPit0, gMonitoring.aDelay, 50);
 
 		if(mSwitches_Get(kMaskSwitch0))
 		{
 			//Generate string
-			gMonitoring.aDataString[0] = 'L';
-			gMonitoring.aDataString[1] = ':';
-
+			gMonitoring.aDataString[0] = 0x0D;//'L';
+			gMonitoring.aDataString[1] = 0x0A;//':';
 			gMonitoring.aDataString[2] = (gAttitudeSensors.aHeading_mrad >> 8);
 			gMonitoring.aDataString[3] = (gAttitudeSensors.aHeading_mrad & 0xFF);
 			gMonitoring.aDataString[4] = (gAttitudeSensors.aPitch_mrad >> 8);
@@ -111,23 +110,28 @@ void gMonitoring_Run()
 			gMonitoring.aDataString[66] = (gMiscSensors.aBatteryUsedCapacity_mAh >> 8);
 			gMonitoring.aDataString[67] = (gMiscSensors.aBatteryUsedCapacity_mAh & 0xFF);
 			gMonitoring.aDataString[68] = (gFlightCompute.aState);
-			gMonitoring.aDataString[69] = 0;
+			gMonitoring.aDataString[69] = (gFlightCompute.aPidTime>>8);
+			gMonitoring.aDataString[70] = (gFlightCompute.aPidTime & 0xFF);
+			gMonitoring.aDataString[71] = 0;
+			gMonitoring.aDataString[72] = 0;
+			gMonitoring.aDataString[73] = 0;
+			gMonitoring.aDataString[74] = 0;
+			gMonitoring.aDataString[75] = 0;
+			gMonitoring.aDataString[76] = 0;
+			gMonitoring.aDataString[77] = 0;
+			gMonitoring.aDataString[78] = 0;
+			gMonitoring.aDataString[79] = 0;
+
 
 			//String is NULL terminated
 			gMonitoring.aDataString[kMonitoringStringLength-1] = '\0';
 			int i;
 			for (i=2; i<kMonitoringStringLength-1; i++) //2..68
 			{
-				//Avoid a "L:"
-				if((gMonitoring.aDataString[i] == 'L') && (gMonitoring.aDataString[i+1]==':'))
-				{
-					gMonitoring.aDataString[i] = 255;
-				}
-
 				//Avoid a \r\n
-				if((gMonitoring.aDataString[i] == '\r') && (gMonitoring.aDataString[i+1]=='\n'))
+				if((gMonitoring.aDataString[i] == 0x0D) && (gMonitoring.aDataString[i+1]==0x03))
 				{
-					gMonitoring.aDataString[i] = 255;
+					gMonitoring.aDataString[i] = 0;
 				}
 			}
 

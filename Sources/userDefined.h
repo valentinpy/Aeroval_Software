@@ -62,13 +62,13 @@
 //------------------------------------------------------------------------
 
 //PID Roll
-#define kPIDRoll_Kp		1
-#define kPIDRoll_Ki		0
+#define kPIDRoll_Kp		0
+#define kPIDRoll_Ki		1
 #define kPIDRoll_Kd		0
 
-//PID Roll
-#define kPIDPitch_Kp	1
-#define kPIDPitch_Ki	0
+//PID Pitch
+#define kPIDPitch_Kp	0
+#define kPIDPitch_Ki	1
 #define kPIDPitch_Kd	0
 
 //PID Yaw

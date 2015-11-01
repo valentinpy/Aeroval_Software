@@ -58,6 +58,7 @@ typedef struct
 	Int16 aRoll_mrad_offset;
 
 	UInt16 aMotorsOutput[8];
+
 } gFlightComputeStruct;
 extern gFlightComputeStruct gFlightCompute;
 

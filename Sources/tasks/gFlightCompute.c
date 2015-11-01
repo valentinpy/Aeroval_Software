@@ -7,7 +7,7 @@
 
 
 #include "gFlightCompute.h"
-
+#include "../modules/mGpio.h"
 //-----------------------------------
 // Static functions
 // TODO comment
@@ -51,12 +51,12 @@ void gFlightCompute_Setup()
 	sPID[kPIDRoll].aKi = kPIDRoll_Ki;
 
 	sPID[kPIDPitch].aKp = kPIDPitch_Kp;
-	sPID[kPIDPitch].aKd = kPIDPitch_Ki;
-	sPID[kPIDPitch].aKi = kPIDPitch_Kd;
+	sPID[kPIDPitch].aKd = kPIDPitch_Kd;
+	sPID[kPIDPitch].aKi = kPIDPitch_Ki;
 
 	sPID[kPIDYaw].aKp = kPIDYaw_Kp;
-	sPID[kPIDYaw].aKd = kPIDYaw_Ki;
-	sPID[kPIDYaw].aKi = kPIDYaw_Kd;
+	sPID[kPIDYaw].aKd = kPIDYaw_Kd;
+	sPID[kPIDYaw].aKi = kPIDYaw_Ki;
 }
 
 //-----------------------------------
@@ -112,8 +112,6 @@ void gFlightCompute_Run()
 
 	//Constrain and send to motors
 	gFlightCompute_ConstrainSendMotorsValues(aToMotors);
-
-
 }
 
 
@@ -122,9 +120,9 @@ static void gFlightCompute_ResetPID(PIDdata* aPID)
 	UInt8 i;
 	for(i=0; i<3; i++)
 	{
-		aPID->aIntegral=0;
-		aPID->aPreviousError=0;
-		//sPID->aPreviousTime = //TODO get time
+		aPID[i].aIntegral=0;
+		aPID[i].aPreviousError=0;
+		aPID[i].aPreviousTime = sTicker100Us[0];
 	}
 }
 
@@ -142,7 +140,7 @@ static void gFlightCompute_PID(Int16* aOutput, PIDdata* aPIDstruct, Int16 aTarge
 
 	//Compute separate terms
 	aProportional = aError * aPIDstruct->aKp;
-	aPIDstruct->aIntegral += (aError * aDeltaTime * aPIDstruct->aKi);
+	aPIDstruct->aIntegral += (aError * aDeltaTime * aPIDstruct->aKi/10000);
 	aDerivative = (aError-aPIDstruct->aPreviousError) * aPIDstruct->aKd;
 
 	//Compute output
