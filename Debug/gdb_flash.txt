@@ -1,0 +1,21 @@
+# Segger: listen on port
+target remote localhost:2331
+
+# Segger: reset device
+monitor reset
+
+# Segger: specify flash of device
+monitor device = MK64FN1M0xxx12
+
+# load/flash application file
+load Aeroval.elf
+
+#reset target
+monitor reset
+
+#start programm
+#continue
+
+# exit gdb
+quit
+
