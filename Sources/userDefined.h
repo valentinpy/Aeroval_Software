@@ -24,10 +24,11 @@
 
 
 //------------------------------------------------------------------------
-//----------------------- Wirering configuration -------------------------
+//----------------------- Receiver configuration ---------------------------
 //------------------------------------------------------------------------
 
 // Order of channels for the receiver
+//TODO conflict with mReceiver
 #define THROTTLE	0
 #define YAW			1
 #define PITCH		2
@@ -36,6 +37,16 @@
 #define AUX1		5
 #define AUX2		6
 #define AUX3		7
+
+#define kReceiverIDLE		50		//Threshold value for throttle: below: idle, no regulation, above: regulation is applied
+#define kReceiverMIN 		50		//Min value for detection of patterns
+#define kReceiverMAX		950		//Max value for detection of patterns
+
+
+//------------------------------------------------------------------------
+//----------------------- Motors configuration ---------------------------
+//------------------------------------------------------------------------
+
 
 // Order of motors
 #define M0			0
@@ -46,6 +57,7 @@
 #define M5			5
 #define M6			6
 #define M7			7
+
 
 //------------------------------------------------------------------------
 //----------------------- MOTOR / ESC configuration ----------------------
@@ -62,25 +74,27 @@
 //------------------------------------------------------------------------
 
 //PID Roll
-#define kPIDRoll_Kp		0
+#define kPIDRoll_Kp		8
 #define kPIDRoll_Ki		1
-#define kPIDRoll_Kd		0
+#define kPIDRoll_Kd		4
 
 //PID Pitch
-#define kPIDPitch_Kp	0
+#define kPIDPitch_Kp	8
 #define kPIDPitch_Ki	1
-#define kPIDPitch_Kd	0
+#define kPIDPitch_Kd	4//8
 
 //PID Yaw
-#define kPIDYaw_Kp		1
+#define kPIDYaw_Kp		0
 #define kPIDYaw_Ki		0
-#define kPIDYaw_Kd		0
+#define kPIDYaw_Kd		0//500
+
+#define kWindupGuard	150
 
 //Convert time measured be receiver module to an angle.
 //Used to convert roll & pitch commands to angle for PID
 //Currently limit between -45;+45° => -1000*pi/4; +1000*pi/4
-#define kReceiverMaxAngle_mrad	(Int16)(785)
-#define kReceiverUsTomrad		(float)1.57
+#define kReceiverMaxAngle_urad	(Int32)(785000)
+#define kReceiverUsTomrad		(float)1570
 
 //------------------------------------------------------------------------
 //------------------------- DO NOT MANUALLY MODIFY BELOW -----------------

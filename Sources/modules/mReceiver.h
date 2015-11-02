@@ -33,10 +33,6 @@ typedef enum
 #define kReceiverAux1 		kReceiverChannel2
 #define kReceiverAux2 		kReceiverChannel3
 
-#define kReceiverMIN 		50
-#define kReceiverMAX		950
-
-
 //------------------------------------------------------------
 // Setup receiver
 //------------------------------------------------------------

@@ -25,9 +25,9 @@ void gAttitudeSensors_Setup()
 	gAttitudeSensors.aRoll_rad 	  = 0.0;
 
 	//milli-int
-	gAttitudeSensors.aHeading_mrad = 0;
-	gAttitudeSensors.aPitch_mrad   = 0;
-	gAttitudeSensors.aRoll_mrad    = 0;
+	gAttitudeSensors.aHeading_urad = 0;
+	gAttitudeSensors.aPitch_urad   = 0;
+	gAttitudeSensors.aRoll_urad    = 0;
 
 	//int
 	gAttitudeSensors.aTimeStamp = 0;
@@ -50,13 +50,13 @@ void gAttitudeSensors_Run()
 	gAttitudeSensors.aRoll_rad = 	aDataResult.QY.f;
 
 	//Copy in milli-radians (int16, signed)
-	gAttitudeSensors.aHeading_mrad = (Int16) (1000* aDataResult.QX.f);
-	gAttitudeSensors.aPitch_mrad   = (Int16) (1000* aDataResult.QY.f);
-	gAttitudeSensors.aRoll_mrad    = (Int16) (1000* aDataResult.QZ.f);
+	gAttitudeSensors.aHeading_urad = (Int32) (1000000* aDataResult.QX.f);
+	gAttitudeSensors.aPitch_urad   = (Int32) (1000000* aDataResult.QY.f);
+	gAttitudeSensors.aRoll_urad    = (Int32) (1000000* aDataResult.QZ.f);
 
 	//Add offset
-	gAttitudeSensors.aPitch_mrad   += gFlightCompute.aPitch_mrad_offset;
-	gAttitudeSensors.aRoll_mrad    += gFlightCompute.aRoll_mrad_offset;
+	gAttitudeSensors.aPitch_urad   += gFlightCompute.aPitch_urad_offset;
+	gAttitudeSensors.aRoll_urad    += gFlightCompute.aRoll_urad_offset;
 
 	//Store time
 	gAttitudeSensors.aTimeStamp = aDataResult.QTime;

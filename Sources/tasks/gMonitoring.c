@@ -38,17 +38,17 @@ void gMonitoring_Run()
 
 		mDelay_ReStart(kPit0, gMonitoring.aDelay, 50);
 
-		if(mSwitches_Get(kMaskSwitch0))
+		if(mSwitches_Get(kMaskSwitch4))
 		{
 			//Generate string
 			gMonitoring.aDataString[0] = 0x0D;//'L';
 			gMonitoring.aDataString[1] = 0x0A;//':';
-			gMonitoring.aDataString[2] = (gAttitudeSensors.aHeading_mrad >> 8);
-			gMonitoring.aDataString[3] = (gAttitudeSensors.aHeading_mrad & 0xFF);
-			gMonitoring.aDataString[4] = (gAttitudeSensors.aPitch_mrad >> 8);
-			gMonitoring.aDataString[5] = (gAttitudeSensors.aPitch_mrad & 0xFF);
-			gMonitoring.aDataString[6] = (gAttitudeSensors.aRoll_mrad >> 8);
-			gMonitoring.aDataString[7] = (gAttitudeSensors.aRoll_mrad & 0xFF);
+			gMonitoring.aDataString[2] = (Int16)(gAttitudeSensors.aHeading_urad/1000) >> 8;
+			gMonitoring.aDataString[3] = (Int16)(gAttitudeSensors.aHeading_urad/1000) & 0xFF;
+			gMonitoring.aDataString[4] = (Int16)(gAttitudeSensors.aPitch_urad/1000) >> 8;
+			gMonitoring.aDataString[5] = (Int16)(gAttitudeSensors.aPitch_urad/1000) & 0xFF;
+			gMonitoring.aDataString[6] = (Int16)(gAttitudeSensors.aRoll_urad/1000) >> 8;
+			gMonitoring.aDataString[7] = (Int16)(gAttitudeSensors.aRoll_urad/1000) & 0xFF;
 			gMonitoring.aDataString[8] =  (gReceiver.aChannels[0]>>8);
 			gMonitoring.aDataString[9] =  (gReceiver.aChannels[0] & 0xFF);
 			gMonitoring.aDataString[10] = (gReceiver.aChannels[1]>>8);
@@ -110,8 +110,8 @@ void gMonitoring_Run()
 			gMonitoring.aDataString[66] = (gMiscSensors.aBatteryUsedCapacity_mAh >> 8);
 			gMonitoring.aDataString[67] = (gMiscSensors.aBatteryUsedCapacity_mAh & 0xFF);
 			gMonitoring.aDataString[68] = (gFlightCompute.aState);
-			gMonitoring.aDataString[69] = (gFlightCompute.aPidTime>>8);
-			gMonitoring.aDataString[70] = (gFlightCompute.aPidTime & 0xFF);
+			gMonitoring.aDataString[69] = 0;
+			gMonitoring.aDataString[70] = 0;
 			gMonitoring.aDataString[71] = 0;
 			gMonitoring.aDataString[72] = 0;
 			gMonitoring.aDataString[73] = 0;
@@ -129,7 +129,7 @@ void gMonitoring_Run()
 			for (i=2; i<kMonitoringStringLength-1; i++) //2..68
 			{
 				//Avoid a \r\n
-				if((gMonitoring.aDataString[i] == 0x0D) && (gMonitoring.aDataString[i+1]==0x03))
+				if((gMonitoring.aDataString[i] == 0x0D) && (gMonitoring.aDataString[i+1]==0x0A))
 				{
 					gMonitoring.aDataString[i] = 0;
 				}

@@ -13,7 +13,7 @@
 // TODO comment
 //-----------------------------------
 static void gFlightCompute_ResetPID(PIDdata* sPID);
-static void gFlightCompute_PID(Int16* aOutput, PIDdata* aPIDstruct, Int16 aSetPoint, Int16 aMeasured, UInt16 aTime);
+static void gFlightCompute_PID(Int16* aOutput, PIDdata* aPIDstruct, Int32 aSetPoint, Int32 aMeasured, UInt16 aTime);
 static void gFlightCompute_MotorMix(Int16 aThrottle, Int16 aPIDPitchOutput, Int16 aPIDRollOutput, Int16 aPIDYawOutput, Int16* aOutput);
 static void gFlightCompute_ConstrainSendMotorsValues(Int16* aOutput);
 
@@ -28,8 +28,8 @@ void gFlightCompute_Setup()
 
 	//Init attitude offset
 	//offset to apply to attitude
-	gFlightCompute.aPitch_mrad_offset		= 0;
-	gFlightCompute.aRoll_mrad_offset		= 0;
+	gFlightCompute.aPitch_urad_offset		= 0;
+	gFlightCompute.aRoll_urad_offset		= 0;
 
 	//Init state of motors
 	gFlightCompute.aState = kDisarmed;
@@ -79,37 +79,49 @@ void gFlightCompute_Run()
 	if(
 			(gReceiver.aChannels[kReceiverThrottle] < kReceiverMIN) &&
 			(gReceiver.aChannels[kReceiverYaw] < kReceiverMIN) &&
-			(gReceiver.aChannels[kReceiverPitch] < kReceiverMIN) &&
+			(gReceiver.aChannels[kReceiverPitch] > kReceiverMAX) &&
 			(gReceiver.aChannels[kReceiverRoll] > kReceiverMAX) &&
 			(gFlightCompute.aState == kDisarmed)
 	)
 	{
-		gFlightCompute.aPitch_mrad_offset 	-= gAttitudeSensors.aPitch_mrad;
-		gFlightCompute.aRoll_mrad_offset	-= gAttitudeSensors.aRoll_mrad;
+		gFlightCompute.aPitch_urad_offset 	-= gAttitudeSensors.aPitch_urad;
+		gFlightCompute.aRoll_urad_offset	-= gAttitudeSensors.aRoll_urad;
 	}
 
 	Int16 aToMotors[NUMBER_OF_MOTORS];
 	Int16 aThrottle = gReceiver.aChannels[kReceiverThrottle];
 
-	//Get time
-	UInt16 aTime = sTicker100Us[0];
-
-	//Call regulation for roll axis
 	Int16 aPIDRollOutput;
-	gFlightCompute_PID(&aPIDRollOutput, &sPID[kPIDRoll], gReceiver.aChannels_mrad[kReceiverRoll], gAttitudeSensors.aRoll_mrad, aTime);
-
-	//Call regulation for pitch axis
 	Int16 aPIDPitchOutput;
-	gFlightCompute_PID(&aPIDPitchOutput, &sPID[kPIDPitch], gReceiver.aChannels_mrad[kReceiverPitch], gAttitudeSensors.aPitch_mrad, aTime);
+	Int16 aPIDYawOutput;
 
-	//Call regulation for yaw axis
-	Int16 aPIDYawOutput=0;
-	aPIDYawOutput = gReceiver.aChannels_mrad[kReceiverYaw]/2;
-	//TODO implement
+	//Check if IDLE
+	if(aThrottle < kReceiverIDLE)
+	{
+		aThrottle = MOTOR_IDLE_VALUE;
+		aPIDRollOutput = 0;
+		aPIDPitchOutput = 0;
+		aPIDYawOutput = 0;
+		gFlightCompute_ResetPID(sPID);
+	}
+	else
+	{
+		//Get time
+		UInt16 aTime = sTicker100Us[0];
+
+		//Call regulation for roll axis
+		gFlightCompute_PID(&aPIDRollOutput, &sPID[kPIDRoll], gReceiver.aChannels_urad[kReceiverRoll], gAttitudeSensors.aRoll_urad, aTime);
+
+		//Call regulation for pitch axis
+		gFlightCompute_PID(&aPIDPitchOutput, &sPID[kPIDPitch], gReceiver.aChannels_urad[kReceiverPitch], gAttitudeSensors.aPitch_urad, aTime);
+
+		//Call regulation for yaw axis
+		//TODO implement
+		aPIDYawOutput = gReceiver.aChannels_urad[kReceiverYaw]/2000;
+	}
 
 	//Call motor mix
 	gFlightCompute_MotorMix(aThrottle, aPIDPitchOutput, aPIDRollOutput, aPIDYawOutput, aToMotors);
-
 	//Constrain and send to motors
 	gFlightCompute_ConstrainSendMotorsValues(aToMotors);
 }
@@ -126,25 +138,44 @@ static void gFlightCompute_ResetPID(PIDdata* aPID)
 	}
 }
 
-static void gFlightCompute_PID(Int16* aOutput, PIDdata* aPIDstruct, Int16 aTarget, Int16 aMeasured, UInt16 aTime)
+static void gFlightCompute_PID(Int16* aOutput, PIDdata* aPIDstruct, Int32 aTarget, Int32 aMeasured, UInt16 aTime)
 {
 	//TODO stability: add windup guard
 
-	Int16 aDeltaTime, aError, aProportional, aDerivative;
+	Int32 aDeltaTime, aError, aProportional, aDerivative;
 
 	aDeltaTime = aTime - aPIDstruct->aPreviousTime;
-	//TODO constrain time if abnormal ?
+
+	//Constrain time if abnormal
+	if (aDeltaTime <1)
+	{
+		aDeltaTime = 1;
+	}
+	else if (aDeltaTime >1000)
+	{
+		aDeltaTime = 1000;
+	}
+
+	//Constrain integral
+	if(aPIDstruct->aIntegral > (kWindupGuard*1000))
+	{
+		aPIDstruct->aIntegral = kWindupGuard*1000;
+	}
+	else if(aPIDstruct->aIntegral < (-1000*kWindupGuard))
+	{
+		aPIDstruct->aIntegral = -1000*kWindupGuard;
+	}
 
 	//Compute error
 	aError = (aTarget - aMeasured);
 
 	//Compute separate terms
-	aProportional = aError * aPIDstruct->aKp;
-	aPIDstruct->aIntegral += (aError * aDeltaTime * aPIDstruct->aKi/10000);
-	aDerivative = (aError-aPIDstruct->aPreviousError) * aPIDstruct->aKd;
+	aProportional = (aError * aPIDstruct->aKp)/10000;
+	aPIDstruct->aIntegral += (aError * aDeltaTime * aPIDstruct->aKi)/10000;
+	aDerivative = ((aError-(aPIDstruct->aPreviousError)) * aPIDstruct->aKd*24)/1000; ///aDeltaTime;
 
 	//Compute output
-	*aOutput = aProportional + aPIDstruct->aIntegral + aDerivative;
+	*aOutput = aProportional + (aPIDstruct->aIntegral/1000) + aDerivative;
 
 	//Sore previous parameters
 	aPIDstruct->aPreviousTime = aTime;
