@@ -9,6 +9,7 @@
 #define SOURCES_TASKS_GMOTORS_H_
 
 #include "../modules/mMotors.h"
+#include "../modules/mSwitches.h"
 #include "../gMbox.h"
 
 

@@ -14,11 +14,11 @@
 
 // Switch mask
 typedef enum {
-	kMaskSwitch0 = 0x1,
+	kMaskSwitch0 = 0x1,		//Motors: [1:On, 0: Off]
 	kMaskSwitch1 = 0x2,
 	kMaskSwitch2 = 0x4,
 	kMaskSwitch3 = 0x8,
-	kMaskSwitch4 = 0x10,
+	kMaskSwitch4 = 0x10,	// Telemetry: [1:On, 0: Off]
 	kMaskSwitch5 = 0x20,
 	kMaskSwitch6 = 0x40,
 	kMaskSwitch7 = 0x80,

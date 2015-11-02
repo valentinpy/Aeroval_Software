@@ -38,15 +38,22 @@ void gMotors_Run()
 	else if (gFlightCompute.aState == kArmed)
 	{
 		//Send values to motors
-		mMotors_SetMotor(kMotor0, gMotors.aMotorsValues[M0]);
-		mMotors_SetMotor(kMotor1, gMotors.aMotorsValues[M1]);
-		mMotors_SetMotor(kMotor2, gMotors.aMotorsValues[M2]);
-		mMotors_SetMotor(kMotor3, gMotors.aMotorsValues[M3]);
+		if(mSwitches_Get(kMaskSwitch0))
+		{
+			mMotors_SetMotor(kMotor0, gMotors.aMotorsValues[M0]);
+			mMotors_SetMotor(kMotor1, gMotors.aMotorsValues[M1]);
+			mMotors_SetMotor(kMotor2, gMotors.aMotorsValues[M2]);
+			mMotors_SetMotor(kMotor3, gMotors.aMotorsValues[M3]);
 
-		mMotors_SetMotor(kMotor4, gMotors.aMotorsValues[M4]);
-		mMotors_SetMotor(kMotor5, gMotors.aMotorsValues[M5]);
-		mMotors_SetMotor(kMotor6, gMotors.aMotorsValues[M6]);
-		mMotors_SetMotor(kMotor7, gMotors.aMotorsValues[M7]);
+			mMotors_SetMotor(kMotor4, gMotors.aMotorsValues[M4]);
+			mMotors_SetMotor(kMotor5, gMotors.aMotorsValues[M5]);
+			mMotors_SetMotor(kMotor6, gMotors.aMotorsValues[M6]);
+			mMotors_SetMotor(kMotor7, gMotors.aMotorsValues[M7]);
+		}
+		else
+		{
+			mMotors_StopAll();
+		}
 
 		//Store values in our own mailbox to allow access to the true values of motors
 		gMotors.aMotorsValues[0] = gFlightCompute.aMotorsOutput[0];
