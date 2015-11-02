@@ -92,6 +92,14 @@ void main(void)
 		//Monitoring
 		gMonitoring_Run();
 
+//		UInt16 aDelayMain = mDelay_GetDelay(kPit0, 9);
+//		while(mDelay_IsDelayDone(kPit0, aDelayMain)==false);
+//		mDelay_DelayRelease(kPit0, aDelayMain);
+
+		//Measure time with logic
+		mGpio_AllToggle();
+
+
 	}
 
 	//Never happens (infinite loop above)
