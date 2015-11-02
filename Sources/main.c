@@ -97,7 +97,7 @@ void main(void)
 //		mDelay_DelayRelease(kPit0, aDelayMain);
 
 		//Measure time with logic
-		mGpio_AllToggle();
+		//mGpio_AllToggle();
 
 
 	}

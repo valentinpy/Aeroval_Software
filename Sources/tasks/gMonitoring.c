@@ -41,14 +41,14 @@ void gMonitoring_Run()
 		if(mSwitches_Get(kMaskSwitch4))
 		{
 			//Generate string
-			gMonitoring.aDataString[0] = 0x0D;//'L';
-			gMonitoring.aDataString[1] = 0x0A;//':';
-			gMonitoring.aDataString[2] = (Int16)(gAttitudeSensors.aHeading_urad/1000) >> 8;
-			gMonitoring.aDataString[3] = (Int16)(gAttitudeSensors.aHeading_urad/1000) & 0xFF;
-			gMonitoring.aDataString[4] = (Int16)(gAttitudeSensors.aPitch_urad/1000) >> 8;
-			gMonitoring.aDataString[5] = (Int16)(gAttitudeSensors.aPitch_urad/1000) & 0xFF;
-			gMonitoring.aDataString[6] = (Int16)(gAttitudeSensors.aRoll_urad/1000) >> 8;
-			gMonitoring.aDataString[7] = (Int16)(gAttitudeSensors.aRoll_urad/1000) & 0xFF;
+			gMonitoring.aDataString[0] = 0x0D;
+			gMonitoring.aDataString[1] = 0x0A;
+			gMonitoring.aDataString[2] = (Int16)(gAttitudeSensors.aHeading_rad*1000) >> 8;		//Transmit float as milli-rad
+			gMonitoring.aDataString[3] = (Int16)(gAttitudeSensors.aHeading_rad*1000) & 0xFF;
+			gMonitoring.aDataString[4] = (Int16)(gAttitudeSensors.aPitch_rad*1000) >> 8;
+			gMonitoring.aDataString[5] = (Int16)(gAttitudeSensors.aPitch_rad*1000) & 0xFF;
+			gMonitoring.aDataString[6] = (Int16)(gAttitudeSensors.aRoll_rad*1000) >> 8;
+			gMonitoring.aDataString[7] = (Int16)(gAttitudeSensors.aRoll_rad*1000) & 0xFF;
 			gMonitoring.aDataString[8] =  (gReceiver.aChannels[0]>>8);
 			gMonitoring.aDataString[9] =  (gReceiver.aChannels[0] & 0xFF);
 			gMonitoring.aDataString[10] = (gReceiver.aChannels[1]>>8);

@@ -30,10 +30,6 @@ typedef struct
 	float aPitch_rad;
 	float aRoll_rad;
 
-	Int32 aHeading_urad;
-	Int32 aPitch_urad;
-	Int32 aRoll_urad;
-
 	UInt16 aTimeStamp;
 
 } gAttitudeSensorsStruct;
@@ -54,8 +50,8 @@ typedef struct
 {
 	StateEnum aState;
 
-	Int32 aPitch_urad_offset;
-	Int32 aRoll_urad_offset;
+	float aPitch_rad_offset;
+	float aRoll_rad_offset;
 
 	UInt16 aMotorsOutput[8];
 
@@ -107,7 +103,7 @@ extern gMotorsStruct gMotors;
 typedef struct
 {
 	UInt16 aChannels[8];
-	Int32 aChannels_urad[8];
+	float aChannels_rad[8];
 } gReceiverStruct;
 extern gReceiverStruct gReceiver ;
 

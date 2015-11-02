@@ -74,27 +74,27 @@
 //------------------------------------------------------------------------
 
 //PID Roll
-#define kPIDRoll_Kp		8
-#define kPIDRoll_Ki		1
-#define kPIDRoll_Kd		4
+#define kPIDRoll_Kp		(float)8
+#define kPIDRoll_Ki		(float)1
+#define kPIDRoll_Kd		(float)4
 
 //PID Pitch
-#define kPIDPitch_Kp	8
-#define kPIDPitch_Ki	1
-#define kPIDPitch_Kd	4//8
+#define kPIDPitch_Kp	(float)8
+#define kPIDPitch_Ki	(float)1
+#define kPIDPitch_Kd	(float)4
 
 //PID Yaw
-#define kPIDYaw_Kp		0
-#define kPIDYaw_Ki		0
-#define kPIDYaw_Kd		0//500
+#define kPIDYaw_Kp		(float)0
+#define kPIDYaw_Ki		(float)0
+#define kPIDYaw_Kd		(float)0
 
-#define kWindupGuard	150
+#define kWindupGuard	(float) 150
 
 //Convert time measured be receiver module to an angle.
 //Used to convert roll & pitch commands to angle for PID
-//Currently limit between -45;+45° => -1000*pi/4; +1000*pi/4
-#define kReceiverMaxAngle_urad	(Int32)(785000)
-#define kReceiverUsTomrad		(float)1570
+//Currently limit between -45;+45° => -pi/4; +pi/4
+#define kReceiverMaxAngle_rad	(Int32)(0.785)
+#define kReceiverUsToRad		(float)0.00157
 
 //------------------------------------------------------------------------
 //------------------------- DO NOT MANUALLY MODIFY BELOW -----------------

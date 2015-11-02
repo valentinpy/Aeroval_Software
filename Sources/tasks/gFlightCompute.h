@@ -23,9 +23,9 @@ typedef enum {
 
 //Struct that contains the PID datas for each PID
 typedef struct {
-	Int32 aKp, aKi, aKd;
-	Int32 aPreviousError;
-	Int32 aIntegral;
+	float aKp, aKi, aKd;
+	float aPreviousError;
+	float aIntegral;
 	UInt16 aPreviousTime;
 } PIDdata;
 PIDdata sPID [3];
