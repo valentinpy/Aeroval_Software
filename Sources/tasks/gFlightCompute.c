@@ -64,8 +64,6 @@ void gFlightCompute_Setup()
 //-----------------------------------
 void gFlightCompute_Run()
 {
-	mGpio_AllOn();
-
 	//Check controls to arm/disarm the motors
 	if((gReceiver.aChannels[kReceiverThrottle] < kReceiverMIN) && (gReceiver.aChannels[kReceiverYaw] < kReceiverMIN))
 	{
@@ -126,8 +124,6 @@ void gFlightCompute_Run()
 	gFlightCompute_MotorMix(aThrottle, aPIDPitchOutput, aPIDRollOutput, aPIDYawOutput, aToMotors);
 	//Constrain and send to motors
 	gFlightCompute_ConstrainSendMotorsValues(aToMotors);
-
-	mGpio_AllOff();
 }
 
 
@@ -165,7 +161,7 @@ static void gFlightCompute_PID(float* aOutput, PIDdata* aPIDstruct, float aTarge
 	{
 		aPIDstruct->aIntegral = kWindupGuard;
 	}
-	else if(aPIDstruct->aIntegral < kWindupGuard)
+	else if(aPIDstruct->aIntegral < -kWindupGuard)
 	{
 		aPIDstruct->aIntegral = -kWindupGuard;
 	}
