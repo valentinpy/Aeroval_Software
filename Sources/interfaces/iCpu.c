@@ -18,9 +18,6 @@ static void iCpu_PllInit(void);
 // K64 pin functions configuration
 static void iCpu_PinFctCfg(void);
 
-// Internal voltage reference init (VREF0)
-static void iCpu_VREFInit(void);
-
 //------------------------------------------------------------
 // Core and peripheral clock init
 // External clock = 8MHz 	(20MHz)

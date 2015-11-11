@@ -76,12 +76,12 @@
 //PID Roll
 #define kPIDRoll_Kp		(float)200
 #define kPIDRoll_Ki		(float)0
-#define kPIDRoll_Kd		(float)500000
+#define kPIDRoll_Kd		(float)700000
 
 //PID Pitch
 #define kPIDPitch_Kp	(float)200
 #define kPIDPitch_Ki	(float)0
-#define kPIDPitch_Kd	(float)500000
+#define kPIDPitch_Kd	(float)700000
 
 //PID Yaw
 #define kPIDYaw_Kp		(float)0

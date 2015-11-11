@@ -8,8 +8,11 @@
 #ifndef SOURCES_GMBOX_H_
 #define SOURCES_GMBOX_H_
 
+#include "misc/PID.h"
 #include "misc/def.h"
 #include "userDefined.h"
+
+
 
 //-----------------------------------------------------------------------------
 // gAltitudeSensors mailbox
@@ -31,7 +34,6 @@ typedef struct
 	float aRoll_rad;
 
 	UInt16 aTimeStamp;
-
 } gAttitudeSensorsStruct;
 extern gAttitudeSensorsStruct gAttitudeSensors;
 
@@ -52,6 +54,8 @@ typedef struct
 
 	float aPitch_rad_offset;
 	float aRoll_rad_offset;
+
+	PIDdata aPID [3];
 
 	UInt16 aMotorsOutput[8];
 

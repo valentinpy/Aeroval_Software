@@ -67,6 +67,17 @@ typedef unsigned short 			Word;
 //Battery
 #define kBatLevelWarning (10800)	//Low level battery threshold
 
+
+//Struct that contains the PID datas for each PID
+typedef struct PIDdataStruct{
+	float aKp, aKi, aKd;
+	float aPreviousError;
+	float aIntegral;
+	UInt16 aPreviousTime;
+	float aWindupGuard;
+} PIDdata;
+
+
 //------------------------------------------------------------
 // Macros
 //------------------------------------------------------------

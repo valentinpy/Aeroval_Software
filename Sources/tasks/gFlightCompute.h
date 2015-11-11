@@ -21,16 +21,6 @@ typedef enum {
 	kPIDYaw
 } sPIDenum;
 
-//Struct that contains the PID datas for each PID
-typedef struct {
-	float aKp, aKi, aKd;
-	float aPreviousError;
-	float aIntegral;
-	UInt16 aPreviousTime;
-} PIDdata;
-PIDdata sPID [3];
-
-
 
 //-----------------------------------
 // Flight controller (regulation,..) initialization

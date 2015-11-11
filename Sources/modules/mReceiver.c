@@ -79,7 +79,6 @@ UInt16 mReceiver_GetChannel(ReceiverEnum aChannel)
 	default:
 		aVal=0;
 		break;
-
-		return aVal;
 	}
+	return aVal;
 }

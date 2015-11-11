@@ -37,7 +37,7 @@ void mRs232_Setup(void);
 // *aDataPtr	: string address
 // uart			: which UART to use
 //-----------------------------------------------------------------------------
-void mRs232_WriteString(UartEnum uart, char *aDataPtr);
+void mRs232_WriteString(UartEnum uart, UInt8 *aDataPtr);
 
 //-----------------------------------------------------------------------------
 // String send (fixed size)
