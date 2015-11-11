@@ -67,7 +67,7 @@ typedef unsigned short 			Word;
 //Battery
 #define kBatLevelWarning (10800)	//Low level battery threshold
 
-
+//TODO move elsewhere
 //Struct that contains the PID datas for each PID
 typedef struct PIDdataStruct{
 	float aKp, aKi, aKd;

@@ -24,11 +24,6 @@ void gAttitudeSensors_Setup()
 	gAttitudeSensors.aPitch_rad   =	0.0;
 	gAttitudeSensors.aRoll_rad 	  = 0.0;
 
-	//milli-int
-	gAttitudeSensors.aHeading_rad = 0;
-	gAttitudeSensors.aPitch_rad   = 0;
-	gAttitudeSensors.aRoll_rad    = 0;
-
 	//int
 	gAttitudeSensors.aTimeStamp = 0;
 }
@@ -48,6 +43,10 @@ void gAttitudeSensors_Run()
 	gAttitudeSensors.aHeading_rad = aDataResult.QX.f;
 	gAttitudeSensors.aPitch_rad = 	aDataResult.QZ.f;
 	gAttitudeSensors.aRoll_rad = 	aDataResult.QY.f;
+
+	gAttitudeSensors.aHeadingRate_rads = kGyroToRadS * ((float)aDataResult.GX);
+	gAttitudeSensors.aPitchRate_rads = kGyroToRadS * (float)(aDataResult.GY);
+	gAttitudeSensors.aRollRate_rads = kGyroToRadS * ((float)aDataResult.GZ);
 
 	//Add offset
 	gAttitudeSensors.aPitch_rad   += gFlightCompute.aPitch_rad_offset;

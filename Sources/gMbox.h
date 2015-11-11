@@ -33,6 +33,10 @@ typedef struct
 	float aPitch_rad;
 	float aRoll_rad;
 
+	float aHeadingRate_rads;
+	float aPitchRate_rads;
+	float aRollRate_rads;
+
 	UInt16 aTimeStamp;
 } gAttitudeSensorsStruct;
 extern gAttitudeSensorsStruct gAttitudeSensors;

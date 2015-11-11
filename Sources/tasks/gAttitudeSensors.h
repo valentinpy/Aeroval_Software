@@ -13,6 +13,8 @@
 #include "modules/mEm7180.h"
 #include "../gMbox.h"
 
+//Factor between Int16 (full range) to rad/s of the orientation sensor/gyro
+#define kGyroToRadS ((float)0.00266)
 
 //-----------------------------------
 // Attitude measurement initialization

@@ -150,21 +150,17 @@ void mEm7180_GetEuler(EM7180_DataStruct *aResultStruct)
 	(aResultStruct)->QX.s[2] = mEm7180_GetData8(0x2);
 	(aResultStruct)->QX.s[3] = mEm7180_GetData8(0x3);
 
-	//*(aQuaeternionsTab+0) = (mEm7180_GetData8(0x0)) + (mEm7180_GetData8(0x1)<<8) + (mEm7180_GetData8(0x2)<<16) + (mEm7180_GetData8(0x3)<<24);
-
 	//Y
 	(aResultStruct)->QY.s[0] = mEm7180_GetData8(0x4);
 	(aResultStruct)->QY.s[1] = mEm7180_GetData8(0x5);
 	(aResultStruct)->QY.s[2] = mEm7180_GetData8(0x6);
 	(aResultStruct)->QY.s[3] = mEm7180_GetData8(0x7);
-	//*(aQuaeternionsTab+1) = (mEm7180_GetData8(0x4)) + (mEm7180_GetData8(0x5)<<8) + (mEm7180_GetData8(0x6)<<16) + (mEm7180_GetData8(0x7)<<24);
 
 	//Z
 	(aResultStruct)->QZ.s[0] = mEm7180_GetData8(0x8);
 	(aResultStruct)->QZ.s[1] = mEm7180_GetData8(0x9);
 	(aResultStruct)->QZ.s[2] = mEm7180_GetData8(0xA);
 	(aResultStruct)->QZ.s[3] = mEm7180_GetData8(0xB);
-	//*(aQuaeternionsTab+2) = (mEm7180_GetData8(0x8)) + (mEm7180_GetData8(0x9)<<8) + (mEm7180_GetData8(0xA)<<16) + (mEm7180_GetData8(0xB)<<24);
 
 	//W
 	//TODO remove qw?
@@ -172,8 +168,10 @@ void mEm7180_GetEuler(EM7180_DataStruct *aResultStruct)
 	(aResultStruct)->QW.s[1] = mEm7180_GetData8(0xD);
 	(aResultStruct)->QW.s[2] = mEm7180_GetData8(0xE);
 	(aResultStruct)->QW.s[3] = mEm7180_GetData8(0xF);
-	//*(aQuaeternionsTab+3) = (mEm7180_GetData8(0xC)) + (mEm7180_GetData8(0xD)<<8) + (mEm7180_GetData8(0xE)<<16) + (mEm7180_GetData8(0xF)<<24);
 
+	(aResultStruct)->GX = ((UInt16)mEm7180_GetData8(0x22)) | ((UInt16)mEm7180_GetData8(0x23) <<8);
+	(aResultStruct)->GY = ((UInt16)mEm7180_GetData8(0x24)) | ((UInt16)mEm7180_GetData8(0x25) <<8);
+	(aResultStruct)->GZ = ((UInt16)mEm7180_GetData8(0x26)) | ((UInt16)mEm7180_GetData8(0x27) <<8);
 	//Timestamp
 	aResultStruct->QTime = (mEm7180_GetData8(0x10)) + (mEm7180_GetData8(0x10)<<8);
 

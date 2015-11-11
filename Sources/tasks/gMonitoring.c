@@ -110,12 +110,12 @@ void gMonitoring_Run()
 			gMonitoring.aDataString[66] = (gMiscSensors.aBatteryUsedCapacity_mAh >> 8);
 			gMonitoring.aDataString[67] = (gMiscSensors.aBatteryUsedCapacity_mAh & 0xFF);
 			gMonitoring.aDataString[68] = (gFlightCompute.aState);
-			gMonitoring.aDataString[69] = 0;
-			gMonitoring.aDataString[70] = 0;
-			gMonitoring.aDataString[71] = 0;
-			gMonitoring.aDataString[72] = 0;
-			gMonitoring.aDataString[73] = 0;
-			gMonitoring.aDataString[74] = 0;
+			gMonitoring.aDataString[69] = (Int16)(gAttitudeSensors.aHeadingRate_rads*1000) >>8; //Transmit as milli-rad/s
+			gMonitoring.aDataString[70] = (Int16)(gAttitudeSensors.aHeadingRate_rads*1000) & 0xFF;
+			gMonitoring.aDataString[71] = (Int16)(gAttitudeSensors.aPitchRate_rads*1000) >>8;
+			gMonitoring.aDataString[72] = (Int16)(gAttitudeSensors.aPitchRate_rads*1000) & 0xFF;
+			gMonitoring.aDataString[73] = (Int16)(gAttitudeSensors.aRollRate_rads*1000) >>8;
+			gMonitoring.aDataString[74] = (Int16)(gAttitudeSensors.aRollRate_rads*1000) & 0xFF;
 			gMonitoring.aDataString[75] = 0;
 			gMonitoring.aDataString[76] = 0;
 			gMonitoring.aDataString[77] = 0;
@@ -126,7 +126,7 @@ void gMonitoring_Run()
 			//String is NULL terminated
 			gMonitoring.aDataString[kMonitoringStringLength-1] = '\0';
 			int i;
-			for (i=2; i<kMonitoringStringLength-1; i++) //2..68
+			for (i=2; i<kMonitoringStringLength-1; i++) //2..79
 			{
 				//Avoid a \r\n
 				if((gMonitoring.aDataString[i] == 0x0D) && (gMonitoring.aDataString[i+1]==0x0A))
