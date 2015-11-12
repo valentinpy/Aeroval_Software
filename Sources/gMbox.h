@@ -59,9 +59,10 @@ typedef struct
 	float aPitch_rad_offset;
 	float aRoll_rad_offset;
 
-	PIDdata aPID [3];
-
+	PIDdata aPIDRate [3];
+	PIDdata aPIDAngle [3];
 	UInt16 aMotorsOutput[8];
+	float aError;
 
 } gFlightComputeStruct;
 extern gFlightComputeStruct gFlightCompute;
@@ -100,7 +101,12 @@ extern gMonitoringStruct gMonitoring;
 //-----------------------------------------------------------------------------
 typedef struct
 {
-	UInt16 aMotorsValues[8];
+	UInt16 aMotorsValuesIn_0[8];
+	UInt16 aMotorsValuesIn_1[8];
+	UInt16 aMotorsValuesIn_2[8];
+	UInt16 aMotorsValuesOut[8];
+
+
 	UInt16 aServosValues[4];
 } gMotorsStruct;
 extern gMotorsStruct gMotors;
@@ -112,6 +118,8 @@ typedef struct
 {
 	UInt16 aChannels[8];
 	float aChannels_rad[8];
+	float aChannels_radS[8];
+
 } gReceiverStruct;
 extern gReceiverStruct gReceiver ;
 

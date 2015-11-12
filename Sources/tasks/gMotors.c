@@ -6,6 +6,7 @@
  */
 
 #include "gMotors.h"
+#include "../misc/filters.h"
 
 //-----------------------------------
 // Motors initialisation
@@ -32,38 +33,47 @@ void gMotors_Run()
 		UInt8 i;
 		for(i=0; i<8; i++)
 		{
-			gMotors.aMotorsValues[i] = 0;
+			gMotors.aMotorsValuesIn_0[i] = 0;
+			gMotors.aMotorsValuesIn_1[i] = 0;
+			gMotors.aMotorsValuesIn_2[i] = 0;
+			gMotors.aMotorsValuesOut[i]=0;
 		}
 	}
 	else if (gFlightCompute.aState == kArmed)
 	{
+
+		//Filter values
+		int i=0;
+		for(i=0; i<8; i++)
+		{
+			gMotors.aMotorsValuesIn_0[i] = gFlightCompute.aMotorsOutput[i];
+			gMotors.aMotorsValuesOut[i] = misc_MedianFilter(gMotors.aMotorsValuesIn_0[i], gMotors.aMotorsValuesIn_1[i], gMotors.aMotorsValuesIn_2[i]);
+		}
+
+
+		//Store for next iteration
+		for(i=0; i<8; i++)
+		{
+			gMotors.aMotorsValuesIn_2[i]=gMotors.aMotorsValuesIn_1[i];
+			gMotors.aMotorsValuesIn_1[i]=gMotors.aMotorsValuesIn_0[i];
+		}
+
 		//Send values to motors
 		if(mSwitches_Get(kMaskSwitch0))
 		{
-			mMotors_SetMotor(kMotor0, gMotors.aMotorsValues[M0]);
-			mMotors_SetMotor(kMotor1, gMotors.aMotorsValues[M1]);
-			mMotors_SetMotor(kMotor2, gMotors.aMotorsValues[M2]);
-			mMotors_SetMotor(kMotor3, gMotors.aMotorsValues[M3]);
+			mMotors_SetMotor(kMotor0, gMotors.aMotorsValuesOut[M0]);
+			mMotors_SetMotor(kMotor1, gMotors.aMotorsValuesOut[M1]);
+			mMotors_SetMotor(kMotor2, gMotors.aMotorsValuesOut[M2]);
+			mMotors_SetMotor(kMotor3, gMotors.aMotorsValuesOut[M3]);
 
-			mMotors_SetMotor(kMotor4, gMotors.aMotorsValues[M4]);
-			mMotors_SetMotor(kMotor5, gMotors.aMotorsValues[M5]);
-			mMotors_SetMotor(kMotor6, gMotors.aMotorsValues[M6]);
-			mMotors_SetMotor(kMotor7, gMotors.aMotorsValues[M7]);
+			mMotors_SetMotor(kMotor4, gMotors.aMotorsValuesOut[M4]);
+			mMotors_SetMotor(kMotor5, gMotors.aMotorsValuesOut[M5]);
+			mMotors_SetMotor(kMotor6, gMotors.aMotorsValuesOut[M6]);
+			mMotors_SetMotor(kMotor7, gMotors.aMotorsValuesOut[M7]);
 		}
 		else
 		{
 			mMotors_StopAll();
 		}
-
-		//Store values in our own mailbox to allow access to the true values of motors
-		gMotors.aMotorsValues[0] = gFlightCompute.aMotorsOutput[0];
-		gMotors.aMotorsValues[1] = gFlightCompute.aMotorsOutput[1];
-		gMotors.aMotorsValues[2] = gFlightCompute.aMotorsOutput[2];
-		gMotors.aMotorsValues[3] = gFlightCompute.aMotorsOutput[3];
-
-		gMotors.aMotorsValues[4] = gFlightCompute.aMotorsOutput[4];
-		gMotors.aMotorsValues[5] = gFlightCompute.aMotorsOutput[5];
-		gMotors.aMotorsValues[6] = gFlightCompute.aMotorsOutput[6];
-		gMotors.aMotorsValues[7] = gFlightCompute.aMotorsOutput[7];
 	}
 }

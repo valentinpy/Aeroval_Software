@@ -43,18 +43,23 @@ void gReceiver_Run()
 		if(aTmp>1000)
 		{
 			gReceiver.aChannels[i] = 1000;
+			gReceiver.aChannels_radS[i] = kReceiverMaxRate_radS;
 			gReceiver.aChannels_rad[i] = kReceiverMaxAngle_rad;
+
 		}
 		else if(aTmp<0)
 		{
 			gReceiver.aChannels[i] = 0;
+			gReceiver.aChannels_radS[i] = -kReceiverMaxRate_radS;
 			gReceiver.aChannels_rad[i] = -kReceiverMaxAngle_rad;
+
 		}
 		else
 		{
 			gReceiver.aChannels[i] = (UInt16)aTmp;
 
-			//-500 => half range of time => center between +kReceiverMaxAngle and -kReceiverMaxAngle
+			//-500 => half range of time => center between +kReceiverMaxAngle/Rate and -kReceiverMaxAngle/Rate
+			gReceiver.aChannels_radS[i] = (aTmp-500) * kReceiverUsToRadS;
 			gReceiver.aChannels_rad[i] = (aTmp-500) * kReceiverUsToRad;
 
 		}

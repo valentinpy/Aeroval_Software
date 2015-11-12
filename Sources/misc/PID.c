@@ -23,7 +23,6 @@ void misc_ResetPID(PIDdata* aPID)
 void misc_PID(float* aOutput, PIDdata* aPIDstruct, float aTarget, float aMeasured, UInt16 aTime)
 {
 	float aDeltaTime;
-
 	float aError, aProportional, aDerivative;
 
 	aDeltaTime = (float)(aTime - aPIDstruct->aPreviousTime);
@@ -50,6 +49,7 @@ void misc_PID(float* aOutput, PIDdata* aPIDstruct, float aTarget, float aMeasure
 
 	//Compute error
 	aError = (aTarget - aMeasured);
+	gFlightCompute.aError = aTarget; //DEBUG
 
 	//Compute separate terms
 	aProportional = (aError * aPIDstruct->aKp);

@@ -73,28 +73,59 @@
 //----------------------- Flight parameters ------------------------------
 //------------------------------------------------------------------------
 
-//PID Roll
-#define kPIDRoll_Kp		(float)200
-#define kPIDRoll_Ki		(float)0
-#define kPIDRoll_Kd		(float)700000
+//------------------------------------------------------
+// PID Rate
+//------------------------------------------------------
 
-//PID Pitch
-#define kPIDPitch_Kp	(float)200
-#define kPIDPitch_Ki	(float)0
-#define kPIDPitch_Kd	(float)700000
+//PID Rate Roll
+#define kPIDRollRate_Kp		(float)100//150
+#define kPIDRollRate_Ki		(float)0
+#define kPIDRollRate_Kd		(float)40000
 
-//PID Yaw
-#define kPIDYaw_Kp		(float)0
-#define kPIDYaw_Ki		(float)0
-#define kPIDYaw_Kd		(float)0
+//PID Rate Pitch
+#define kPIDPitchRate_Kp	(float)-100
+#define kPIDPitchRate_Ki	(float)0
+#define kPIDPitchRate_Kd	(float)-40000
 
-#define kWindupGuard	(float) 150
+//PID Rate Yaw
+#define kPIDYawRate_Kp		(float)0
+#define kPIDYawRate_Ki		(float)0
+#define kPIDYawRate_Kd		(float)0
 
-//Convert time measured be receiver module to an angle.
-//Used to convert roll & pitch commands to angle for PID
+#define kWindupGuardRate	(float) 150
+
+//------------------------------------------------------
+// PID Angle
+//------------------------------------------------------
+
+//PID Angle_Roll
+#define kPIDRollAngle_Kp	(float)0
+#define kPIDRollAngle_Ki	(float)0
+#define kPIDRollAngle_Kd	(float)0
+
+//PID Angle_Pitch
+#define kPIDPitchAngle_Kp	(float)0
+#define kPIDPitchAngle_Ki	(float)0
+#define kPIDPitchAngle_Kd	(float)0
+
+//PID Angle_Yaw
+#define kPIDYawAngle_Kp		(float)0
+#define kPIDYawAngle_Ki		(float)0
+#define kPIDYawAngle_Kd		(float)0
+
+#define kWindupGuardAngle	(float) 150
+
+//Convert time measured be receiver module to an angle or in angular velocity, depending on the flight mode (Rate/Angle)
+//Used to convert roll & pitch commands to angle/angular velocity for PID
+
+#define kReceiverUsToRadS		(float)0.0314
+#define kReceiverMaxRate_radS	(float)(15.7)
+
+
 //Currently limit between -45;+45° => -pi/4; +pi/4
-#define kReceiverMaxAngle_rad	(Int32)(0.785)
 #define kReceiverUsToRad		(float)0.00157
+#define kReceiverMaxAngle_rad	(float)(0.785)
+
 
 //------------------------------------------------------------------------
 //------------------------- DO NOT MANUALLY MODIFY BELOW -----------------
