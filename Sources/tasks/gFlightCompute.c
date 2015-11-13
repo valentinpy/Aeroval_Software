@@ -140,8 +140,7 @@ void gFlightCompute_Run()
 		misc_PID(&aPIDPitchRateOutput, &(gFlightCompute.aPIDRate[kPIDPitch]), gReceiver.aChannels_radS[kReceiverPitch], gAttitudeSensors.aPitchRate_rads, aTime);
 
 		//Call regulation for yaw axis
-		//TODO implement
-		aPIDYawRateOutput = gReceiver.aChannels_rad[kReceiverYaw]/0.002;
+		misc_PID(&aPIDPitchRateOutput, &(gFlightCompute.aPIDRate[kPIDYaw]), gReceiver.aChannels_radS[kReceiverYaw], gAttitudeSensors.aHeadingRate_rads, aTime);
 	}
 
 	//Call motor mix
