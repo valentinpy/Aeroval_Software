@@ -49,6 +49,13 @@ typedef enum
 	kArmed
 }StateEnum;
 
+// Flight Mode enum
+typedef enum
+{
+	kRate,
+	kAngle
+}FlightModeEnum;
+
 //-----------------------------------------------------------------------------
 // gFlightCompute mailbox
 //-----------------------------------------------------------------------------
@@ -56,6 +63,8 @@ typedef struct
 {
 	//Armed/Disarmed
 	StateEnum aState;
+
+	FlightModeEnum aFLightMode;
 
 	//Orientation offsets to be transmitted to gAttitude
 	float aPitch_rad_offset;

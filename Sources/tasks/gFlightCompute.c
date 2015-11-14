@@ -13,8 +13,8 @@
 // Static functions
 // TODO comment
 //-----------------------------------
-static void gFlightCompute_MotorMix(Int16 aThrottle, Int16 aPIDPitchOutput, Int16 aPIDRollOutput, Int16 aPIDYawOutput, Int16* aOutput);
-static void gFlightCompute_ConstrainSendMotorsValues(Int16* aOutput);
+static void gFlightCompute_MotorMix(float aThrottle, float aPIDPitchOutput, float aPIDRollOutput, float aPIDYawOutput, float* aOutput);
+static void gFlightCompute_ConstrainSendMotorsValues(float* aOutput, float aThrottle);
 
 
 //static void gFlightCompute_ProcessUserAction()
@@ -81,6 +81,13 @@ void gFlightCompute_Setup()
 //-----------------------------------
 void gFlightCompute_Run()
 {
+	float aToMotors[NUMBER_OF_MOTORS];
+	float aThrottle = (float) gReceiver.aChannels[kReceiverThrottle];
+
+	float aPIDRollRateOutput;
+	float aPIDPitchRateOutput;
+	float aPIDYawRateOutput;
+
 	//Check controls to arm/disarm the motors
 	if((gReceiver.aChannels[kReceiverThrottle] < kReceiverMIN) && (gReceiver.aChannels[kReceiverYaw] < kReceiverMIN))
 	{
@@ -106,12 +113,15 @@ void gFlightCompute_Run()
 		gFlightCompute.aRoll_rad_offset	-= gAttitudeSensors.aRoll_rad;
 	}
 
-	Int16 aToMotors[NUMBER_OF_MOTORS];
-	float aThrottle = (float) gReceiver.aChannels[kReceiverThrottle];
-
-	float aPIDRollRateOutput;
-	float aPIDPitchRateOutput;
-	float aPIDYawRateOutput;
+	//Check controls to switch betwwen rate and angle mode
+	if(gReceiver.aChannels[kReceiverGear]>kReceiverMIDDLE)
+	{
+		gFlightCompute.aFLightMode = kAngle;
+	}
+	else
+	{
+		gFlightCompute.aFLightMode = kRate;
+	}
 
 	//Check if IDLE
 	if(aThrottle < kReceiverIDLE)
@@ -128,18 +138,24 @@ void gFlightCompute_Run()
 		//Get time
 		UInt16 aTime = sTicker100Us[0];
 
-		gFlightCompute.aDesiredRate[kRoll] = gReceiver.aChannels_radS[kReceiverRoll];
-		gFlightCompute.aDesiredRate[kPitch] = gReceiver.aChannels_radS[kReceiverPitch];
-		gFlightCompute.aDesiredRate[kYaw] = gReceiver.aChannels_radS[kReceiverYaw];
+		if(gFlightCompute.aFLightMode == kAngle)
+		{
+			//Call regulation for roll axis rate
+			misc_PID(&(gFlightCompute.aDesiredRate[kRoll]), &(gFlightCompute.aPIDAngle[kRoll]), gReceiver.aChannels_rad[kReceiverRoll], gAttitudeSensors.aRoll_rad, aTime);
 
-#if 1
-		//Call regulation for roll axis rate
-		misc_PID(&(gFlightCompute.aDesiredRate[kRoll]), &(gFlightCompute.aPIDAngle[kRoll]), gReceiver.aChannels_rad[kReceiverRoll], gAttitudeSensors.aRoll_rad, aTime);
+			//Call regulation for pitch axis rate
+			misc_PID(&(gFlightCompute.aDesiredRate[kPitch]), &(gFlightCompute.aPIDAngle[kPitch]), gReceiver.aChannels_rad[kReceiverPitch], gAttitudeSensors.aPitch_rad, aTime);
 
-		//Call regulation for pitch axis rate
-		misc_PID(&(gFlightCompute.aDesiredRate[kPitch]), &(gFlightCompute.aPIDAngle[kPitch]), gReceiver.aChannels_rad[kReceiverPitch], gAttitudeSensors.aPitch_rad, aTime);
+			gFlightCompute.aDesiredRate[kYaw] = gReceiver.aChannels_radS[kReceiverYaw];
 
-#endif
+		}
+		else if(gFlightCompute.aFLightMode ==kRate)
+		{
+			gFlightCompute.aDesiredRate[kRoll] = gReceiver.aChannels_radS[kReceiverRoll];
+			gFlightCompute.aDesiredRate[kPitch] = gReceiver.aChannels_radS[kReceiverPitch];
+			gFlightCompute.aDesiredRate[kYaw] = gReceiver.aChannels_radS[kReceiverYaw];
+		}
+
 
 		//Call regulation for roll axis rate
 		misc_PID(&aPIDRollRateOutput, &(gFlightCompute.aPIDRate[kRoll]), gFlightCompute.aDesiredRate[kRoll], gAttitudeSensors.aRollRate_rads, aTime);
@@ -155,12 +171,12 @@ void gFlightCompute_Run()
 	gFlightCompute_MotorMix(aThrottle, aPIDPitchRateOutput, aPIDRollRateOutput, aPIDYawRateOutput, aToMotors);
 
 	//Constrain and send to motors
-	gFlightCompute_ConstrainSendMotorsValues(aToMotors);
+	gFlightCompute_ConstrainSendMotorsValues(aToMotors, aThrottle);
 }
 
 
 
-static void gFlightCompute_MotorMix(Int16 aThrottle, Int16 aPIDPitchOutput, Int16 aPIDRollOutput, Int16 aPIDYawOutput, Int16* aOutput)
+static void gFlightCompute_MotorMix(float aThrottle, float aPIDPitchOutput, float aPIDRollOutput, float aPIDYawOutput, float* aOutput)
 {
 	//4 motors, X configuration
 	// Motor 0: Front right, counter-clockwise
@@ -178,22 +194,27 @@ static void gFlightCompute_MotorMix(Int16 aThrottle, Int16 aPIDPitchOutput, Int1
 #endif
 }
 
-static void gFlightCompute_ConstrainSendMotorsValues(Int16* aOutput)
+static void gFlightCompute_ConstrainSendMotorsValues(float* aOutput, float aThrottle)
 {
-	//Constrain and export to mailbox
 	for (int i=0; i<NUMBER_OF_MOTORS; i++)
 	{
+		//Constrain to min/max
 		if(aOutput[i]<MOTOR_IDLE_VALUE)
 		{
-			gFlightCompute.aMotorsOutput[i] = MOTOR_IDLE_VALUE;
+			aOutput[i] = MOTOR_IDLE_VALUE;
 		}
 		else if (aOutput[i]>MOTOR_MAX_VALUE)
 		{
-			gFlightCompute.aMotorsOutput[i] = MOTOR_MAX_VALUE;
+			aOutput[i] = MOTOR_MAX_VALUE;
 		}
-		else
+
+		//Reduce the output to not jump in the air if not leveled
+		if(aOutput[i] > 2*aThrottle)
 		{
-			gFlightCompute.aMotorsOutput[i] = aOutput[i];
+			aOutput[i] = 2*aThrottle;
 		}
+
+		//Send
+		gFlightCompute.aMotorsOutput[i] = (UInt16)(aOutput[i]);
 	}
 }

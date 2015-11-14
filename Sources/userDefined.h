@@ -40,6 +40,9 @@
 
 #define kReceiverIDLE		50		//Threshold value for throttle: below: idle, no regulation, above: regulation is applied
 #define kReceiverMIN 		50		//Min value for detection of patterns
+#define kReceiverMINMIDDLE	450		//Min value of a tri-state switch
+#define kReceiverMIDDLE		500		//Middle of the range
+#define kReceiverMAXMIDDLE	550		//Max value of a tri-state switch
 #define kReceiverMAX		950		//Max value for detection of patterns
 
 
@@ -65,8 +68,8 @@
 
 // Set the min and max value for motors (in flight).
 // Idle value must be greater than 0 to prevent shutting down of motors in flight
-#define MOTOR_MAX_VALUE 	1000
-#define MOTOR_IDLE_VALUE	50
+#define MOTOR_MAX_VALUE 	(UInt16)(1000)
+#define MOTOR_IDLE_VALUE	(UInt16)(50)
 
 
 //------------------------------------------------------------------------
@@ -78,7 +81,7 @@
 //------------------------------------------------------
 
 //PID Rate Roll
-#define kPIDRollRate_Kp		(float)100//150
+#define kPIDRollRate_Kp		(float)100
 #define kPIDRollRate_Ki		(float)0
 #define kPIDRollRate_Kd		(float)40000
 
@@ -92,7 +95,7 @@
 #define kPIDYawRate_Ki		(float)0
 #define kPIDYawRate_Kd		(float)0
 
-#define kWindupGuardRate	(float) 150
+#define kWindupGuardRate	(float)150
 
 //------------------------------------------------------
 // PID Angle
@@ -108,7 +111,7 @@
 #define kPIDPitchAngle_Ki	(float)0
 #define kPIDPitchAngle_Kd	(float)-1000
 
-#define kWindupGuardAngle	(float) 150
+#define kWindupGuardAngle	(float)150
 
 //Convert time measured be receiver module to an angle or in angular velocity, depending on the flight mode (Rate/Angle)
 //Used to convert roll & pitch commands to angle/angular velocity for PID
