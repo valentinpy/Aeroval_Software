@@ -54,15 +54,26 @@ typedef enum
 //-----------------------------------------------------------------------------
 typedef struct
 {
+	//Armed/Disarmed
 	StateEnum aState;
 
+	//Orientation offsets to be transmitted to gAttitude
 	float aPitch_rad_offset;
 	float aRoll_rad_offset;
 
+	//Desired rate (angular speed)
+	//If rate/angle mode: output of first PID
+	//If accro mode: output of receiver
+	float aDesiredRate[3];
+
+	//PID structures
 	PIDdata aPIDRate [3];
 	PIDdata aPIDAngle [3];
+
+	//Output of the flightcomputer, to transmit to motor control
 	UInt16 aMotorsOutput[8];
-	float aError;
+
+	float aError; //DEBUG
 
 } gFlightComputeStruct;
 extern gFlightComputeStruct gFlightCompute;

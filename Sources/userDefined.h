@@ -88,7 +88,7 @@
 #define kPIDPitchRate_Kd	(float)-40000
 
 //PID Rate Yaw
-#define kPIDYawRate_Kp		(float)0
+#define kPIDYawRate_Kp		(float)100
 #define kPIDYawRate_Ki		(float)0
 #define kPIDYawRate_Kd		(float)0
 
@@ -99,19 +99,14 @@
 //------------------------------------------------------
 
 //PID Angle_Roll
-#define kPIDRollAngle_Kp	(float)0
+#define kPIDRollAngle_Kp	(float)20
 #define kPIDRollAngle_Ki	(float)0
-#define kPIDRollAngle_Kd	(float)0
+#define kPIDRollAngle_Kd	(float)1000
 
 //PID Angle_Pitch
-#define kPIDPitchAngle_Kp	(float)0
+#define kPIDPitchAngle_Kp	(float)-20
 #define kPIDPitchAngle_Ki	(float)0
-#define kPIDPitchAngle_Kd	(float)0
-
-//PID Angle_Yaw
-#define kPIDYawAngle_Kp		(float)0
-#define kPIDYawAngle_Ki		(float)0
-#define kPIDYawAngle_Kd		(float)0
+#define kPIDPitchAngle_Kd	(float)-1000
 
 #define kWindupGuardAngle	(float) 150
 

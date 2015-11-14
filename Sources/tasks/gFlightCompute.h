@@ -16,10 +16,10 @@
 
 //enum that contains the PID data variables
 typedef enum {
-	kPIDRoll,
-	kPIDPitch,
-	kPIDYaw
-} sPIDenum;
+	kRoll,
+	kPitch,
+	kYaw
+} axisEnum;
 
 
 //-----------------------------------

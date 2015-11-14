@@ -49,36 +49,31 @@ void gFlightCompute_Setup()
 
 	//Init PIDs parameters
 	//Rate
-	gFlightCompute.aPIDRate[kPIDRoll].aKp = kPIDRollRate_Kp;
-	gFlightCompute.aPIDRate[kPIDRoll].aKd = kPIDRollRate_Kd;
-	gFlightCompute.aPIDRate[kPIDRoll].aKi = kPIDRollRate_Ki;
-	gFlightCompute.aPIDRate[kPIDRoll].aWindupGuard = kWindupGuardRate;
+	gFlightCompute.aPIDRate[kRoll].aKp = kPIDRollRate_Kp;
+	gFlightCompute.aPIDRate[kRoll].aKi = kPIDRollRate_Ki;
+	gFlightCompute.aPIDRate[kRoll].aKd = kPIDRollRate_Kd;
+	gFlightCompute.aPIDRate[kRoll].aWindupGuard = kWindupGuardRate;
 
-	gFlightCompute.aPIDRate[kPIDPitch].aKp = kPIDPitchRate_Kp;
-	gFlightCompute.aPIDRate[kPIDPitch].aKd = kPIDPitchRate_Kd;
-	gFlightCompute.aPIDRate[kPIDPitch].aKi = kPIDPitchRate_Ki;
-	gFlightCompute.aPIDRate[kPIDRoll].aWindupGuard = kWindupGuardRate;
+	gFlightCompute.aPIDRate[kPitch].aKp = kPIDPitchRate_Kp;
+	gFlightCompute.aPIDRate[kPitch].aKi = kPIDPitchRate_Ki;
+	gFlightCompute.aPIDRate[kPitch].aKd = kPIDPitchRate_Kd;
+	gFlightCompute.aPIDRate[kPitch].aWindupGuard = kWindupGuardRate;
 
-	gFlightCompute.aPIDRate[kPIDYaw].aKp = kPIDYawRate_Kp;
-	gFlightCompute.aPIDRate[kPIDYaw].aKd = kPIDYawRate_Kd;
-	gFlightCompute.aPIDRate[kPIDYaw].aKi = kPIDYawRate_Ki;
-	gFlightCompute.aPIDRate[kPIDYaw].aWindupGuard = kWindupGuardRate;
+	gFlightCompute.aPIDRate[kYaw].aKp = kPIDYawRate_Kp;
+	gFlightCompute.aPIDRate[kYaw].aKi = kPIDYawRate_Ki;
+	gFlightCompute.aPIDRate[kYaw].aKd = kPIDYawRate_Kd;
+	gFlightCompute.aPIDRate[kYaw].aWindupGuard = kWindupGuardRate;
 
 	//Angle
-	gFlightCompute.aPIDAngle[kPIDRoll].aKp = kPIDRollAngle_Kp;
-	gFlightCompute.aPIDAngle[kPIDRoll].aKd = kPIDRollAngle_Kd;
-	gFlightCompute.aPIDAngle[kPIDRoll].aKi = kPIDRollAngle_Ki;
-	gFlightCompute.aPIDAngle[kPIDRoll].aWindupGuard = kWindupGuardAngle;
+	gFlightCompute.aPIDAngle[kRoll].aKp = kPIDRollAngle_Kp;
+	gFlightCompute.aPIDAngle[kRoll].aKi = kPIDRollAngle_Ki;
+	gFlightCompute.aPIDAngle[kRoll].aKd = kPIDRollAngle_Kd;
+	gFlightCompute.aPIDAngle[kRoll].aWindupGuard = kWindupGuardAngle;
 
-	gFlightCompute.aPIDAngle[kPIDPitch].aKp = kPIDPitchAngle_Kp;
-	gFlightCompute.aPIDAngle[kPIDPitch].aKd = kPIDPitchAngle_Kd;
-	gFlightCompute.aPIDAngle[kPIDPitch].aKi = kPIDPitchAngle_Ki;
-	gFlightCompute.aPIDAngle[kPIDRoll].aWindupGuard = kWindupGuardAngle;
-
-	gFlightCompute.aPIDAngle[kPIDYaw].aKp = kPIDYawAngle_Kp;
-	gFlightCompute.aPIDAngle[kPIDYaw].aKd = kPIDYawAngle_Kd;
-	gFlightCompute.aPIDAngle[kPIDYaw].aKi = kPIDYawAngle_Ki;
-	gFlightCompute.aPIDAngle[kPIDYaw].aWindupGuard = kWindupGuardAngle;
+	gFlightCompute.aPIDAngle[kPitch].aKp = kPIDPitchAngle_Kp;
+	gFlightCompute.aPIDAngle[kPitch].aKi = kPIDPitchAngle_Ki;
+	gFlightCompute.aPIDAngle[kPitch].aKd = kPIDPitchAngle_Kd;
+	gFlightCompute.aPIDAngle[kPitch].aWindupGuard = kWindupGuardAngle;
 }
 
 //-----------------------------------
@@ -133,18 +128,32 @@ void gFlightCompute_Run()
 		//Get time
 		UInt16 aTime = sTicker100Us[0];
 
+		gFlightCompute.aDesiredRate[kRoll] = gReceiver.aChannels_radS[kReceiverRoll];
+		gFlightCompute.aDesiredRate[kPitch] = gReceiver.aChannels_radS[kReceiverPitch];
+		gFlightCompute.aDesiredRate[kYaw] = gReceiver.aChannels_radS[kReceiverYaw];
+
+#if 1
 		//Call regulation for roll axis rate
-		misc_PID(&aPIDRollRateOutput, &(gFlightCompute.aPIDRate[kPIDRoll]), gReceiver.aChannels_radS[kReceiverRoll], gAttitudeSensors.aRollRate_rads, aTime);
+		misc_PID(&(gFlightCompute.aDesiredRate[kRoll]), &(gFlightCompute.aPIDAngle[kRoll]), gReceiver.aChannels_rad[kReceiverRoll], gAttitudeSensors.aRoll_rad, aTime);
 
 		//Call regulation for pitch axis rate
-		misc_PID(&aPIDPitchRateOutput, &(gFlightCompute.aPIDRate[kPIDPitch]), gReceiver.aChannels_radS[kReceiverPitch], gAttitudeSensors.aPitchRate_rads, aTime);
+		misc_PID(&(gFlightCompute.aDesiredRate[kPitch]), &(gFlightCompute.aPIDAngle[kPitch]), gReceiver.aChannels_rad[kReceiverPitch], gAttitudeSensors.aPitch_rad, aTime);
+
+#endif
+
+		//Call regulation for roll axis rate
+		misc_PID(&aPIDRollRateOutput, &(gFlightCompute.aPIDRate[kRoll]), gFlightCompute.aDesiredRate[kRoll], gAttitudeSensors.aRollRate_rads, aTime);
+
+		//Call regulation for pitch axis rate
+		misc_PID(&aPIDPitchRateOutput, &(gFlightCompute.aPIDRate[kPitch]), gFlightCompute.aDesiredRate[kPitch], gAttitudeSensors.aPitchRate_rads, aTime);
 
 		//Call regulation for yaw axis
-		misc_PID(&aPIDPitchRateOutput, &(gFlightCompute.aPIDRate[kPIDYaw]), gReceiver.aChannels_radS[kReceiverYaw], gAttitudeSensors.aHeadingRate_rads, aTime);
+		misc_PID(&aPIDYawRateOutput, &(gFlightCompute.aPIDRate[kYaw]), gFlightCompute.aDesiredRate[kYaw], gAttitudeSensors.aHeadingRate_rads, aTime);
 	}
 
 	//Call motor mix
 	gFlightCompute_MotorMix(aThrottle, aPIDPitchRateOutput, aPIDRollRateOutput, aPIDYawRateOutput, aToMotors);
+
 	//Constrain and send to motors
 	gFlightCompute_ConstrainSendMotorsValues(aToMotors);
 }
