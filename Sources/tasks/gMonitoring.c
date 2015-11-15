@@ -126,12 +126,23 @@ void gMonitoring_Run()
 			//String is NULL terminated
 			gMonitoring.aDataString[kMonitoringStringLength-1] = '\0';
 			int i;
-			for (i=2; i<kMonitoringStringLength-1; i++) //2..79
+//			for (i=2; i<kMonitoringStringLength-1; i++) //2..79
+//			{
+//				//Avoid a \r\n
+//				if((gMonitoring.aDataString[i] == 0x0D) && (gMonitoring.aDataString[i+1]==0x0A))
+//				{
+//					gMonitoring.aDataString[i] = 0;
+//				}
+//			}
+			for(i=2; i<kMonitoringStringLength; i++)
 			{
-				//Avoid a \r\n
-				if((gMonitoring.aDataString[i] == 0x0D) && (gMonitoring.aDataString[i+1]==0x0A))
+				if(gMonitoring.aDataString[i] == 0x0D)
 				{
-					gMonitoring.aDataString[i] = 0;
+					gMonitoring.aDataString[i] = 0x0C;
+				}
+				if(gMonitoring.aDataString[i] == 0x0A)
+				{
+					gMonitoring.aDataString[i] = 0x09;
 				}
 			}
 

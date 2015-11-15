@@ -81,12 +81,12 @@
 //------------------------------------------------------
 
 //PID Rate Roll
-#define kPIDRollRate_Kp		(float)100
+#define kPIDRollRate_Kp		(float)50
 #define kPIDRollRate_Ki		(float)0
 #define kPIDRollRate_Kd		(float)40000
 
 //PID Rate Pitch
-#define kPIDPitchRate_Kp	(float)-100
+#define kPIDPitchRate_Kp	(float)-50
 #define kPIDPitchRate_Ki	(float)0
 #define kPIDPitchRate_Kd	(float)-40000
 
@@ -102,16 +102,16 @@
 //------------------------------------------------------
 
 //PID Angle_Roll
-#define kPIDRollAngle_Kp	(float)20
-#define kPIDRollAngle_Ki	(float)0
-#define kPIDRollAngle_Kd	(float)1000
+#define kPIDRollAngle_Kp	(float)15
+#define kPIDRollAngle_Ki	(float)0//0.01
+#define kPIDRollAngle_Kd	(float)8000
 
 //PID Angle_Pitch
-#define kPIDPitchAngle_Kp	(float)-20
-#define kPIDPitchAngle_Ki	(float)0
-#define kPIDPitchAngle_Kd	(float)-1000
+#define kPIDPitchAngle_Kp	(float)-15
+#define kPIDPitchAngle_Ki	(float)0//-0.01
+#define kPIDPitchAngle_Kd	(float)-8000
 
-#define kWindupGuardAngle	(float)150
+#define kWindupGuardAngle	(float)1
 
 //Convert time measured be receiver module to an angle or in angular velocity, depending on the flight mode (Rate/Angle)
 //Used to convert roll & pitch commands to angle/angular velocity for PID

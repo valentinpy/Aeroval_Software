@@ -70,6 +70,9 @@ typedef struct
 	float aPitch_rad_offset;
 	float aRoll_rad_offset;
 
+	//Delay for outter PID regulation
+	Int16 aDelayAnglePID;
+
 	//Desired rate (angular speed)
 	//If rate/angle mode: output of first PID
 	//If accro mode: output of receiver

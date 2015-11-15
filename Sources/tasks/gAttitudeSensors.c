@@ -42,8 +42,8 @@ void gAttitudeSensors_Run()
 	//Copy into mailbox
 
 	gAttitudeSensors.aHeading_rad = aDataResult.QX.f;
-	gAttitudeSensors.aPitch_rad = 	aDataResult.QZ.f;
-	gAttitudeSensors.aRoll_rad = 	aDataResult.QY.f;
+	gAttitudeSensors.aPitch_rad = 	aDataResult.QY.f; //Z
+	gAttitudeSensors.aRoll_rad = 	aDataResult.QZ.f; //Y
 
 	gAttitudeSensors.aHeadingRate_rads = kGyroToRadS * ((float)aDataResult.GZ);
 	gAttitudeSensors.aPitchRate_rads = kGyroToRadS * (float)(aDataResult.GY);
