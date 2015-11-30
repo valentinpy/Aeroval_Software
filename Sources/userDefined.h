@@ -1,8 +1,20 @@
 /*
- * userDefined.h
+ * Copyright (C) 2015 Valentin Py
  *
- *  Created on: 20 sept. 2015
- *      Author: valentinpy
+ * This file is part of Aeroval.
+ *
+ * Aeroval is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Aeroval is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef SOURCES_USERDEFINED_H_
@@ -81,14 +93,14 @@
 //------------------------------------------------------
 
 //PID Rate Roll
-#define kPIDRollRate_Kp		(float)50
-#define kPIDRollRate_Ki		(float)0
-#define kPIDRollRate_Kd		(float)40000
+#define kPIDRollRate_Kp		(float)40
+#define kPIDRollRate_Ki		(float)0//1
+#define kPIDRollRate_Kd		(float)10000
 
 //PID Rate Pitch
-#define kPIDPitchRate_Kp	(float)-50
-#define kPIDPitchRate_Ki	(float)0
-#define kPIDPitchRate_Kd	(float)-40000
+#define kPIDPitchRate_Kp	(float)-40
+#define kPIDPitchRate_Ki	(float)0//-1
+#define kPIDPitchRate_Kd	(float)-10000
 
 //PID Rate Yaw
 #define kPIDYawRate_Kp		(float)100
@@ -102,27 +114,27 @@
 //------------------------------------------------------
 
 //PID Angle_Roll
-#define kPIDRollAngle_Kp	(float)15
-#define kPIDRollAngle_Ki	(float)0//0.01
-#define kPIDRollAngle_Kd	(float)8000
+#define kPIDRollAngle_Kp	(float)15//15
+#define kPIDRollAngle_Ki	(float)0.02//0.01
+#define kPIDRollAngle_Kd	(float)12000
 
 //PID Angle_Pitch
-#define kPIDPitchAngle_Kp	(float)-15
-#define kPIDPitchAngle_Ki	(float)0//-0.01
-#define kPIDPitchAngle_Kd	(float)-8000
+#define kPIDPitchAngle_Kp	(float)-15//-15
+#define kPIDPitchAngle_Ki	(float)-0.02//-0.01
+#define kPIDPitchAngle_Kd	(float)-12000
 
-#define kWindupGuardAngle	(float)1
+#define kWindupGuardAngle	(float)0.5
 
 //Convert time measured be receiver module to an angle or in angular velocity, depending on the flight mode (Rate/Angle)
 //Used to convert roll & pitch commands to angle/angular velocity for PID
 
-#define kReceiverUsToRadS		(float)0.0314
-#define kReceiverMaxRate_radS	(float)(15.7)
+#define kReceiverUsToRadS		(float)0.0157
+#define kReceiverMaxRate_radS	(float)(7.85)
 
 
-//Currently limit between -45;+45° => -pi/4; +pi/4
-#define kReceiverUsToRad		(float)0.00157
-#define kReceiverMaxAngle_rad	(float)(0.785)
+//Currently limit between -45;+45° => -pi/8; +pi/8
+#define kReceiverUsToRad		(float)(0.000785)
+#define kReceiverMaxAngle_rad	(float)(0.3925)
 
 
 //------------------------------------------------------------------------

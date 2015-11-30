@@ -1,7 +1,7 @@
-#File conaining parameters for GDB, in order to flash the firmware
-# Valeitn Py - Aeroval
+# File conaining parameters for GDB, in order to flash the firmware
+# Valentin Py - Aeroval
 # 02.11.15
-#You'll maybe need to change the name of the binary
+# You'll maybe need to change the name of the binary
 
 
 # Segger: listen on port
@@ -16,14 +16,15 @@ monitor device = MK64FN1M0xxx12
 # load/flash application file
 load build/aeroval.elf
 
-#reset target
+# reset target
 monitor reset
 
-#start programm
-#continue
+# start programm
+# continue
 monitor go
 
 disconnect
+
 # exit gdb
 quit
 

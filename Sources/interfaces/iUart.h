@@ -1,11 +1,21 @@
 /*
- File name 			:	iUart.h
- Author and date 	:	Fivaz Timoth�e, 22.06.2015
-
- Description 		:	Interface for the Universal Asynchronous Receiver Transmitter. The methods in this file allow to set up the UARTs at a certain baudrate and 
- 	 	 	 	 	 	put to disposal the main functions used in a UART communication.
-
- -----------------------------------------------------------------------------
+ * Copyright (C) 2015 Valentin Py
+ * Copyright (C) 2015 Thimothée Fivaz
+ *
+ * This file is part of Aeroval.
+ *
+ * Aeroval is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Aeroval is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __iUart__

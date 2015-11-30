@@ -1,9 +1,30 @@
-# Makefile to compile aeroval by hand
+# Makefile to compile Aeroval manually
 # Valentin Py - Aeroval
 # 02.11.15
-# You will need an arm-non-eabi toolchain (available with Kinetis-Design-Studio for example.)
-# This makefile is inspire: from https://github.com/phantax/stm32f4/blob/master/makefile
+# You need an arm-non-eabi toolchain (available with Kinetis-Design-Studio for example.)
 # The file you'll have to load to the microcontroller is the *.elf, fount in ./build/
+#
+# This makefile is inspired from https://github.com/phantax/stm32f4/blob/master/makefile
+
+
+
+# Copyright (C) 2015 Valentin Py
+#
+# This file is part of Aeroval.
+#
+# Aeroval is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Aeroval is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 
 #Project's name
 PROJ_NAME = aeroval
