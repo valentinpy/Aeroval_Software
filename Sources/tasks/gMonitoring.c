@@ -138,14 +138,8 @@ void gMonitoring_Run()
 			//String is NULL terminated
 			gMonitoring.aDataString[kMonitoringStringLength-1] = '\0';
 			int i;
-//			for (i=2; i<kMonitoringStringLength-1; i++) //2..79
-//			{
-//				//Avoid a \r\n
-//				if((gMonitoring.aDataString[i] == 0x0D) && (gMonitoring.aDataString[i+1]==0x0A))
-//				{
-//					gMonitoring.aDataString[i] = 0;
-//				}
-//			}
+
+			//Avoid a \r\n
 			for(i=2; i<kMonitoringStringLength; i++)
 			{
 				if(gMonitoring.aDataString[i] == 0x0D)
@@ -158,25 +152,18 @@ void gMonitoring_Run()
 				}
 			}
 
-
 			//Transmit datas
-			mRs232_WriteStringFixedSize(kUart3USB, gMonitoring.aDataString, kMonitoringStringLength);
-
-			//Tests
-			mRs232_WriteStringFixedSize(kUart4Aux, gMonitoring.aDataString, kMonitoringStringLength);
-		}
-
-
-		if(mSwitches_Get(kMaskSwitch1))
-		{
-			UInt8 aReceivedDatas[256];
-			UInt8 i = 0;
-			while(mRs232_ReadDataFromBuffer(kUart3USB, aReceivedDatas+i)==false)
+			if(mSwitches_Get(kMaskSwitch5))
 			{
-				i++;
+				mRs232_WriteStringFixedSize(kUart3USB, gMonitoring.aDataString, kMonitoringStringLength);
+
 			}
 
-			mRs232_WriteString(kUart3USB, aReceivedDatas);
+			if(mSwitches_Get(kMaskSwitch6))
+			{
+				mRs232_WriteStringFixedSize(kUart4Aux, gMonitoring.aDataString, kMonitoringStringLength);
+
+			}
 		}
 	}
 }
