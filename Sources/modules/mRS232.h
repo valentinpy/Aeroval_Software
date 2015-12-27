@@ -43,7 +43,7 @@ void mRs232_Setup(void);
 // *aDataPtr	: string address
 // uart			: which UART to use
 //-----------------------------------------------------------------------------
-void mRs232_WriteString(UartEnum uart, UInt8 *aDataPtr);
+void mRs232_WriteString(UartEnum uart, char *aDataPtr);
 
 //-----------------------------------------------------------------------------
 // String send (fixed size)
@@ -68,7 +68,7 @@ void mRs232_WriteChar(UartEnum uart, UInt8 aData);
 // Return 	    : true --> the buffer is empty, false the buffer is not empty
 // uart			: which UART to use
 //-----------------------------------------------------------------------------
-bool mRs232_ReadDataFromBuffer(UartEnum uart, UInt8 *aBytePtr);
+bool mRs232_ReadDataFromBuffer(UartEnum uart, char *aBytePtr);
 
 
 //-----------------------------------------------------------------------------
