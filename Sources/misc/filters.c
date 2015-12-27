@@ -20,7 +20,7 @@
 #include "filters.h"
 #include "def.h"
 
-Int16 misc_MedianFilter(Int16 a_0, Int16 a_1, Int16 a_2)
+Int16 filter_MedianFilter(Int16 a_0, Int16 a_1, Int16 a_2)
 {
 	Int16 middle;
 	if((a_0<=a_1)&&(a_0<=a_2))
@@ -37,3 +37,14 @@ Int16 misc_MedianFilter(Int16 a_0, Int16 a_1, Int16 a_2)
 	}
 	 return middle;
 }
+
+
+//Low pass filter
+//Return: output of the filter
+//Current value: new value (input)
+//Previous value: previous output of the filter
+//alpha: coeff of the filter. Between 0 and 1
+float filter_lowPassFilter(float currentValue, float previousValue, float alpha)
+{
+	return (alpha * currentValue) + ((1.0 - alpha) * previousValue);
+ }

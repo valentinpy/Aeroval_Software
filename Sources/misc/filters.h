@@ -21,8 +21,17 @@
 #define SOURCES_MISC_FILTERS_H_
 
 #include "def.h"
-Int16 misc_MedianFilter(Int16 a_0, Int16 a_1, Int16 a_2);
 
+//Median filter
+//Return: output of the filter (middle value of the 3 inputs)
+//Inputs: 3 values
+Int16 filter_MedianFilter(Int16 a_0, Int16 a_1, Int16 a_2);
 
+//Low pass filter
+//Return: output of the filter
+//Current value: new value (input)
+//Previous value: previous output of the filter
+//alpha: coeff of the filter. Between 0 and 1
+float filter_lowPassFilter(float currentValue, float previousValue, float alpha);
 
 #endif /* SOURCES_MISC_FILTERS_H_ */

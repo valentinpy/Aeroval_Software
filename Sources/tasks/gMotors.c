@@ -59,7 +59,7 @@ void gMotors_Run()
 		for(i=0; i<8; i++)
 		{
 			gMotors.aMotorsValuesIn_0[i] = gFlightCompute.aMotorsOutput[i];
-			gMotors.aMotorsValuesOut[i] = misc_MedianFilter(gMotors.aMotorsValuesIn_0[i], gMotors.aMotorsValuesIn_1[i], gMotors.aMotorsValuesIn_2[i]);
+			gMotors.aMotorsValuesOut[i] = filter_MedianFilter(gMotors.aMotorsValuesIn_0[i], gMotors.aMotorsValuesIn_1[i], gMotors.aMotorsValuesIn_2[i]);
 		}
 
 
