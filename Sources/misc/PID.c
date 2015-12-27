@@ -22,7 +22,7 @@
 
 
 
-void misc_ResetPID(PIDdata* aPID)
+void pid_ResetPID(PIDdata* aPID)
 {
 	UInt8 i;
 	for(i=0; i<3; i++)
@@ -33,7 +33,7 @@ void misc_ResetPID(PIDdata* aPID)
 	}
 }
 
-void misc_PID(float* aOutput, PIDdata* aPIDstruct, float aTarget, float aMeasured, UInt16 aTime)
+void pid_PID(float* aOutput, PIDdata* aPIDstruct, float aTarget, float aMeasured, UInt16 aTime)
 {
 	float aDeltaTime;
 	float aError, aProportional, aDerivative;
