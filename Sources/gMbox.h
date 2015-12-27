@@ -127,6 +127,8 @@ typedef struct
 {
 	Int16 aDelay;
 	char aDataString[kMonitoringStringLength];
+	char aReceived[50];
+	UInt8 aReceivedIdx;
 
 } gMonitoringStruct;
 extern gMonitoringStruct gMonitoring;
