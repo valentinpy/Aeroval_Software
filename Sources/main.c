@@ -35,7 +35,7 @@
 #include "tasks/gReceiver.h"
 #include "tasks/gMiscSensors.h"
 
-void main(void)
+int main(void)
 {
 	//Non specific modules initialization
 	mCpu_Setup();
@@ -92,5 +92,5 @@ void main(void)
 	}
 
 	//Never happens (infinite loop above)
-	return;
+	return 0;
 }
