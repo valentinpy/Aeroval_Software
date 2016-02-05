@@ -46,5 +46,5 @@ Int16 filter_MedianFilter(Int16 a_0, Int16 a_1, Int16 a_2)
 //alpha: coeff of the filter. Between 0 and 1
 float filter_lowPassFilter(float currentValue, float previousValue, float alpha)
 {
-	return (alpha * currentValue) + ((1.0 - alpha) * previousValue);
+	return ((alpha * currentValue) + ((1.0 - alpha) * previousValue));
  }

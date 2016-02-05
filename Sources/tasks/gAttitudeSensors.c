@@ -18,6 +18,7 @@
  */
 
 #include "gAttitudeSensors.h"
+#include "../misc/filters.h"
 
 //-----------------------------------
 // Attitude measurement initialization
@@ -34,6 +35,10 @@ void gAttitudeSensors_Setup()
 	gAttitudeSensors.aHeading_rad = 0.0;
 	gAttitudeSensors.aPitch_rad   =	0.0;
 	gAttitudeSensors.aRoll_rad 	  = 0.0;
+
+	gAttitudeSensors.aHeadingRate_rads = 0.0;
+	gAttitudeSensors.aPitchRate_rads   =	0.0;
+	gAttitudeSensors.aRollRate_rads 	  = 0.0;
 
 	//int
 	gAttitudeSensors.aTimeStamp = 0;
@@ -55,18 +60,16 @@ void gAttitudeSensors_Run()
 	gAttitudeSensors.aHeading_rad = aDataResult.QX.f;
 	gAttitudeSensors.aPitch_rad = 	aDataResult.QY.f; //Z
 	gAttitudeSensors.aRoll_rad = 	aDataResult.QZ.f; //Y
-
+/*
 	gAttitudeSensors.aHeadingRate_rads = kGyroToRadS * ((float)aDataResult.GZ);
 	gAttitudeSensors.aPitchRate_rads = kGyroToRadS * (float)(aDataResult.GY);
 	gAttitudeSensors.aRollRate_rads = kGyroToRadS * ((float)aDataResult.GX);
-/*
-	gAttitudeSensors.aHeading_rad = 0;
-	gAttitudeSensors.aPitch_rad = 	0;
-	gAttitudeSensors.aRoll_rad = 	0;
+*/
 
-	gAttitudeSensors.aHeadingRate_rads = 0;
-	gAttitudeSensors.aPitchRate_rads = 0;
-	gAttitudeSensors.aRollRate_rads = 0;*/
+	//Filter and nuit conversion
+	gAttitudeSensors.aHeadingRate_rads =  filter_lowPassFilter(kGyroToRadS * ((float)aDataResult.GZ), gAttitudeSensors.aHeadingRate_rads, 0.9);
+	gAttitudeSensors.aPitchRate_rads =  filter_lowPassFilter(kGyroToRadS * ((float)aDataResult.GY), gAttitudeSensors.aPitchRate_rads, 0.9);
+	gAttitudeSensors.aRollRate_rads =  filter_lowPassFilter(kGyroToRadS * ((float)aDataResult.GX), gAttitudeSensors.aRollRate_rads, 0.9);
 
 	//Add offset
 	gAttitudeSensors.aPitch_rad   += gFlightCompute.aPitch_rad_offset;
