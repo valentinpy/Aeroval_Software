@@ -238,9 +238,9 @@ static void gFlightCompute_ConstrainSendMotorsValues(float* aOutput, float aThro
 		}
 
 		//Reduce the output to not jump in the air if not leveled
-		if(aOutput[i] > 2*aThrottle)
+		if(aOutput[i] > 3*aThrottle+50)
 		{
-			aOutput[i] = 2*aThrottle;
+			aOutput[i] = 3*aThrottle+50;
 		}
 
 		//Send
