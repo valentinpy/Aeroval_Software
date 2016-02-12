@@ -124,7 +124,7 @@ void gFlightCompute_Run()
 	if(
 			(gReceiver.aChannels[kReceiverThrottle] < kReceiverMIN) &&
 			(gReceiver.aChannels[kReceiverYaw] < kReceiverMIN) &&
-			(gReceiver.aChannels[kReceiverPitch] > kReceiverMAX) &&
+			(gReceiver.aChannels[kReceiverPitch] < kReceiverMIN) &&
 			(gReceiver.aChannels[kReceiverRoll] > kReceiverMAX) &&
 			(gFlightCompute.aState == kDisarmed)
 	)
