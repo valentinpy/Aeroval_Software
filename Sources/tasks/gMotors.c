@@ -18,6 +18,8 @@
  */
 
 #include "gMotors.h"
+#include "../userDefined.h"
+
 #include "../misc/filters.h"
 
 //-----------------------------------
@@ -58,8 +60,12 @@ void gMotors_Run()
 		int i=0;
 		for(i=0; i<8; i++)
 		{
+#ifdef MOTORS_NOMEDIANFILTER
+			gMotors.aMotorsValuesOut[i] = gFlightCompute.aMotorsOutput[i];
+#else
 			gMotors.aMotorsValuesIn_0[i] = gFlightCompute.aMotorsOutput[i];
 			gMotors.aMotorsValuesOut[i] = filter_MedianFilter(gMotors.aMotorsValuesIn_0[i], gMotors.aMotorsValuesIn_1[i], gMotors.aMotorsValuesIn_2[i]);
+#endif
 		}
 
 

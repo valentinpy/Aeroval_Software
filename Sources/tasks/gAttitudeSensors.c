@@ -60,16 +60,17 @@ void gAttitudeSensors_Run()
 	gAttitudeSensors.aHeading_rad = aDataResult.QX.f;
 	gAttitudeSensors.aPitch_rad = 	aDataResult.QY.f; //Z
 	gAttitudeSensors.aRoll_rad = 	aDataResult.QZ.f; //Y
-/*
+#ifdef EM7180_GIRO_NOFILTER
 	gAttitudeSensors.aHeadingRate_rads = kGyroToRadS * ((float)aDataResult.GZ);
 	gAttitudeSensors.aPitchRate_rads = kGyroToRadS * (float)(aDataResult.GY);
 	gAttitudeSensors.aRollRate_rads = kGyroToRadS * ((float)aDataResult.GX);
-*/
 
-	//Filter and nuit conversion
-	gAttitudeSensors.aHeadingRate_rads =  filter_lowPassFilter(kGyroToRadS * ((float)aDataResult.GZ), gAttitudeSensors.aHeadingRate_rads, 0.9);
-	gAttitudeSensors.aPitchRate_rads =  filter_lowPassFilter(kGyroToRadS * ((float)aDataResult.GY), gAttitudeSensors.aPitchRate_rads, 0.9);
-	gAttitudeSensors.aRollRate_rads =  filter_lowPassFilter(kGyroToRadS * ((float)aDataResult.GX), gAttitudeSensors.aRollRate_rads, 0.9);
+#else
+	//Filter and unit conversion
+	gAttitudeSensors.aHeadingRate_rads =  filter_lowPassFilter(kGyroToRadS * ((float)aDataResult.GZ), gAttitudeSensors.aHeadingRate_rads, 0.6);
+	gAttitudeSensors.aPitchRate_rads =  filter_lowPassFilter(kGyroToRadS * ((float)aDataResult.GY), gAttitudeSensors.aPitchRate_rads, 0.6);
+	gAttitudeSensors.aRollRate_rads =  filter_lowPassFilter(kGyroToRadS * ((float)aDataResult.GX), gAttitudeSensors.aRollRate_rads, 0.6);
+#endif
 
 	//Add offset
 	gAttitudeSensors.aPitch_rad   += gFlightCompute.aPitch_rad_offset;

@@ -88,6 +88,12 @@
 #define MOTOR_MAX_VALUE 	(UInt16)(1000)
 #define MOTOR_IDLE_VALUE	(UInt16)(50)
 
+//#define MOTORS_NOMEDIANFILTER // The output of the motors are not median-filtered if defined (hide peaks)
+
+//------------------------------------------------------------------------
+//----------------------- SENSORS configuration ----------------------
+//------------------------------------------------------------------------
+#define EM7180_GIRO_NOFILTER //The angular speed is not filtered if defined
 
 //------------------------------------------------------------------------
 //----------------------- Flight parameters ------------------------------
