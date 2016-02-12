@@ -46,15 +46,14 @@
 //------------------------------------------------------------------------
 
 // Order of channels for the receiver
-//TODO conflict with mReceiver
-#define THROTTLE	0
-#define YAW			1
-#define PITCH		2
-#define ROLL		3
-#define GEAR		4
-#define AUX1		5
-#define AUX2		6
-#define AUX3		7
+#define kReceiverThrottle 	7//
+#define kReceiverRoll 		6//
+#define kReceiverPitch 		5//
+#define kReceiverYaw 		0//
+#define kReceiverGear 		4//
+#define kReceiverAux1 		3//
+#define kReceiverAux2 		2
+#define kReceiverAux3 		1
 
 #define kReceiverIDLE		50		//Threshold value for throttle: below: idle, no regulation, above: regulation is applied
 #define kReceiverMIN 		50		//Min value for detection of patterns

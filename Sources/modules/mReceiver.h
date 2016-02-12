@@ -35,15 +35,6 @@ typedef enum
 	kReceiverChannel7,
 }ReceiverEnum;
 
-#define kReceiverThrottle 	kReceiverChannel7
-#define kReceiverRoll 		kReceiverChannel6
-#define kReceiverPitch 		kReceiverChannel4
-#define kReceiverYaw 		kReceiverChannel5
-
-#define kReceiverGear 		kReceiverChannel0
-#define kReceiverAux1 		kReceiverChannel2
-#define kReceiverAux2 		kReceiverChannel3
-
 //------------------------------------------------------------
 // Setup receiver
 //------------------------------------------------------------

@@ -18,6 +18,7 @@
  */
 
 #include "gFlightCompute.h"
+#include "../userDefined.h"
 #include "../modules/mGpio.h"
 #include "../misc/PID.h"
 //-----------------------------------

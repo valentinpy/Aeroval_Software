@@ -18,6 +18,8 @@
  */
 
 #include "gMonitoring.h"
+#include "../userDefined.h"
+
 #include "gFlightCompute.h"
 #include "misc/string.h"
 #include "misc/maths.h"
@@ -89,22 +91,22 @@ static void gMonitoring_sendMonitoring()
 	gMonitoring.aDataString[5] = (Int16)(gAttitudeSensors.aPitch_rad*1000) & 0xFF;
 	gMonitoring.aDataString[6] = (Int16)(gAttitudeSensors.aRoll_rad*1000) >> 8;
 	gMonitoring.aDataString[7] = (Int16)(gAttitudeSensors.aRoll_rad*1000) & 0xFF;
-	gMonitoring.aDataString[8] =  (gReceiver.aChannels[0]>>8);
-	gMonitoring.aDataString[9] =  (gReceiver.aChannels[0] & 0xFF);
-	gMonitoring.aDataString[10] = (gReceiver.aChannels[1]>>8);
-	gMonitoring.aDataString[11] = (gReceiver.aChannels[1] & 0xFF);
-	gMonitoring.aDataString[12] = (gReceiver.aChannels[2]>>8);
-	gMonitoring.aDataString[13] = (gReceiver.aChannels[2] & 0xFF);
-	gMonitoring.aDataString[14] = (gReceiver.aChannels[3]>>8);
-	gMonitoring.aDataString[15] = (gReceiver.aChannels[3] & 0xFF);
-	gMonitoring.aDataString[16] = (gReceiver.aChannels[4]>>8);
-	gMonitoring.aDataString[17] = (gReceiver.aChannels[4] & 0xFF);
-	gMonitoring.aDataString[18] = (gReceiver.aChannels[5]>>8);
-	gMonitoring.aDataString[19] = (gReceiver.aChannels[5] & 0xFF);
-	gMonitoring.aDataString[20] = (gReceiver.aChannels[6]>>8);
-	gMonitoring.aDataString[21] = (gReceiver.aChannels[6] & 0xFF);
-	gMonitoring.aDataString[22] = (gReceiver.aChannels[7]>>8);
-	gMonitoring.aDataString[23] = (gReceiver.aChannels[7] & 0xFF);
+	gMonitoring.aDataString[8] =  (gReceiver.aChannels[kReceiverThrottle]>>8);
+	gMonitoring.aDataString[9] =  (gReceiver.aChannels[kReceiverThrottle] & 0xFF);
+	gMonitoring.aDataString[10] = (gReceiver.aChannels[kReceiverYaw]>>8);
+	gMonitoring.aDataString[11] = (gReceiver.aChannels[kReceiverYaw] & 0xFF);
+	gMonitoring.aDataString[12] = (gReceiver.aChannels[kReceiverPitch]>>8);
+	gMonitoring.aDataString[13] = (gReceiver.aChannels[kReceiverPitch] & 0xFF);
+	gMonitoring.aDataString[14] = (gReceiver.aChannels[kReceiverRoll]>>8);
+	gMonitoring.aDataString[15] = (gReceiver.aChannels[kReceiverRoll] & 0xFF);
+	gMonitoring.aDataString[16] = (gReceiver.aChannels[kReceiverGear]>>8);
+	gMonitoring.aDataString[17] = (gReceiver.aChannels[kReceiverGear] & 0xFF);
+	gMonitoring.aDataString[18] = (gReceiver.aChannels[kReceiverAux1]>>8);
+	gMonitoring.aDataString[19] = (gReceiver.aChannels[kReceiverAux1] & 0xFF);
+	gMonitoring.aDataString[20] = (gReceiver.aChannels[kReceiverAux2]>>8);
+	gMonitoring.aDataString[21] = (gReceiver.aChannels[kReceiverAux2] & 0xFF);
+	gMonitoring.aDataString[22] = (gReceiver.aChannels[kReceiverAux3]>>8);
+	gMonitoring.aDataString[23] = (gReceiver.aChannels[kReceiverAux3] & 0xFF);
 	gMonitoring.aDataString[24] = (gMotors.aMotorsValuesOut[0]>>8);
 	gMonitoring.aDataString[25] = (gMotors.aMotorsValuesOut[0] & 0xFF);
 	gMonitoring.aDataString[26] = (gMotors.aMotorsValuesOut[1]>>8);
