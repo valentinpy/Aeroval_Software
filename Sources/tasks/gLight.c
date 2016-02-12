@@ -33,8 +33,8 @@ void gLight_Setup()
 	mHleds_AllOff();
 
 	//Get delays for 2 slow speed loops (human visible blink)
-	gLight.aDelay2Hz = mDelay_GetDelay(kPit0, 250);
-	gLight.aDelay5Hz = mDelay_GetDelay(kPit0, 100);
+	gLight.aDelayLeds = mDelay_GetDelay(kPit0, 100);
+	gLight.aDelayHLeds = mDelay_GetDelay(kPit0, 100);
 }
 
 //-----------------------------------
@@ -42,59 +42,130 @@ void gLight_Setup()
 //-----------------------------------
 void gLight_Run()
 {
-
-	// 2Hz loop
-	if(mDelay_IsDelayDone(kPit0, gLight.aDelay2Hz)==true)
+	//PCB LEDS
+	if(mDelay_IsDelayDone(kPit0, gLight.aDelayLeds)==true)
 	{
-		mDelay_ReStart(kPit0, gLight.aDelay2Hz, 100);
+		if(kAngle==gFlightCompute.aFLightMode) //Angle / stable mode - blink slow
+		{
+			mLeds_AllToggle();
 
-		//TODO implement LEDS
-		//Blink, as nothing else is implemented yet
-		mLeds_AllToggle();
+			mDelay_ReStart(kPit0, gLight.aDelayLeds, 500);
+
+		}
+		else if(kRate==gFlightCompute.aFLightMode) //Angular speed (acro) mode - blink fast
+		{
+			mLeds_AllToggle();
+
+			mDelay_ReStart(kPit0, gLight.aDelayLeds, 100);
+
+		}
+		else //Unknown flight mode
+		{
+			mLeds_AllOff();
+
+			mDelay_ReStart(kPit0, gLight.aDelayLeds, 100);
+		}
 	}
 
-	// 5Hz loop (10Hz?) //TODO fix frequency
-	if(mDelay_IsDelayDone(kPit0, gLight.aDelay5Hz)==true)
+	//Power LEDS
+	if(mDelay_IsDelayDone(kPit0, gLight.aDelayHLeds)==true)
 	{
-		mDelay_ReStart(kPit0, gLight.aDelay5Hz, 100);
+		mDelay_ReStart(kPit0, gLight.aDelayHLeds, 100);
 
 		//If battery voltage is sufficient, blink to indicate orientation.
 		//TODO store/check battery warning in mailbox
 		if(gMiscSensors.aBatteryVoltage_mV > kBatLevelWarning)
 		{
-			//Roll
-			if(gAttitudeSensors.aRoll_rad<-0.09)
+			//Forward-left
+			if((gAttitudeSensors.aRoll_rad<-0.09) && (gAttitudeSensors.aPitch_rad<-0.09))
 			{
-				mHleds_Toggle(kMaskHled0);
+				mHleds_Toggle(kMaskHled2);
+
+				mHleds_Write(kMaskHled0, kHledOn);
 				mHleds_Write(kMaskHled1, kHledOn);
+				mHleds_Write(kMaskHled3, kHledOn);
+
 			}
-			else if (gAttitudeSensors.aRoll_rad>0.09)
+
+			//Forward-right
+			else if((gAttitudeSensors.aRoll_rad>0.09) && (gAttitudeSensors.aPitch_rad<-0.09))
+			{
+				mHleds_Toggle(kMaskHled3);
+
+				mHleds_Write(kMaskHled0, kHledOn);
+				mHleds_Write(kMaskHled1, kHledOn);
+				mHleds_Write(kMaskHled2, kHledOn);
+
+			}
+
+			//Backward-left
+			else if((gAttitudeSensors.aRoll_rad<-0.09) && (gAttitudeSensors.aPitch_rad>0.09))
 			{
 				mHleds_Toggle(kMaskHled1);
+
 				mHleds_Write(kMaskHled0, kHledOn);
+				mHleds_Write(kMaskHled2, kHledOn);
+				mHleds_Write(kMaskHled3, kHledOn);
+
 			}
-			else
+
+			//Backward-right
+			else if((gAttitudeSensors.aRoll_rad>0.09) && (gAttitudeSensors.aPitch_rad>0.09))
 			{
+				mHleds_Toggle(kMaskHled0);
+
+				mHleds_Write(kMaskHled1, kHledOn);
+				mHleds_Write(kMaskHled2, kHledOn);
+				mHleds_Write(kMaskHled3, kHledOn);
+
+			}
+
+			//Forward
+			else if(gAttitudeSensors.aPitch_rad<-0.09)
+			{
+				mHleds_Toggle(kMaskHled2);
+				mHleds_Toggle(kMaskHled3);
+
 				mHleds_Write(kMaskHled0, kHledOn);
 				mHleds_Write(kMaskHled1, kHledOn);
 			}
 
-			//Pitch
-			if(gAttitudeSensors.aPitch_rad<-0.09)
+			//Backward
+			else if(gAttitudeSensors.aPitch_rad>0.09)
 			{
-				mHleds_Toggle(kMaskHled2);
+				mHleds_Toggle(kMaskHled0);
+				mHleds_Toggle(kMaskHled1);
+
+				mHleds_Write(kMaskHled2, kHledOn);
 				mHleds_Write(kMaskHled3, kHledOn);
 			}
-			else if (gAttitudeSensors.aPitch_rad>0.09)
+
+			//Left
+			else if(gAttitudeSensors.aRoll_rad<-0.09)
 			{
+				mHleds_Toggle(kMaskHled1);
+				mHleds_Toggle(kMaskHled2);
+
+				mHleds_Write(kMaskHled0, kHledOn);
+				mHleds_Write(kMaskHled3, kHledOn);
+			}
+
+			//Right
+			else if(gAttitudeSensors.aRoll_rad>0.09)
+			{
+				mHleds_Toggle(kMaskHled0);
 				mHleds_Toggle(kMaskHled3);
+
+				mHleds_Write(kMaskHled1, kHledOn);
 				mHleds_Write(kMaskHled2, kHledOn);
 			}
+
 			else
 			{
-				mHleds_Write(kMaskHled2, kHledOn);
-				mHleds_Write(kMaskHled3, kHledOn);
+				mHleds_AllOn();
 			}
+
+
 		}
 
 		//Battery is low, blink all leds to indicate.

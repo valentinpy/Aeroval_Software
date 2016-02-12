@@ -107,8 +107,8 @@ extern gFlightComputeStruct gFlightCompute;
 //-----------------------------------------------------------------------------
 typedef struct
 {
-	Int16 aDelay2Hz;
-	Int16 aDelay5Hz;
+	Int16 aDelayLeds;
+	Int16 aDelayHLeds;
 } gLightStruct;
 extern gLightStruct gLight;
 
