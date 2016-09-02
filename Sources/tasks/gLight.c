@@ -59,7 +59,7 @@ void gLight_Run()
 			mDelay_ReStart(kPit0, gLight.aDelayLeds, 100);
 
 		}
-		else //Unknown flight mode
+		else //Other flight mode
 		{
 			mLeds_AllOff();
 

@@ -76,7 +76,7 @@ void gMotors_Run()
 			gMotors.aMotorsValuesIn_1[i]=gMotors.aMotorsValuesIn_0[i];
 		}
 
-		//Send values to motors
+		//Send values to motors only if switch 0 is ON (safety feature: allow the regulation to work without output)
 		if(mSwitches_Get(kMaskSwitch0))
 		{
 			mMotors_SetMotor(kMotor0, gMotors.aMotorsValuesOut[M0]);
