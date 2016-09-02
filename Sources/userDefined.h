@@ -25,7 +25,8 @@
 //----------------------- General informations ---------------------------
 //------------------------------------------------------------------------
 #define AEROVAL_VERSION	"0.1 beta"
-
+//#define AEROVAL
+#define ARCDRONE
 
 //------------------------------------------------------------------------
 //----------------------- FRAME CONFIGURATION ----------------------------
@@ -98,54 +99,109 @@
 //------------------------------------------------------------------------
 //----------------------- Flight parameters ------------------------------
 //------------------------------------------------------------------------
+#ifdef ARCDRONE
 
-//------------------------------------------------------
-// PID Rate
-//------------------------------------------------------
+	//------------------------------------------------------
+	// PID Rate
+	//------------------------------------------------------
 
-//PID Rate Roll
-#define kPIDRollRate_Kp		(float)100//60
-#define kPIDRollRate_Ki		(float)0//1
-#define kPIDRollRate_Kd		(float)30000//15000
+	//PID Rate Roll
+	#define kPIDRollRate_Kp		(float)100//60
+	#define kPIDRollRate_Ki		(float)0//1
+	#define kPIDRollRate_Kd		(float)30000//15000
 
-//PID Rate Pitch
-#define kPIDPitchRate_Kp	(float)-100 //-60
-#define kPIDPitchRate_Ki	(float)0//-1
-#define kPIDPitchRate_Kd	(float)-30000//-15000
+	//PID Rate Pitch
+	#define kPIDPitchRate_Kp	(float)-100 //-60
+	#define kPIDPitchRate_Ki	(float)0//-1
+	#define kPIDPitchRate_Kd	(float)-30000//-15000
 
-//PID Rate Yaw
-#define kPIDYawRate_Kp		(float)100
-#define kPIDYawRate_Ki		(float)0
-#define kPIDYawRate_Kd		(float)0
+	//PID Rate Yaw
+	#define kPIDYawRate_Kp		(float)100
+	#define kPIDYawRate_Ki		(float)0
+	#define kPIDYawRate_Kd		(float)0
 
-#define kWindupGuardRate	(float)150
+	#define kWindupGuardRate	(float)150
 
-//------------------------------------------------------
-// PID Angle
-//------------------------------------------------------
+	//------------------------------------------------------
+	// PID Angle
+	//------------------------------------------------------
 
-//PID Angle_Roll
-#define kPIDRollAngle_Kp	(float)15//15
-#define kPIDRollAngle_Ki	(float)0//0.01
-#define kPIDRollAngle_Kd	(float)0
+	//PID Angle_Roll
+	#define kPIDRollAngle_Kp	(float)15//15
+	#define kPIDRollAngle_Ki	(float)0//0.01
+	#define kPIDRollAngle_Kd	(float)0
 
-//PID Angle_Pitch
-#define kPIDPitchAngle_Kp	(float)-15//-15
-#define kPIDPitchAngle_Ki	(float)-0//-0.01
-#define kPIDPitchAngle_Kd	(float)-0
+	//PID Angle_Pitch
+	#define kPIDPitchAngle_Kp	(float)-15//-15
+	#define kPIDPitchAngle_Ki	(float)-0//-0.01
+	#define kPIDPitchAngle_Kd	(float)-0
 
-#define kWindupGuardAngle	(float)0.5
+	#define kWindupGuardAngle	(float)0.5
 
-//Convert time measured be receiver module to an angle or in angular velocity, depending on the flight mode (Rate/Angle)
-//Used to convert roll & pitch commands to angle/angular velocity for PID
+	//Convert time measured be receiver module to an angle or in angular velocity, depending on the flight mode (Rate/Angle)
+	//Used to convert roll & pitch commands to angle/angular velocity for PID
 
-#define kReceiverUsToRadS		(float)0.0157
-#define kReceiverMaxRate_radS	(float)(7.85)
+	#define kReceiverUsToRadS		(float)0.0157
+	#define kReceiverMaxRate_radS	(float)(7.85)
 
 
-//Currently limit between -45;+45° => -pi/8; +pi/8
-#define kReceiverUsToRad		(float)(0.000785)
-#define kReceiverMaxAngle_rad	(float)(0.3925)
+	//Currently limit between -45;+45° => -pi/8; +pi/8
+	#define kReceiverUsToRad		(float)(0.000785)
+	#define kReceiverMaxAngle_rad	(float)(0.3925)
+
+
+#else //Aeroval ?
+
+	//------------------------------------------------------
+	// PID Rate
+	//------------------------------------------------------
+
+	//PID Rate Roll
+	#define kPIDRollRate_Kp		(float)100//60
+	#define kPIDRollRate_Ki		(float)0//1
+	#define kPIDRollRate_Kd		(float)30000//15000
+
+	//PID Rate Pitch
+	#define kPIDPitchRate_Kp	(float)-100 //-60
+	#define kPIDPitchRate_Ki	(float)0//-1
+	#define kPIDPitchRate_Kd	(float)-30000//-15000
+
+	//PID Rate Yaw
+	#define kPIDYawRate_Kp		(float)100
+	#define kPIDYawRate_Ki		(float)0
+	#define kPIDYawRate_Kd		(float)0
+
+	#define kWindupGuardRate	(float)150
+
+	//------------------------------------------------------
+	// PID Angle
+	//------------------------------------------------------
+
+	//PID Angle_Roll
+	#define kPIDRollAngle_Kp	(float)15//15
+	#define kPIDRollAngle_Ki	(float)0//0.01
+	#define kPIDRollAngle_Kd	(float)0
+
+	//PID Angle_Pitch
+	#define kPIDPitchAngle_Kp	(float)-15//-15
+	#define kPIDPitchAngle_Ki	(float)-0//-0.01
+	#define kPIDPitchAngle_Kd	(float)-0
+
+	#define kWindupGuardAngle	(float)0.5
+
+	//Convert time measured be receiver module to an angle or in angular velocity, depending on the flight mode (Rate/Angle)
+	//Used to convert roll & pitch commands to angle/angular velocity for PID
+
+	#define kReceiverUsToRadS		(float)0.0157
+	#define kReceiverMaxRate_radS	(float)(7.85)
+
+
+	//Currently limit between -45;+45° => -pi/8; +pi/8
+	#define kReceiverUsToRad		(float)(0.000785)
+	#define kReceiverMaxAngle_rad	(float)(0.3925)
+
+
+#endif
 
 
 //------------------------------------------------------------------------
