@@ -106,14 +106,14 @@
 	//------------------------------------------------------
 
 	//PID Rate Roll
-	#define kPIDRollRate_Kp		(float)100//60
+	#define kPIDRollRate_Kp		(float)90
 	#define kPIDRollRate_Ki		(float)0//1
-	#define kPIDRollRate_Kd		(float)30000//15000
+	#define kPIDRollRate_Kd		(float)12000
 
 	//PID Rate Pitch
-	#define kPIDPitchRate_Kp	(float)-100 //-60
+	#define kPIDPitchRate_Kp	(float)-90
 	#define kPIDPitchRate_Ki	(float)0//-1
-	#define kPIDPitchRate_Kd	(float)-30000//-15000
+	#define kPIDPitchRate_Kd	(float)-12000
 
 	//PID Rate Yaw
 	#define kPIDYawRate_Kp		(float)100
