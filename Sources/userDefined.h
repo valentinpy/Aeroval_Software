@@ -106,14 +106,14 @@
 	//------------------------------------------------------
 
 	//PID Rate Roll
-	#define kPIDRollRate_Kp		(float)100//60
+	#define kPIDRollRate_Kp		(float)60
 	#define kPIDRollRate_Ki		(float)0//1
-	#define kPIDRollRate_Kd		(float)30000//15000
+	#define kPIDRollRate_Kd		(float)15000
 
 	//PID Rate Pitch
-	#define kPIDPitchRate_Kp	(float)-100 //-60
+	#define kPIDPitchRate_Kp	(float)-60
 	#define kPIDPitchRate_Ki	(float)0//-1
-	#define kPIDPitchRate_Kd	(float)-30000//-15000
+	#define kPIDPitchRate_Kd	(float)-15000
 
 	//PID Rate Yaw
 	#define kPIDYawRate_Kp		(float)100
@@ -145,7 +145,7 @@
 	#define kReceiverMaxRate_radS	(float)(7.85)
 
 
-	//Currently limit between -45;+45Â° => -pi/8; +pi/8
+	//Currently limit between -45;+45° => -pi/8; +pi/8
 	#define kReceiverUsToRad		(float)(0.000785)
 	#define kReceiverMaxAngle_rad	(float)(0.3925)
 
@@ -196,7 +196,7 @@
 	#define kReceiverMaxRate_radS	(float)(7.85)
 
 
-	//Currently limit between -45;+45Â° => -pi/8; +pi/8
+	//Currently limit between -45;+45° => -pi/8; +pi/8
 	#define kReceiverUsToRad		(float)(0.000785)
 	#define kReceiverMaxAngle_rad	(float)(0.3925)
 
