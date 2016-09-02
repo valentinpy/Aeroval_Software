@@ -137,6 +137,7 @@
 	#define kPIDPitchAngle_Kd	(float)-0
 
 	#define kWindupGuardAngle	(float)0.5
+	#define kAngleLoopDelay_Ms		(UInt32) 5 //ms
 
 	//Convert time measured be receiver module to an angle or in angular velocity, depending on the flight mode (Rate/Angle)
 	//Used to convert roll & pitch commands to angle/angular velocity for PID

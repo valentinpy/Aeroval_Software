@@ -51,8 +51,8 @@ void gFlightCompute_Setup()
 		gFlightCompute.aMotorsOutput[i] = 0;
 	}
 
-	//Get a delay
-	gFlightCompute.aDelayAnglePID = mDelay_GetDelay(kPit0, 10);
+	//Get a delay to reduce the speed of the angle loop
+	gFlightCompute.aDelayAnglePID = mDelay_GetDelay(kPit0, kAngleLoopDelay_Ms);
 
 
 
@@ -164,7 +164,7 @@ void gFlightCompute_Run()
 			if(mDelay_IsDelayDone(kPit0, gFlightCompute.aDelayAnglePID)==TRUE)
 			{
 				//Restart delay
-				mDelay_ReStart(kPit0, gFlightCompute.aDelayAnglePID, 5);
+				mDelay_ReStart(kPit0, gFlightCompute.aDelayAnglePID, kAngleLoopDelay_Ms);
 
 				//Call regulation for roll axis rate
 				pid_PID(&(gFlightCompute.aDesiredRate[kRoll]), &(gFlightCompute.aPIDAngle[kRoll]), gReceiver.aChannels_rad[kReceiverRoll], gAttitudeSensors.aRoll_rad, aTime);
