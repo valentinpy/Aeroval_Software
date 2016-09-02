@@ -41,8 +41,7 @@ void mMotors_StopAll()
 //------------------------------------------------------------
 void mMotors_IdleAll()
 {
-	//TODO check value
-	mMotors_SetAllMotors(50);
+	mMotors_SetAllMotors(MOTOR_IDLE_VALUE);
 }
 
 //------------------------------------------------------------

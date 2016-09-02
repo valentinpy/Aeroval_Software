@@ -86,7 +86,7 @@
 // Set the min and max value for motors (in flight).
 // Idle value must be greater than 0 to prevent shutting down of motors in flight
 #define MOTOR_MAX_VALUE 	(UInt16)(1000)
-#define MOTOR_IDLE_VALUE	(UInt16)(50)
+#define MOTOR_IDLE_VALUE	(UInt16)(110)
 
 //#define MOTORS_NOMEDIANFILTER // The output of the motors are not median-filtered if defined (hide peaks)
 
