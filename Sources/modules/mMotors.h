@@ -22,6 +22,7 @@
 
 #include "../interfaces/iFtm.h"
 #include "../misc/def.h"
+#include "../userDefined.h"
 
 // Motors Enum
 typedef enum
