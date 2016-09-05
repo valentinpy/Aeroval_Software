@@ -130,12 +130,12 @@
 	//------------------------------------------------------
 
 	//PID Angle_Roll
-	#define kPIDRollAngle_Kp	(float)15//15
+	#define kPIDRollAngle_Kp	(float)12//15
 	#define kPIDRollAngle_Ki	(float)0//0.01
 	#define kPIDRollAngle_Kd	(float)0
 
 	//PID Angle_Pitch
-	#define kPIDPitchAngle_Kp	(float)-15//-15
+	#define kPIDPitchAngle_Kp	(float)-12//-15
 	#define kPIDPitchAngle_Ki	(float)-0//-0.01
 	#define kPIDPitchAngle_Kd	(float)-0
 
@@ -149,7 +149,7 @@
 	#define kReceiverMaxRate_radS	(float)(7.85)
 
 
-	//Currently limit between -45;+45° => -pi/8; +pi/8
+	//Currently limit between -45;+45ï¿½ => -pi/8; +pi/8
 	#define kReceiverUsToRad		(float)(0.000785)
 	#define kReceiverMaxAngle_rad	(float)(0.3925)
 
@@ -200,7 +200,7 @@
 	#define kReceiverMaxRate_radS	(float)(7.85)
 
 
-	//Currently limit between -45;+45° => -pi/8; +pi/8
+	//Currently limit between -45;+45ï¿½ => -pi/8; +pi/8
 	#define kReceiverUsToRad		(float)(0.000785)
 	#define kReceiverMaxAngle_rad	(float)(0.3925)
 
