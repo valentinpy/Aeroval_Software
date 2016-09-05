@@ -54,22 +54,28 @@ void mEm7180_Setup()
 	iI2C_Enable(kI2c0);
 
 	// Hardware reset of EM7180 module
-	mEm7180_SetData8(ResetReq, 0x01);
+	mEm7180_SetData8(EM7180_ResetRequest, 0x01);
 
 	// Wait for reset
-	UInt16 aDelay = mDelay_GetDelay(kPit0, 100);
+	//TODO Should read interrupt instead of waiting
+	UInt16 aDelay = mDelay_GetDelay(kPit0, 5000);
 	while(mDelay_IsDelayDone(kPit0, aDelay)==false);
 	mDelay_DelayRelease(kPit0, aDelay);
 
+#ifdef DEBUG_MODE
+	UInt8 aTemp = 0;
+	aTemp = mEm7180_GetData8(EM7180_SentralStatus);
+#endif
+
 	// Check EEPROM detected by SENTRAL
-	while(FALSE == (0x01 & mEm7180_GetData8(SentralStatus)));
+	while(FALSE == (0x01 & mEm7180_GetData8(EM7180_SentralStatus)));
 
 	// Check Configuration file uploaded from EEPROM to SENTRAL
-	while(FALSE == (0x01 & (mEm7180_GetData8(SentralStatus) >> 1)));
+	while(FALSE == (0x01 & (mEm7180_GetData8(EM7180_SentralStatus) >> 1)));
 
 	// Check if upload has successfull finished (CRC = OK)
-	//TODO WTF?
-	if(FALSE == (0x01 & (mEm7180_GetData8(SentralStatus) >> 2)))
+	//TODO
+	if(FALSE == (0x01 & (mEm7180_GetData8(EM7180_SentralStatus) >> 2)))
 	{
 		//mRs232_SendString("[Sentral / INFO]	Configuration file successfully uploaded!\r\n");
 	}
@@ -78,18 +84,21 @@ void mEm7180_Setup()
 		//mRs232_SendString("[Sentral / ERROR]	Failed to upload configuration file!\r\n");
 	}
 
+	// Check
+	while(FALSE == (0x01 & (mEm7180_GetData8(EM7180_SentralStatus) >> 3)));
+
 	// Set MagRate register to 200Hz
-	mEm7180_SetData8(MagRate, 0xC8);
+	mEm7180_SetData8(EM7180_MagRate, 0xC8);
 	// Set AccelRate register to 200Hz
-	mEm7180_SetData8(AccelRate, 0x14);
+	mEm7180_SetData8(EM7180_AccelRate, 0x14);
 	// Set GyroRate register to 300Hz
-	mEm7180_SetData8(GyroRate, 0x1E);
+	mEm7180_SetData8(EM7180_GyroRate, 0x1E);
 	// Set QRateDivisor to 1 (Related to GyroRate -> 1300Hz / QRateDivisor)
-	mEm7180_SetData8(QRateDivisor, 0x01);
+	mEm7180_SetData8(EM7180_QRateDivisor, 0x01);
 	//Set AlgorithmControl register (enable heading, pitch and roll)
-	mEm7180_SetData8(AlgorithmControl, 0x06);
+	mEm7180_SetData8(EM7180_AlgorithmControl, 0x06);
 	// Set EnableEvent register (enable interrupt when: reset, error, new quaternion available)
-	mEm7180_SetData8(EnableEvents, 0x07);
+	mEm7180_SetData8(EM7180_EnableEvents, 0x07);
 }
 
 //-------------------------------------------------------------------
@@ -98,7 +107,7 @@ void mEm7180_Setup()
 void mEm7180_Open()
 {
 	// Enable run Sentral sensor algorithm
-	mEm7180_SetData8(HostControl, 0x01);
+	mEm7180_SetData8(EM7180_HostControl, 0x01);
 }
 
 //-------------------------------------------------------------------
@@ -107,7 +116,35 @@ void mEm7180_Open()
 void mEm7180_Close()
 {
 	// Disable run Sentral sensor algorithm
-	mEm7180_SetData8(HostControl, 0x00);
+	mEm7180_SetData8(EM7180_HostControl, 0x00);
+}
+
+//-------------------------------------------------------------------
+// Get status, for debug purpose
+//-------------------------------------------------------------------
+void mEM7180_readStatus()
+{
+	UInt8 aTemp=0;
+
+	aTemp = mEm7180_GetData8(EM7180_HostControl);
+	aTemp = mEm7180_GetData8(EM7180_EventStatus);
+	aTemp = mEm7180_GetData8(EM7180_SensorStatus);
+	aTemp = mEm7180_GetData8(EM7180_SentralStatus);
+	aTemp = mEm7180_GetData8(EM7180_AlgorithmStatus); // read mag calibration incomplete
+	aTemp = mEm7180_GetData8(EM7180_FeatureFlags);
+	aTemp = mEm7180_GetData8(EM7180_ActualMagRate); // read 0 => ?? TODO!
+	aTemp = mEm7180_GetData8(EM7180_ActualAccelRate); //read 25 => 250Hz :)
+	aTemp = mEm7180_GetData8(EM7180_ActualGyroRate); //read 40 => 400Hz :)
+	aTemp = mEm7180_GetData8(EM7180_ErrorRegister);
+	aTemp = mEm7180_GetData8(EM7180_AlgorithmControl); //read 6 => raw data enable: ok for gyro, HPR output => heading/pitch/roll instead of quaternions!
+	aTemp = mEm7180_GetData8(EM7180_ROMVersion1);
+	aTemp = mEm7180_GetData8(EM7180_ROMVersion2);
+	aTemp = mEm7180_GetData8(EM7180_RAMVersion1);
+	aTemp = mEm7180_GetData8(EM7180_RAMVersion2);
+	aTemp = mEm7180_GetData8(EM7180_ProductID);
+	aTemp = mEm7180_GetData8(EM7180_RevisionID);
+	aTemp = mEm7180_GetData8(EM7180_RunStatus);
+
 }
 
 //-------------------------------------------------------------------

@@ -28,6 +28,9 @@
 //#define AEROVAL
 #define ARCDRONE
 
+//In debug mode, more informations are read from sensors,... usefull only with debugger and breakpoints
+#define DEBUG_MODE
+
 //------------------------------------------------------------------------
 //----------------------- FRAME CONFIGURATION ----------------------------
 //------------------------------------------------------------------------

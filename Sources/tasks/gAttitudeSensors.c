@@ -52,6 +52,11 @@ void gAttitudeSensors_Run()
 	//Struct to stock data into
 	EM7180_DataStruct aDataResult;
 
+#ifdef DEBUG_MODE
+	//readStatus
+	mEM7180_readStatus();
+#endif
+
 	//Get values from sensor
 	mEm7180_GetEuler(&aDataResult);
 
