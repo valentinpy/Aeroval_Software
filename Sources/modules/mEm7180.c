@@ -58,13 +58,13 @@ void mEm7180_Setup()
 
 	// Wait for reset
 	//TODO Should read interrupt instead of waiting
-	UInt16 aDelay = mDelay_GetDelay(kPit0, 5000);
+	UInt16 aDelay = mDelay_GetDelay(kPit0, 100);
 	while(mDelay_IsDelayDone(kPit0, aDelay)==false);
 	mDelay_DelayRelease(kPit0, aDelay);
 
 #ifdef DEBUG_MODE
 	UInt8 aTemp = 0;
-	aTemp = mEm7180_GetData8(EM7180_SentralStatus);
+	aTemp = mEm7180_GetData8(EM7180_SentralStatus); //should be 0x0B according to http://www.emmicroelectronic.com/sites/default/files/public/products/datasheets/607002.pdf
 #endif
 
 	// Check EEPROM detected by SENTRAL
@@ -87,13 +87,13 @@ void mEm7180_Setup()
 	// Check
 	while(FALSE == (0x01 & (mEm7180_GetData8(EM7180_SentralStatus) >> 3)));
 
-	// Set MagRate register to 200Hz
-	mEm7180_SetData8(EM7180_MagRate, 0xC8);
-	// Set AccelRate register to 200Hz
-	mEm7180_SetData8(EM7180_AccelRate, 0x14);
-	// Set GyroRate register to 300Hz
-	mEm7180_SetData8(EM7180_GyroRate, 0x1E);
-	// Set QRateDivisor to 1 (Related to GyroRate -> 1300Hz / QRateDivisor)
+	// Set MagRate register to 30Hz
+	mEm7180_SetData8(EM7180_MagRate, 0x1E);
+	// Set AccelRate register to 100Hz
+	mEm7180_SetData8(EM7180_AccelRate, 0x0A);
+	// Set GyroRate register to 200Hz
+	mEm7180_SetData8(EM7180_GyroRate, 0x14);
+	// Set QRateDivisor to 1 (Related to GyroRate -> 200Hz / QRateDivisor)
 	mEm7180_SetData8(EM7180_QRateDivisor, 0x01);
 	//Set AlgorithmControl register (enable heading, pitch and roll)
 	mEm7180_SetData8(EM7180_AlgorithmControl, 0x06);
@@ -132,9 +132,9 @@ void mEM7180_readStatus()
 	aTemp = mEm7180_GetData8(EM7180_SentralStatus);
 	aTemp = mEm7180_GetData8(EM7180_AlgorithmStatus); // read mag calibration incomplete
 	aTemp = mEm7180_GetData8(EM7180_FeatureFlags);
-	aTemp = mEm7180_GetData8(EM7180_ActualMagRate); // read 0 => ?? TODO!
-	aTemp = mEm7180_GetData8(EM7180_ActualAccelRate); //read 25 => 250Hz :)
-	aTemp = mEm7180_GetData8(EM7180_ActualGyroRate); //read 40 => 400Hz :)
+	aTemp = mEm7180_GetData8(EM7180_ActualMagRate); // read 30 => 30HZ
+	aTemp = mEm7180_GetData8(EM7180_ActualAccelRate); //read 12 => 120Hz :)
+	aTemp = mEm7180_GetData8(EM7180_ActualGyroRate); //read 20 => 200Hz :)
 	aTemp = mEm7180_GetData8(EM7180_ErrorRegister);
 	aTemp = mEm7180_GetData8(EM7180_AlgorithmControl); //read 6 => raw data enable: ok for gyro, HPR output => heading/pitch/roll instead of quaternions!
 	aTemp = mEm7180_GetData8(EM7180_ROMVersion1);
