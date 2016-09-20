@@ -169,7 +169,8 @@ static void gMonitoring_sendMonitoring()
 	gMonitoring.aDataString[kMonitoringStringLength-1] = '\0';
 	UInt8 i;
 
-	//Avoid a \r\n
+	//Avoid
+	//TODO WTF!!
 	for(i=2; i<kMonitoringStringLength; i++)
 	{
 		if(gMonitoring.aDataString[i] == 0x0D)
@@ -367,7 +368,6 @@ static bool gMonitoring_getNumber(float* number, char * aReceived, UInt8 aReceiv
 
 	//*number = sCharTab[0]*10^index +  sCharTab[1]*10^(index-1) +... + sCharTab[index]*10^(index-index)
 	UInt8 i = 0;
-	UInt8 pointPosition = 0;
 
 	*number=0;
 

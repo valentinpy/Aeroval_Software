@@ -63,8 +63,8 @@ void mEm7180_Setup()
 	mDelay_DelayRelease(kPit0, aDelay);
 
 #ifdef DEBUG_MODE
-	UInt8 aTemp = 0;
-	aTemp = mEm7180_GetData8(EM7180_SentralStatus); //should be 0x0B according to http://www.emmicroelectronic.com/sites/default/files/public/products/datasheets/607002.pdf
+	UInt8 aTmp = 0;
+	aTmp = mEm7180_GetData8(EM7180_SentralStatus); //should be 0x0B according to http://www.emmicroelectronic.com/sites/default/files/public/products/datasheets/607002.pdf
 #endif
 
 	// Check EEPROM detected by SENTRAL
@@ -192,6 +192,7 @@ void mEm7180_GetEuler(EM7180_DataStruct *aResultStruct)
 
 	 */
 
+	//TODO replace addresses with name of register, defined in mEm7180.h
 	//X
 	(aResultStruct)->QX.s[0] = mEm7180_GetData8(0x0);
 	(aResultStruct)->QX.s[1] = mEm7180_GetData8(0x1);
@@ -220,7 +221,10 @@ void mEm7180_GetEuler(EM7180_DataStruct *aResultStruct)
 	(aResultStruct)->GX = ((UInt16)mEm7180_GetData8(0x22)) | ((UInt16)mEm7180_GetData8(0x23) <<8);
 	(aResultStruct)->GY = ((UInt16)mEm7180_GetData8(0x24)) | ((UInt16)mEm7180_GetData8(0x25) <<8);
 	(aResultStruct)->GZ = ((UInt16)mEm7180_GetData8(0x26)) | ((UInt16)mEm7180_GetData8(0x27) <<8);
+
 	//Timestamp
+	//TODO Warning! The timestamps may be not accurate, according to Matthieu Favre-Bulle's Master thesis: page 46
+	//That means that those timestamps should not be used unless if it's proven to be usable
 	aResultStruct->QTime = (mEm7180_GetData8(0x10)) + (mEm7180_GetData8(0x10)<<8);
 
 	//Read events
