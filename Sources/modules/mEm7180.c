@@ -47,7 +47,7 @@ static UInt8 mEm7180_GetData8(EM7180_Reg_Enum aReg);
 //-------------------------------------------------------------------
 // Basic setup of the sensor
 //-------------------------------------------------------------------
-void mEm7180_Setup()
+void mEM7180_Setup()
 {
 	//Configure I2C bus
 	iI2C_Config();
@@ -104,7 +104,7 @@ void mEm7180_Setup()
 //-------------------------------------------------------------------
 // Run sensor algorithm
 //-------------------------------------------------------------------
-void mEm7180_Open()
+void mEM7180_Open()
 {
 	// Enable run Sentral sensor algorithm
 	mEm7180_SetData8(EM7180_HostControl, 0x01);

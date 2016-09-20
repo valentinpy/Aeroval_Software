@@ -26,8 +26,8 @@
 void gAttitudeSensors_Setup()
 {
 	//Setup and open mEm7180
-	mEm7180_Setup();
-	mEm7180_Open();
+	mEM7180_Setup();
+	mEM7180_Open();
 
 	//Initialize variables
 
