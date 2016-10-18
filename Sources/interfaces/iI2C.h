@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2015 Valentin Py
- * Copyright (C) 2015 Serge Monnerat
+ * Copyright (C) 2015-2016 Valentin Py
+ * Copyright (C) 2015-2016 Serge Monnerat
  *
  * This file is part of Aeroval.
  *
@@ -33,8 +33,6 @@ typedef enum
 	kI2c2
 } I2cEnum;
 
-
-
 typedef enum
 {
 	kAckAuto,
@@ -55,6 +53,16 @@ typedef enum
 	kRxMode
 }I2CTransmiteModeEnum;
 
+//--------------------------------------------------
+// Union to convert 4 bytes in float
+// TODO find a better way to achieve this
+//-------------------------------------------------
+typedef union _data {
+  float f;
+  char  s[4];
+} floatcharUnion;
+
+
 //------------------------------------------------------------
 // I2C module config
 //------------------------------------------------------------
@@ -65,54 +73,48 @@ void iI2C_Config(void);
 //------------------------------------------------------------
 void iI2C_Enable(I2cEnum aI2c);
 
-//------------------------------------------------------------
-// I2C interface disable
-//------------------------------------------------------------
-void iI2C_Disable(I2cEnum aI2c);
+//-------------------------------------------------------------------
+// Send a byte to aAddr_W over I2C
+// aAddr_W: Address of the device
+// aReg: register to write into
+// aVal: value to write in aReg
+// return: true: write successful, false: error when writing
+//-------------------------------------------------------------------
+bool iI2C_SetData8(I2cEnum aI2c, UInt8 aAddr_W, UInt8 aReg,UInt8 aVal);
 
-//------------------------------------------------------------
-// Set START state
-//------------------------------------------------------------
-void iI2C_SetStartState(I2cEnum aI2c);
+//-----------------------------------------------------------------------------
+// Read one register (8 bits) from sensor
+// aReg:    Address of the register we wnat to read
+// aAddr_W:	Address of the device (Write)
+// Return:	Value of the requested register
+//-----------------------------------------------------------------------------
+UInt8 iI2C_GetData8(I2cEnum aI2c, UInt8 aAddr_W, UInt8 aReg);
 
-//------------------------------------------------------------
-// Set repeated START state
-//------------------------------------------------------------
-void iI2C_SetRepeatedStartSate(I2cEnum aI2c);
+//-----------------------------------------------------------------------------
+// Read two registers (8 bits) from sensor
+// aReg:    Address of the register we want to read
+// aAddr_W:	Address of the device (Write)
+// Return:	Value of the requested register
+//-----------------------------------------------------------------------------
+UInt16 iI2C_GetData16(I2cEnum aI2c, UInt8 aAddr_W, UInt8 aReg);
 
-//------------------------------------------------------------
-// Set STOP state
-//------------------------------------------------------------
-void iI2C_SetStopState(I2cEnum aI2c);
+//-----------------------------------------------------------------------------
+// Read aLength registers (8 bits) from sensor
+// aReg:    Address of the register we want to read
+// aAddr_W:	Address of the device (Write)
+// aLength: Number of bytes to read
+// aRet*:	Pointer to return the data, must be big enough, according to aLength
+// Return:	true if success, false else
+//-----------------------------------------------------------------------------
+bool iI2C_GetData(I2cEnum aI2c, UInt8 aAddr_W, UInt8 aReg, UInt8 aLength, UInt8 *aRetData);
 
-//------------------------------------------------------------
-// Generate automatic ACK or not
-//------------------------------------------------------------
-void iI2C_SetAckMode(I2cEnum aI2c, I2CAckEnum aAck);
+//-------------------------------------------------------------------
+// Read 4 bytes from Em7180 over I2C
+// aReg: first register to read
+// return: value of the register aReg..aReg+3
+// TODO optimization
+//-------------------------------------------------------------------
+float iI2C_GetDataFloat32(I2cEnum aI2c, UInt8 aAddr_W, UInt8 aReg);
 
-//------------------------------------------------------------
-// Select if we transmit or receive
-//------------------------------------------------------------
-void iI2C_TxRxSelect(I2cEnum aI2c, I2CTransmiteModeEnum aMode);
-
-//------------------------------------------------------------
-// Send a data
-//------------------------------------------------------------
-void iI2C_SendData(I2cEnum aI2c, UInt8 aData);
-
-//------------------------------------------------------------
-// Wait End of transmit or receive
-//------------------------------------------------------------
-void iI2C_WaitEndOfRxOrTx(I2cEnum aI2c);
-
-//------------------------------------------------------------
-// Read received data, ! generate I2C clock if not in STOP mode
-//------------------------------------------------------------
-UInt8 iI2C_ReadData(I2cEnum aI2c);
-
-//------------------------------------------------------------
-// Get I2C status flags
-//------------------------------------------------------------
-bool iI2C_ReadStatus(I2cEnum aI2c, I2CStatusEnum aStatus);
 
 #endif
