@@ -62,9 +62,15 @@ int main(void)
 	//Indicate that programm is ready.
 	mLeds_AllOn();
 
+	//Get delay for main loop
+	UInt16 aDelayMainLoop = mDelay_GetDelay(kPit0, 5);
+
 	//Main loop
 	while(1)
 	{
+		while(mDelay_IsDelayDone(kPit0, aDelayMainLoop)==false);
+		mDelay_ReStart(kPit0, aDelayMainLoop, 5);
+
 		//Get inputs
 		gAttitudeSensors_Run();
 		gReceiver_Run();
@@ -81,9 +87,6 @@ int main(void)
 		//Monitoring
 		gMonitoring_Run();
 
-//		UInt16 aDelayMain = mDelay_GetDelay(kPit0, 9);
-//		while(mDelay_IsDelayDone(kPit0, aDelayMain)==false);
-//		mDelay_DelayRelease(kPit0, aDelayMain);
 
 		//Measure time with logic
 		//mGpio_AllToggle();
