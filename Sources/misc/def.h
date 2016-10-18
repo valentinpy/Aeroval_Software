@@ -108,10 +108,10 @@ typedef struct
 	Int32 EulerDeltaTime_us;		//microseconds since last value
 
 	Int8 QOutput;				//Does the sensor output quaternions ?
-	Int32 QW;						//TODO choose scale factor
-	Int32 QX;						//TODO choose scale factor
-	Int32 QY;						//TODO choose scale factor
-	Int32 QZ;						//TODO choose scale factor
+	Int32 QW;						//TODO Warn: choose scale factor
+	Int32 QX;						//TODO Warn: choose scale factor
+	Int32 QY;						//TODO Warn: choose scale factor
+	Int32 QZ;						//TODO Warn: choose scale factor
 	Int8 QDeltaTime;
 
 	Int8 AltitudeOutput;		//Does the sensor output altitude?
@@ -135,7 +135,7 @@ typedef struct
 //Battery
 #define kBatLevelWarning (10800)	//Low level battery threshold
 
-//TODO move elsewhere
+//TODO Improv: move elsewhere
 //Struct that contains the PID datas for each PID
 typedef struct PIDdataStruct{
 	float aKp, aKi, aKd;
