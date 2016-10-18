@@ -28,6 +28,8 @@
 //#define AEROVAL
 #define ARCDRONE
 
+#define USE_EM7180
+//#define USE_MPU6000 //TODO implement
 //In debug mode, more informations are read from sensors,... usefull only with debugger and breakpoints
 #define DEBUG_MODE
 
