@@ -462,8 +462,6 @@ void iFtm_SetPwm(PwmOutEnum aOut, UInt32 aTimeUs)
 //------------------------------------------------------------
 void FTM0_IRQHandler(void)
 {
-	UInt32 aVal;
-
 	// Test si le compteur a fait un overflow
 	// TODO à virer?
 	if ((FTM0_SC & FTM_SC_TOF_MASK) == FTM_SC_TOF_MASK)
