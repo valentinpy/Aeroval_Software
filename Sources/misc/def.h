@@ -64,6 +64,61 @@ typedef unsigned char 			Byte;
 typedef unsigned long 			LWord;
 typedef unsigned short 			Word;
 
+//------------------------------------------------------------
+// Sensor data struct
+//------------------------------------------------------------
+typedef struct
+{
+	//-----------------------------------------------------------
+	// Raw values
+	//-----------------------------------------------------------
+
+	UInt8 MagOutput;			//Does the sensor output mag ?
+	UInt16 RawMagX;
+	UInt16 RawMagY;
+	UInt16 RawMagZ;
+	UInt16 RawMagDeltaTime;
+
+	UInt8 AccelOutput;
+	UInt16 RawAccelX;
+	UInt16 RawAccelY;
+	UInt16 RawAccelZ;
+	UInt16 RawAccelDeltaTime;
+
+	UInt8 GyroOutput;
+	UInt16 RawGyroX;
+	UInt16 RawGyroY;
+	UInt16 RawGyroZ;
+	UInt16 RawGyroDeltaTime;
+
+	UInt8 TempOutput;
+	UInt16 RawTemp;
+
+	UInt8 PressureOutput;
+	UInt16 RawPressure;
+
+	//-----------------------------------------------------------
+	// Computed by sensor values
+	//-----------------------------------------------------------
+
+	Int8 EulerOutput;			//Does the sensor output Euler ?
+	Int32 EulerHeading_urad;		//microrad
+	Int32 EulerRoll_urad;			//microrad
+	Int32 EulerPitch_urad;			//microrad
+	Int32 EulerDeltaTime_us;		//microseconds since last value
+
+	Int8 QOutput;				//Does the sensor output quaternions ?
+	Int32 QW;						//TODO choose scale factor
+	Int32 QX;						//TODO choose scale factor
+	Int32 QY;						//TODO choose scale factor
+	Int32 QZ;						//TODO choose scale factor
+	Int8 QDeltaTime;
+
+	Int8 AltitudeOutput;		//Does the sensor output altitude?
+	Int32 Altitude;
+
+} gIMUSensorStruct;
+
 
 //------------------------------------------------------------
 // Constants
