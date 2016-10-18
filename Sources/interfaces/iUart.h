@@ -29,6 +29,10 @@
 #define kUart3BaudRate 115200
 #define kUart4BaudRate 115200
 
+// IRQ Handler prototype
+void UART0_Status_IRQHandler(void);
+void UART3_Status_IRQHandler(void);
+void UART4_Status_IRQHandler(void);
 
 // Uart reception buffer sizes
 #define kUartRecBufSize ((UInt8)(200)) 

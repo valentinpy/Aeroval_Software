@@ -24,6 +24,13 @@
 #include "../misc/def.h"
 #include "MK64F12.h"
 
+// IRQ Handler prototypes
+void PIT0_IRQHandler(void);
+void PIT1_IRQHandler(void);
+void PIT2_IRQHandler(void);
+void PIT3_IRQHandler(void);
+
+
 // Maximum delay number
 #define kNbDelays 			20
 #define kNbTickers100Us		3

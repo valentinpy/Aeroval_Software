@@ -24,6 +24,10 @@
 #include "../misc/derivative.h"
 #include "iDio.h"
 
+// IRQ Handler prototype
+void FTM0_IRQHandler(void);
+
+
 // PWM Out Enum
 typedef enum
 {
