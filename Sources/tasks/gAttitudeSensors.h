@@ -27,7 +27,11 @@
 #include "../gMbox.h"
 
 //Factor between Int16 (full range) to rad/s of the orientation sensor/gyro
-#define kEM7180_GyroToRadS ((float)0.00266)
+//TODO ERROR: As the coefficient changed since last real test, the PID need to be updated!
+#define kEM7180_GyroToRadS ((float)0.0010653) //=0.061035dps * pi/180, according to acquire_data.m matlab script
+//#define kEM7180_GyroToRadS ((float)0.00266)
+
+#define kEM7180_AccelToG ((float)0.0020534) //TODO: Warn: select, compute, test scaling!
 
 //-----------------------------------
 // Attitude measurement initialization
