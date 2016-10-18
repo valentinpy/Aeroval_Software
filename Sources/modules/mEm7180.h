@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Valentin Py
+ * Copyright (C) 2015-2016 Valentin Py
  *
  * This file is part of Aeroval.
  *
@@ -23,12 +23,13 @@
 #include "../userDefined.h"
 #include "../interfaces/iI2C.h"
 #include "../misc/def.h"
+
 #include "mDelay.h"
 #include "math.h"
 
 // Addresses of registers
 #define EM7180_ADDR_W 			0x50
-#define EM7180_ADDR_R			0x51
+
 #define SetupValue_MagRate 		0x1E
 #define SetupValue_AccelRate 	0x0A
 #define SetupValue_GyroRate 	0x14
@@ -96,46 +97,10 @@ typedef enum{
 
 } EM7180_Reg_Enum;
 
-//--------------------------------------------------
-// Union to convert 4 bytes in float
-// TODO find a better way to achieve this
-//-------------------------------------------------
-typedef union _data {
-  float f;
-  char  s[4];
-} floatcharUnion;
-
-//--------------------------------------------------
-// Struct of datas read from sensor
-//--------------------------------------------------
-typedef struct{
-	floatcharUnion QX;
-	floatcharUnion QY;
-	floatcharUnion QZ;
-	floatcharUnion QW;
-	UInt16 QTime;
-	Int16 MX;
-	Int16 MY;
-	Int16 MZ;
-	Int16 MTime;
-	Int16 AX;
-	Int16 AY;
-	Int16 AZ;
-	Int16 ATime;
-	Int16 GX;
-	Int16 GY;
-	Int16 GZ;
-	Int16 GTime;
-	float Heading;
-	float Roll;
-	float Pitch;
-	UInt16 Event;
-} EM7180_DataStruct;
-
 //-------------------------------------------------------------------
 // Basic setup of the sensor
 //-------------------------------------------------------------------
-void mEM7180_Setup(void);
+void mEM7180_Setup(gIMUSensorStruct *aValuesStruct);
 
 //-------------------------------------------------------------------
 // Run sensor algorithm
@@ -152,12 +117,10 @@ void mEm7180_Close(void);
 //-------------------------------------------------------------------
 void mEM7180_readStatus();
 
-
 //-------------------------------------------------------------------
-// Read heading, pitch, roll and timestamp
-// *aResultStruct: pointer over a structure of type EM7180_DataStruct in which the values are stored (QX, QY, QZ, QTime)
+// Read all IMU vlaues provided by sensor
+// *aResultStruct: pointer over a structure of type EM7180_DataStruct in which the values are stored (QX, QY, QZ, QTime,...)
 //-------------------------------------------------------------------
-void mEm7180_GetEuler(EM7180_DataStruct *aResultStruct);
-
+void mEm7180_GetValues(gIMUSensorStruct *aValuesStruct);
 
 #endif /* SOURCES_MEM7180_H_ */
