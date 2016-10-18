@@ -29,7 +29,7 @@
 #define ARCDRONE
 
 #define USE_EM7180
-//#define USE_MPU6000 //TODO implement
+//#define USE_MPU6000 //TODO Improv: implement
 //In debug mode, more informations are read from sensors,... usefull only with debugger and breakpoints
 #define DEBUG_MODE
 
@@ -99,7 +99,7 @@
 //------------------------------------------------------------------------
 //----------------------- SENSORS configuration ----------------------
 //------------------------------------------------------------------------
-#define EM7180_GIRO_NOFILTER //The angular speed is not filtered if defined
+//#define GYRO_LP_FILTER //The angular speed is not filtered if defined
 
 //------------------------------------------------------------------------
 //----------------------- Flight parameters ------------------------------
