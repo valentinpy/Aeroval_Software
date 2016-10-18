@@ -41,6 +41,13 @@ extern gAltitudeSensorsStruct gAltitudeSensors;
 //-----------------------------------------------------------------------------
 typedef struct
 {
+	//Values by sensor
+	gIMUSensorStruct aSensorValuesEM7180;
+	gIMUSensorStruct aSensorValuesMPU6000;
+
+
+	//Global values, which are fusioned using sensors choosen by user
+	//TODO URGENT implement copy from sensor to this varaibles
 	float aHeading_rad;
 	float aPitch_rad;
 	float aRoll_rad;
@@ -49,7 +56,9 @@ typedef struct
 	float aPitchRate_rads;
 	float aRollRate_rads;
 
-	UInt16 aTimeStamp;
+	UInt16 aDeltaTimeEuler_us;
+	UInt16 aDeltaTimeGyro_us;
+
 } gAttitudeSensorsStruct;
 extern gAttitudeSensorsStruct gAttitudeSensors;
 
