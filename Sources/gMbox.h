@@ -55,6 +55,12 @@ typedef struct
 	float aPitchRate_rads;
 	float aRollRate_rads;
 
+	//TODO Warn: select scale/normalize
+	float aAccel_X;
+	float aAccel_Y;
+	float aAccel_Z;
+
+	//TODO Warn: read time and copy it here
 	UInt16 aDeltaTimeEuler_us;
 	UInt16 aDeltaTimeGyro_us;
 
