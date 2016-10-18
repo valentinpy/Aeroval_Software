@@ -25,9 +25,13 @@
 //-----------------------------------
 void gAttitudeSensors_Setup()
 {
-	//Setup and open mEm7180
-	mEM7180_Setup();
+	//Setup and open EM7180
+	mEM7180_Setup(&(gAttitudeSensors.aSensorValuesEM7180));
 	mEM7180_Open();
+
+	//Setup and open MPU6000
+	mMPU6000_Setup(&(gAttitudeSensors.aSensorValuesEM7180));
+	mMPU6000_Open();
 
 	//Initialize variables
 
@@ -36,12 +40,13 @@ void gAttitudeSensors_Setup()
 	gAttitudeSensors.aPitch_rad   =	0.0;
 	gAttitudeSensors.aRoll_rad 	  = 0.0;
 
-	gAttitudeSensors.aHeadingRate_rads = 0.0;
-	gAttitudeSensors.aPitchRate_rads   =	0.0;
-	gAttitudeSensors.aRollRate_rads 	  = 0.0;
+	gAttitudeSensors.aHeadingRate_rads	= 0.0;
+	gAttitudeSensors.aPitchRate_rads	= 0.0;
+	gAttitudeSensors.aRollRate_rads 	= 0.0;
 
-	//int
-	gAttitudeSensors.aTimeStamp = 0;
+	//UInt16
+	gAttitudeSensors.aDeltaTimeEuler_us = 0;
+	gAttitudeSensors.aDeltaTimeGyro_us 	= 0;
 }
 
 //-----------------------------------
@@ -49,38 +54,40 @@ void gAttitudeSensors_Setup()
 //-----------------------------------
 void gAttitudeSensors_Run()
 {
-	//Struct to stock data into
-	EM7180_DataStruct aDataResult;
 
-#ifdef DEBUG_MODE
-	//readStatus
-	mEM7180_readStatus();
-#endif
+	mEm7180_GetValues(&(gAttitudeSensors.aSensorValuesEM7180));
+	mMPU6000_GetValues(&(gAttitudeSensors.aSensorValuesMPU6000));
 
-	//Get values from sensor
-	mEm7180_GetEuler(&aDataResult);
+#ifdef USE_EM7180
+	//floats
+	gAttitudeSensors.aHeading_rad = (float)(gAttitudeSensors.aSensorValuesEM7180.EulerHeading_urad)/1000000;
+	gAttitudeSensors.aPitch_rad   =	(float)(gAttitudeSensors.aSensorValuesEM7180.EulerPitch_urad)/1000000;
+	gAttitudeSensors.aRoll_rad 	  = (float)(gAttitudeSensors.aSensorValuesEM7180.EulerRoll_urad)/1000000;
 
-	//Copy into mailbox
 
-	gAttitudeSensors.aHeading_rad = aDataResult.QX.f;
-	gAttitudeSensors.aPitch_rad = 	aDataResult.QY.f; //Z
-	gAttitudeSensors.aRoll_rad = 	aDataResult.QZ.f; //Y
-#ifdef EM7180_GIRO_NOFILTER
-	gAttitudeSensors.aHeadingRate_rads = kGyroToRadS * ((float)aDataResult.GZ);
-	gAttitudeSensors.aPitchRate_rads = kGyroToRadS * (float)(aDataResult.GY);
-	gAttitudeSensors.aRollRate_rads = kGyroToRadS * ((float)aDataResult.GX);
+	//UInt16
+	//TODO implement time difference: read old value and scale
+//	gAttitudeSensors.aDeltaTimeEuler_us = gAttitudeSensors.aSensorValuesEM7180.EulerDeltaTime_us;
+//	gAttitudeSensors.aDeltaTimeGyro_us = gAttitudeSensors.aSensorValuesEM7180.RawGyroDeltaTime;
+
+
+	#ifdef EM7180_GIRO_NOFILTER
+		gAttitudeSensors.aHeadingRate_rads = kEM7180_GyroToRadS * ((float)(gAttitudeSensors.aSensorValuesEM7180.RawGyroX));
+		gAttitudeSensors.aPitchRate_rads   = kEM7180_GyroToRadS * ((float)(gAttitudeSensors.aSensorValuesEM7180.RawGyroY));
+		gAttitudeSensors.aRollRate_rads    = kEM7180_GyroToRadS * ((float)(gAttitudeSensors.aSensorValuesEM7180.RawGyroZ));
+	#else
+		//Filter and unit conversion
+		gAttitudeSensors.aHeadingRate_rads =  filter_lowPassFilter(kEM7180_GyroToRadS * ((float)(gAttitudeSensors.aSensorValuesEM7180.RawGyroX)), gAttitudeSensors.aHeadingRate_rads, 0.6);
+		gAttitudeSensors.aPitchRate_rads =  filter_lowPassFilter(kEM7180_GyroToRadS * ((float)(gAttitudeSensors.aSensorValuesEM7180.RawGyroYX)), gAttitudeSensors.aPitchRate_rads, 0.6);
+		gAttitudeSensors.aRollRate_rads =  filter_lowPassFilter(kEM7180_GyroToRadS * ((float)(gAttitudeSensors.aSensorValuesEM7180.RawGyroZ)), gAttitudeSensors.aRollRate_rads, 0.6);
+	#endif
 
 #else
-	//Filter and unit conversion
-	gAttitudeSensors.aHeadingRate_rads =  filter_lowPassFilter(kGyroToRadS * ((float)aDataResult.GZ), gAttitudeSensors.aHeadingRate_rads, 0.6);
-	gAttitudeSensors.aPitchRate_rads =  filter_lowPassFilter(kGyroToRadS * ((float)aDataResult.GY), gAttitudeSensors.aPitchRate_rads, 0.6);
-	gAttitudeSensors.aRollRate_rads =  filter_lowPassFilter(kGyroToRadS * ((float)aDataResult.GX), gAttitudeSensors.aRollRate_rads, 0.6);
+	#error "Not implemented"
 #endif
+
 
 	//Add offset
 	gAttitudeSensors.aPitch_rad   += gFlightCompute.aPitch_rad_offset;
 	gAttitudeSensors.aRoll_rad    += gFlightCompute.aRoll_rad_offset;
-
-	//Store time
-	gAttitudeSensors.aTimeStamp = aDataResult.QTime;
 }
