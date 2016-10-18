@@ -24,7 +24,7 @@
 //-----------------------------------
 void gAltitudeSensors_Setup()
 {
-	//TODO implement
+	//TODO Improv: implement
 }
 
 //-----------------------------------
@@ -32,5 +32,5 @@ void gAltitudeSensors_Setup()
 //-----------------------------------
 void gAltitudeSensors_Run()
 {
-	//TODO implement
+	//TODO Improv: implement
 }

@@ -21,9 +21,10 @@
 #include "../userDefined.h"
 #include "../modules/mGpio.h"
 #include "../misc/PID.h"
+
 //-----------------------------------
 // Static functions
-// TODO comment
+// TODO Comment: add comment
 //-----------------------------------
 static void gFlightCompute_MotorMix(float aThrottle, float aPIDPitchOutput, float aPIDRollOutput, float aPIDYawOutput, float* aOutput);
 static void gFlightCompute_ConstrainSendMotorsValues(float* aOutput, float aThrottle);
@@ -112,7 +113,7 @@ void gFlightCompute_Run()
 	{
 		pid_ResetPID(gFlightCompute.aPIDRate);
 		pid_ResetPID(gFlightCompute.aPIDAngle);
-		/* TODO check should be done to verify all is ok before arming (but wh must be sure we are not in flight while arming)
+		/* TODO Security: check should be done to verify all is ok before arming (but wh must be sure we are not in flight while arming)
 		 * For exemple, attitude sensor, battery level, GPS fix..
 		 * Calibrate gyro, baro,...
 		 */

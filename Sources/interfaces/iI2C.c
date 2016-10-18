@@ -686,7 +686,7 @@ UInt16 iI2C_GetData16(I2cEnum aI2c, UInt8 aAddr_W, UInt8 aReg)
 bool iI2C_GetData(I2cEnum aI2c, UInt8 aAddr_W, UInt8 aReg, UInt8 aLength, UInt8 *aRetData)
 {
 	bool aNoAck=false;
-	bool aRet=true; //TODO handle errors
+	bool aRet=true; //TODO Security: handle errors
 
 	// Disable transmit ACK
 	iI2C_SetAckMode(aI2c, kNoAck);
@@ -846,6 +846,7 @@ bool iI2C_GetData(I2cEnum aI2c, UInt8 aAddr_W, UInt8 aReg, UInt8 aLength, UInt8 
 // Read 4 registers (4*8 bits) from sensor
 // aReg:    Address of the register we want to read
 // Return:	Value of the requested register
+// TODO Improv: burst read
 //-----------------------------------------------------------------------------
 float iI2C_GetDataFloat32(I2cEnum aI2c, UInt8 aAddr_W, UInt8 aReg)
 {

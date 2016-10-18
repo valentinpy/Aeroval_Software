@@ -73,7 +73,7 @@ void gLight_Run()
 		mDelay_ReStart(kPit0, gLight.aDelayHLeds, 100);
 
 		//If battery voltage is sufficient, blink to indicate orientation.
-		//TODO store/check battery warning in mailbox
+		//TODO Improv: store/check battery warning in mailbox
 		if(gMiscSensors.aBatteryVoltage_mV > kBatLevelWarning)
 		{
 			//Forward-left

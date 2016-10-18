@@ -55,7 +55,7 @@ typedef enum
 
 //--------------------------------------------------
 // Union to convert 4 bytes in float
-// TODO find a better way to achieve this
+// TODO Improv: find a better way to achieve this
 //-------------------------------------------------
 typedef union _data {
   float f;
@@ -112,7 +112,6 @@ bool iI2C_GetData(I2cEnum aI2c, UInt8 aAddr_W, UInt8 aReg, UInt8 aLength, UInt8 
 // Read 4 bytes from Em7180 over I2C
 // aReg: first register to read
 // return: value of the register aReg..aReg+3
-// TODO optimization
 //-------------------------------------------------------------------
 float iI2C_GetDataFloat32(I2cEnum aI2c, UInt8 aAddr_W, UInt8 aReg);
 

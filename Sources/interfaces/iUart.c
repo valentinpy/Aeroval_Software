@@ -449,7 +449,7 @@ UInt16 iUart_NbByteReceive(UartEnum uart)
 }
 //------------------------------------------------------------
 // Return : true if we have received a new tram otherwise false
-//TODO utile?
+//TODO IsReq?: iUart_IsNewTram
 //------------------------------------------------------------
 bool iUart_IsNewTram(UartEnum uart)
 {

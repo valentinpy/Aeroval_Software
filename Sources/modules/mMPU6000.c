@@ -48,8 +48,8 @@ void mMPU6000_Setup(gIMUSensorStruct *aValuesStruct)
 	iI2C_SetData8(kI2c0, MPU6000_ADDR_W, MPU6000_ACCEL_CONFIG, MPU6000_BITS_FS_4G); //Accel full range: +-4G
 
 
-	//TODO config mag + add MagOutput =1
-	//TODO config DMP
+	//TODO Improv: config mag + add MagOutput =1
+	//TODO Improv: config DMP
 
 	//Init output struct
 	aValuesStruct->MagOutput = 0;

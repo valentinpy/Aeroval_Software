@@ -170,7 +170,7 @@ static void gMonitoring_sendMonitoring()
 	UInt8 i;
 
 	//Avoid
-	//TODO WTF!!
+	//TODO Warn: WTF
 	for(i=2; i<kMonitoringStringLength; i++)
 	{
 		if(gMonitoring.aDataString[i] == 0x0D)

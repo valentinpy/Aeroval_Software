@@ -47,7 +47,6 @@ typedef struct
 
 
 	//Global values, which are fusioned using sensors choosen by user
-	//TODO URGENT implement copy from sensor to this varaibles
 	float aHeading_rad;
 	float aPitch_rad;
 	float aRoll_rad;

@@ -458,12 +458,12 @@ void iFtm_SetPwm(PwmOutEnum aOut, UInt32 aTimeUs)
 //------------------------------------------------------------
 // FTM0 IRQ Handler
 // Used to measure hich time of PWM signals
-// TODO clean! C'est très moche!
+// TODO Improv: cleaning! C'est très moche!
 //------------------------------------------------------------
 void FTM0_IRQHandler(void)
 {
 	// Test si le compteur a fait un overflow
-	// TODO à virer?
+	// TODO IsReq?
 	if ((FTM0_SC & FTM_SC_TOF_MASK) == FTM_SC_TOF_MASK)
 	{
 		// Reset du flag

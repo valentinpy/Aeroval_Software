@@ -49,8 +49,8 @@ float mAd_readBattVoltage(void)
 }
 //-----------------------------------------------------------------------
 // ADC conversion input value read --> Current
-// TODO test
-// TODO add ratio to convert into amps
+// TODO Test: AD read
+// TODO Improv: add ratio to convert into amps
 // Return: Current in A
 //-----------------------------------------------------------------------
 float mAd_readCurrent(void)
@@ -66,7 +66,7 @@ float mAd_readCurrent(void)
 
 //-----------------------------------------------------------------------
 // ADC conversion input value read --> Sonars
-// TODO add conversion factor (maintenant: renvoie en volts (0...3.3)
+// TODO Improv: add conversion factor (maintenant: renvoie en volts (0...3.3)
 //-----------------------------------------------------------------------
 float mAd_readSonars(SonarsEnum kSonar)
 {

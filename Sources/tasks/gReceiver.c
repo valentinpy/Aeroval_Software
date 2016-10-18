@@ -46,7 +46,7 @@ void gReceiver_Run()
 
 	//Constrain and map all channels between 0 and 1000
 	// My receiver transmit values between 110 and 910, that's why there is a factor 1.25
-	// TODO calibration using monitoring
+	// TODO Improv: calibration using monitoring
 	UInt16 i=0;
 	for(i=0; i<8; i++)
 	{

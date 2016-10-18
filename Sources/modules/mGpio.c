@@ -20,7 +20,7 @@
 #include "mGpio.h"
 
 // At the moment: only output is supported.
-// Todo: add GPIO as input
+// TODO implement: add GPIO as input
 
 //Configure the Gpios (enable port, direction, crossbar,...)
 void mGpio_Setup()

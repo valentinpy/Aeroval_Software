@@ -36,7 +36,7 @@ void mEM7180_Setup(gIMUSensorStruct *aValuesStruct)
 	iI2C_SetData8(kI2c0, EM7180_ADDR_W, EM7180_ResetRequest, 0x01);
 
 	// Wait for reset
-	//TODO Should read interrupt instead of waiting
+	//TODO Improv: Should read interrupt instead of waiting
 	UInt16 aDelay = mDelay_GetDelay(kPit0, 100);
 	while(mDelay_IsDelayDone(kPit0, aDelay)==false);
 	mDelay_DelayRelease(kPit0, aDelay);
@@ -48,7 +48,7 @@ void mEM7180_Setup(gIMUSensorStruct *aValuesStruct)
 	while(FALSE == (0x01 & (iI2C_GetData8(kI2c0, EM7180_ADDR_W, EM7180_SentralStatus) >> 1)));
 
 	// Check if upload has successfull finished (CRC = OK)
-	//TODO
+	//TODO Security: check if upload is successfull
 	if(FALSE == (0x01 & (iI2C_GetData8(kI2c0, EM7180_ADDR_W, EM7180_SentralStatus) >> 2)))
 	{
 		//mRs232_SendString("[Sentral / INFO]	Configuration file successfully uploaded!\r\n");
