@@ -27,12 +27,12 @@
 //-----------------------------------
 // Miscellaneous sensors initialization
 //-----------------------------------
-void gMiscSensors_Setup();
+void gMiscSensors_Setup(void);
 
 //-----------------------------------
 // Miscellaneous sensors measurement
 //-----------------------------------
-void gMiscSensors_Run();
+void gMiscSensors_Run(void);
 
 
 #endif /* SOURCES_TASKS_GMISCSENSORS_H_ */

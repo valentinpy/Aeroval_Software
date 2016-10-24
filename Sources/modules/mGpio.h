@@ -50,16 +50,16 @@ typedef enum {
 // Prototypes
 //---------------------------------------------------------------------------------
 //Configure the Gpios (enable port, direction, crossbar,...)
-void mGpio_Setup();
+void mGpio_Setup(void);
 
 //All Gpios on
-void mGpio_AllOn();
+void mGpio_AllOn(void);
 
 //All Gpios off
-void mGpio_AllOff();
+void mGpio_AllOff(void);
 
 //Toggle all Gpios
-void mGpio_AllToggle();
+void mGpio_AllToggle(void);
 
 //set/clear a mask of Gpios
 // aGetMask is a 8 bits mask. 0x00 => no Gpios, 0xff => 8 Gpios,...

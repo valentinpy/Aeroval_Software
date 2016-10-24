@@ -36,11 +36,11 @@
 //-----------------------------------
 // Attitude measurement initialization
 //-----------------------------------
-void gAttitudeSensors_Setup();
+void gAttitudeSensors_Setup(void);
 
 //-----------------------------------
 // Attitude measurement
 //-----------------------------------
-void gAttitudeSensors_Run();
+void gAttitudeSensors_Run(void);
 
 #endif /* SOURCES_TASKS_GATTITUDESENSORS_H_ */

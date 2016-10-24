@@ -27,11 +27,11 @@
 //-----------------------------------
 // Altitude measurement initialization
 //-----------------------------------
-void gAltitudeSensors_Setup();
+void gAltitudeSensors_Setup(void);
 
 //-----------------------------------
 // Altitude measurement
 //-----------------------------------
-void gAltitudeSensors_Run();
+void gAltitudeSensors_Run(void);
 
 #endif /* SOURCES_TASKS_GALTITUDESENSORS_H_ */

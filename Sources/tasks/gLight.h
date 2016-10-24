@@ -29,11 +29,11 @@
 //-----------------------------------
 // Light (LED strips) inialisation
 //-----------------------------------
-void gLight_Setup();
+void gLight_Setup(void);
 
 //-----------------------------------
 // Run light
 //-----------------------------------
-void gLight_Run();
+void gLight_Run(void);
 
 #endif /* SOURCES_TASKS_GLIGHT_H_ */

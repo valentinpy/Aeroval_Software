@@ -24,8 +24,8 @@
 #include "misc/string.h"
 #include "misc/maths.h"
 
-static void gMonitoring_sendMonitoring();
-static void gMonitoring_receiveMonitoring();
+static void gMonitoring_sendMonitoring(void);
+static void gMonitoring_receiveMonitoring(void);
 static void gMonitoring_terminal_print(char *aReceived, UInt8 aReceivedLength);
 static void gMonitoring_terminal_set(char *aReceived, UInt8 aReceivedLength);
 static bool gMonitoring_getNumber(float* number, char * aReceived, UInt8 aReceivedLength);

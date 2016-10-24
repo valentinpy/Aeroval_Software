@@ -33,12 +33,12 @@
 //-----------------------------------
 // Monitoring initialisation
 //-----------------------------------
-void gMonitoring_Setup();
+void gMonitoring_Setup(void);
 
 //-----------------------------------
 // Run the monitoring
 //-----------------------------------
-void gMonitoring_Run();
+void gMonitoring_Run(void);
 
 
 #endif /* SOURCES_TASKS_GMONITORING_H_ */

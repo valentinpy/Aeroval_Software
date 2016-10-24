@@ -37,12 +37,12 @@ typedef enum {
 //-----------------------------------
 // Flight controller (regulation,..) initialization
 //-----------------------------------
-void gFlightCompute_Setup();
+void gFlightCompute_Setup(void);
 
 //-----------------------------------
 // Run the flight controller
 //-----------------------------------
-void gFlightCompute_Run();
+void gFlightCompute_Run(void);
 
 
 

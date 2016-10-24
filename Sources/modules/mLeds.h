@@ -49,16 +49,16 @@ typedef enum {
 // Prototypes
 //---------------------------------------------------------------------------------
 //Configure the leds (enable port, direction, crossbar,...)
-void mLeds_Setup();
+void mLeds_Setup(void);
 
 //All leds on
-void mLeds_AllOn();
+void mLeds_AllOn(void);
 
 //All leds off
-void mLeds_AllOff();
+void mLeds_AllOff(void);
 
 //Toggle all leds
-void mLeds_AllToggle();
+void mLeds_AllToggle(void);
 
 //set/clear a mask of Leds
 // aGetMask is a 8 bits mask. 0x00 => no leds, 0xff => 8 leds,...

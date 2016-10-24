@@ -115,7 +115,7 @@ void mEm7180_Close(void);
 //-------------------------------------------------------------------
 // Get status, for debug purpose
 //-------------------------------------------------------------------
-void mEM7180_readStatus();
+void mEM7180_readStatus(void);
 
 //-------------------------------------------------------------------
 // Read all IMU vlaues provided by sensor

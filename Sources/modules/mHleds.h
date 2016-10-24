@@ -44,16 +44,16 @@ typedef enum {
 // Prototypes
 //---------------------------------------------------------------------------------
 //Configure the leds (enable port, direction, crossbar,...)
-void mHleds_Setup();
+void mHleds_Setup(void);
 
 //All leds on
-void mHleds_AllOn();
+void mHleds_AllOn(void);
 
 //All leds off
-void mHleds_AllOff();
+void mHleds_AllOff(void);
 
 //Toggle all leds
-void mHleds_AllToggle();
+void mHleds_AllToggle(void);
 
 //Toggle one led
 void mHleds_Toggle(HledMaskEnum aGetMask);

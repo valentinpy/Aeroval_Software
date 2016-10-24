@@ -38,7 +38,7 @@ typedef enum {
 } SwitchesMaskEnum;
 
 //Setup switches
-void mSwitches_Setup();
+void mSwitches_Setup(void);
 
 //Get Switches
 UInt8 mSwitches_Get(SwitchesMaskEnum aMask);

@@ -28,12 +28,12 @@
 //-----------------------------------
 // Motors initialisation
 //-----------------------------------
-void gMotors_Setup();
+void gMotors_Setup(void);
 
 //-----------------------------------
 // Send commands to motors
 //-----------------------------------
-void gMotors_Run();
+void gMotors_Run(void);
 
 
 #endif /* SOURCES_TASKS_GMOTORS_H_ */

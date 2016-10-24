@@ -27,11 +27,11 @@
 //-----------------------------------
 // Receiver initialisation
 //-----------------------------------
-void gReceiver_Setup();
+void gReceiver_Setup(void);
 
 //-----------------------------------
 // Read PWM from receiver
 //-----------------------------------
-void gReceiver_Run();
+void gReceiver_Run(void);
 
 #endif /* SOURCES_TASKS_GRECEIVER_H_ */
