@@ -19,7 +19,9 @@
 
 #include "gAttitudeSensors.h"
 #include "../misc/filters.h"
+#include "../modules/mSwitches.h"
 #include <math.h>
+
 
 //-----------------------------------
 // Attitude measurement initialization
@@ -33,6 +35,9 @@ void gAttitudeSensors_Setup()
 	//Setup and open MPU6000
 	mMPU6000_Setup(&(gAttitudeSensors.aSensorValuesEM7180));
 	mMPU6000_Open();
+
+	//Setup IMU algorithms
+	FusionAhrsInitialise(&gAttitudeSensors.aEM7180FusionAhrs, 0.5f, 20.0f, 70.0f);
 
 	//Initialize variables
 
@@ -51,6 +56,17 @@ void gAttitudeSensors_Setup()
 }
 
 //-----------------------------------
+// Attitude measurement initialization
+//-----------------------------------
+void gAttitudeSensors_Open()
+{
+//	while(FusionAhrsIsInitialising(&gAttitudeSensors.aFusionAhrs))
+//	{
+//		//TODO implement AHRS update 200hz + delay 5ms
+//	}
+}
+
+//-----------------------------------
 // Attitude measurement
 //-----------------------------------
 void gAttitudeSensors_Run()
@@ -60,21 +76,18 @@ void gAttitudeSensors_Run()
 	mMPU6000_GetValues(&(gAttitudeSensors.aSensorValuesMPU6000));
 
 #ifdef USE_EM7180
-
-	//Read Sentral quaternions
-	gAttitudeSensors.aHeading_rad = (float)(gAttitudeSensors.aSensorValuesEM7180.EulerHeading_urad)/1000000;
-	gAttitudeSensors.aPitch_rad   =	(float)(gAttitudeSensors.aSensorValuesEM7180.EulerPitch_urad)/1000000;
-	gAttitudeSensors.aRoll_rad 	  = (float)(gAttitudeSensors.aSensorValuesEM7180.EulerRoll_urad)/1000000;
-
 	//Read gyro
-	gAttitudeSensors.aHeadingRate_rads = kEM7180_GyroToRadS * ((float)(gAttitudeSensors.aSensorValuesEM7180.RawGyroX));
-	gAttitudeSensors.aPitchRate_rads   = kEM7180_GyroToRadS * ((float)(gAttitudeSensors.aSensorValuesEM7180.RawGyroY));
-	gAttitudeSensors.aRollRate_rads    = kEM7180_GyroToRadS * ((float)(gAttitudeSensors.aSensorValuesEM7180.RawGyroZ));
+	gAttitudeSensors.aHeadingRate_rads = kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroX));
+	gAttitudeSensors.aPitchRate_rads   = kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroY));
+	gAttitudeSensors.aRollRate_rads    = kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroZ));
 
 	//Read accel
 	gAttitudeSensors.aAccel_X = kEM7180_AccelToG * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawAccelX));
 	gAttitudeSensors.aAccel_Y = kEM7180_AccelToG * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawAccelY));
 	gAttitudeSensors.aAccel_Z = kEM7180_AccelToG * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawAccelZ));
+#else
+	#error "Not implemented"
+#endif
 
 #ifdef DEBUG_MODE
 	//Compute accel norm
@@ -83,7 +96,10 @@ void gAttitudeSensors_Run()
 							(gAttitudeSensors.aAccel_Z * gAttitudeSensors.aAccel_Z));
 #endif
 
-	MadgwickAHRSupdateIMU()
+//	MadgwickAHRSupdateIMU(	gAttitudeSensors.aHeadingRate_rads, gAttitudeSensors.aPitchRate_rads, gAttitudeSensors.aRollRate_rads,
+//							gAttitudeSensors.aAccel_X, gAttitudeSensors.aAccel_Y, gAttitudeSensors.aAccel_Z, &gAttitudeSensors.aQuatMadgwickEM7180);
+
+//TODO ERROR: implement madgwick
 
 	//UInt16
 	//TODO Warn: implement time difference: read old value and scale
@@ -91,10 +107,40 @@ void gAttitudeSensors_Run()
 	//gAttitudeSensors.aDeltaTimeGyro_us = gAttitudeSensors.aSensorValuesEM7180.RawGyroDeltaTime;
 
 
+//Choose sentral/orientation algorithm
+if(mSwitches_Get(kMaskSwitch1))
+{
+	FusionVector3 gyroscope = {
+		.axis.x = gAttitudeSensors.aHeadingRate_rads,
+		.axis.y = gAttitudeSensors.aPitchRate_rads,
+		.axis.z = gAttitudeSensors.aRollRate_rads,
+	};
+	FusionVector3 accelerometer = {
+		.axis.x = gAttitudeSensors.aAccel_X,
+		.axis.y = gAttitudeSensors.aAccel_Y,
+		.axis.z = gAttitudeSensors.aAccel_Z,
+	};
 
-#else
-	#error "Not implemented"
-#endif
+	//Extract HPR from madgwick's quaternion
+	FusionAhrsUpdate(&gAttitudeSensors.aEM7180FusionAhrs, gyroscope, accelerometer, FUSION_VECTOR3_ZERO, 0.005); //Assume 200Hz sample rate, no magnetometers measurments
+
+	FusionEulerAngles angles_rad = FusionQuaternionToEulerAngles_rad(gAttitudeSensors.aEM7180FusionAhrs.quaternion);
+
+	gAttitudeSensors.aHeading_rad = angles_rad.angle.yaw;
+	gAttitudeSensors.aPitch_rad   = angles_rad.angle.pitch;
+	gAttitudeSensors.aRoll_rad 	  = angles_rad.angle.roll;
+
+}
+else
+{
+	//Copy Sentral HPR
+	gAttitudeSensors.aHeading_rad = (float)(gAttitudeSensors.aSensorValuesEM7180.EulerHeading_urad)/1000000;
+	gAttitudeSensors.aPitch_rad   =	(float)(gAttitudeSensors.aSensorValuesEM7180.EulerPitch_urad)/1000000;
+	gAttitudeSensors.aRoll_rad 	  = (float)(gAttitudeSensors.aSensorValuesEM7180.EulerRoll_urad)/1000000;
+}
+
+
+
 
 
 #ifdef GYRO_LP_FILTER
