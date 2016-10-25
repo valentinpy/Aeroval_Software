@@ -191,13 +191,13 @@ void gFlightCompute_Run()
 
 
 		//Call regulation for roll axis rate
-		pid_PID(&aPIDRollRateOutput, &(gFlightCompute.aPIDRate[kRoll]), gFlightCompute.aDesiredRate[kRoll], gAttitudeSensors.aGyro_Z_rads, aTime);
+		pid_PID(&aPIDRollRateOutput, &(gFlightCompute.aPIDRate[kRoll]), gFlightCompute.aDesiredRate[kRoll], gAttitudeSensors.aGyro_X_rads, aTime);
 
 		//Call regulation for pitch axis rate
 		pid_PID(&aPIDPitchRateOutput, &(gFlightCompute.aPIDRate[kPitch]), gFlightCompute.aDesiredRate[kPitch], gAttitudeSensors.aGyro_Y_rads, aTime);
 
 		//Call regulation for yaw axis
-		pid_PID(&aPIDYawRateOutput, &(gFlightCompute.aPIDRate[kYaw]), gFlightCompute.aDesiredRate[kYaw], -gAttitudeSensors.aGyro_X_rads, aTime);
+		pid_PID(&aPIDYawRateOutput, &(gFlightCompute.aPIDRate[kYaw]), gFlightCompute.aDesiredRate[kYaw], -gAttitudeSensors.aGyro_Z_rads, aTime);
 	}
 
 	//Call motor mix
