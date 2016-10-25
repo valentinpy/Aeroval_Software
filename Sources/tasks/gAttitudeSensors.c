@@ -46,9 +46,9 @@ void gAttitudeSensors_Setup()
 	gAttitudeSensors.aPitch_rad   =	0.0;
 	gAttitudeSensors.aRoll_rad 	  = 0.0;
 
-	gAttitudeSensors.aHeadingRate_rads	= 0.0;
-	gAttitudeSensors.aPitchRate_rads	= 0.0;
-	gAttitudeSensors.aRollRate_rads 	= 0.0;
+	gAttitudeSensors.aGyro_X_rads	= 0.0;
+	gAttitudeSensors.aGyro_Y_rads	= 0.0;
+	gAttitudeSensors.aGyro_Z_rads 	= 0.0;
 
 	//UInt16
 	gAttitudeSensors.aDeltaTimeEuler_us = 0;
@@ -76,12 +76,12 @@ void gAttitudeSensors_Run()
 	mMPU6000_GetValues(&(gAttitudeSensors.aSensorValuesMPU6000));
 
 #ifdef USE_EM7180
-	//Read gyro
-	gAttitudeSensors.aHeadingRate_rads = kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroX));
-	gAttitudeSensors.aPitchRate_rads   = kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroY));
-	gAttitudeSensors.aRollRate_rads    = kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroZ));
+	//Copy gyro
+	gAttitudeSensors.aGyro_X_rads = kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroX));
+	gAttitudeSensors.aGyro_Y_rads   = kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroY));
+	gAttitudeSensors.aGyro_Z_rads    = kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroZ));
 
-	//Read accel
+	//Copy accel
 	gAttitudeSensors.aAccel_X = kEM7180_AccelToG * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawAccelX));
 	gAttitudeSensors.aAccel_Y = kEM7180_AccelToG * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawAccelY));
 	gAttitudeSensors.aAccel_Z = kEM7180_AccelToG * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawAccelZ));
@@ -111,9 +111,9 @@ void gAttitudeSensors_Run()
 if(mSwitches_Get(kMaskSwitch1))
 {
 	FusionVector3 gyroscope = {
-		.axis.x = gAttitudeSensors.aHeadingRate_rads,
-		.axis.y = gAttitudeSensors.aPitchRate_rads,
-		.axis.z = gAttitudeSensors.aRollRate_rads,
+		.axis.x = gAttitudeSensors.aGyro_X_rads,
+		.axis.y = gAttitudeSensors.aGyro_Y_rads,
+		.axis.z = gAttitudeSensors.aGyro_Z_rads,
 	};
 	FusionVector3 accelerometer = {
 		.axis.x = gAttitudeSensors.aAccel_X,

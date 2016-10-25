@@ -145,7 +145,7 @@ void gFlightCompute_Run()
 	}
 
 	//Check if IDLE
-	if(aThrottle < kReceiverIDLE)
+	if(aThrottle <= kReceiverIDLE)
 	{
 		aThrottle = MOTOR_IDLE_VALUE;
 		aPIDRollRateOutput = 0;
@@ -159,6 +159,7 @@ void gFlightCompute_Run()
 		//Get time
 		UInt16 aTime = sTicker100Us[0];
 
+		//Angle Regulation: in this case, we compute the targeted angular speed, using user input (as rad) and orientation using a PID
 		if(gFlightCompute.aFLightMode == kAngle)
 		{
 			//Angle PID (outter loop) must be executed at a lower frequency than the inner loop
@@ -177,7 +178,8 @@ void gFlightCompute_Run()
 			gFlightCompute.aDesiredRate[kYaw] = gReceiver.aChannels_radS[kReceiverYaw];
 
 		}
-		else if(gFlightCompute.aFLightMode ==kRate)
+		//Angular speed (rate) regulation: in that case, we use user input (as rad/s) as the angular speed
+		else if(gFlightCompute.aFLightMode == kRate)
 		{
 			gFlightCompute.aDesiredRate[kRoll] = gReceiver.aChannels_radS[kReceiverRoll];
 			gFlightCompute.aDesiredRate[kPitch] = gReceiver.aChannels_radS[kReceiverPitch];
@@ -189,13 +191,13 @@ void gFlightCompute_Run()
 
 
 		//Call regulation for roll axis rate
-		pid_PID(&aPIDRollRateOutput, &(gFlightCompute.aPIDRate[kRoll]), gFlightCompute.aDesiredRate[kRoll], gAttitudeSensors.aRollRate_rads, aTime);
+		pid_PID(&aPIDRollRateOutput, &(gFlightCompute.aPIDRate[kRoll]), gFlightCompute.aDesiredRate[kRoll], gAttitudeSensors.aGyro_Z_rads, aTime);
 
 		//Call regulation for pitch axis rate
-		pid_PID(&aPIDPitchRateOutput, &(gFlightCompute.aPIDRate[kPitch]), gFlightCompute.aDesiredRate[kPitch], gAttitudeSensors.aPitchRate_rads, aTime);
+		pid_PID(&aPIDPitchRateOutput, &(gFlightCompute.aPIDRate[kPitch]), gFlightCompute.aDesiredRate[kPitch], gAttitudeSensors.aGyro_Y_rads, aTime);
 
 		//Call regulation for yaw axis
-		pid_PID(&aPIDYawRateOutput, &(gFlightCompute.aPIDRate[kYaw]), gFlightCompute.aDesiredRate[kYaw], -gAttitudeSensors.aHeadingRate_rads, aTime);
+		pid_PID(&aPIDYawRateOutput, &(gFlightCompute.aPIDRate[kYaw]), gFlightCompute.aDesiredRate[kYaw], -gAttitudeSensors.aGyro_X_rads, aTime);
 	}
 
 	//Call motor mix
