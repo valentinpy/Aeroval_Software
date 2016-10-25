@@ -54,11 +54,13 @@ typedef struct
 	float aPitch_rad;
 	float aRoll_rad;
 
-	float aHeadingRate_rads;
-	float aPitchRate_rads;
-	float aRollRate_rads;
+	//Gyro
+	float aGyro_X_rads;
+	float aGyro_Y_rads;
+	float aGyro_Z_rads;
 
 	//TODO Warn: select scale/normalize
+	//Accel
 	float aAccel_X;
 	float aAccel_Y;
 	float aAccel_Z;
