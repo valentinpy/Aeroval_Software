@@ -38,6 +38,13 @@
 //-----------------------------------
 void gAttitudeSensors_Setup(void);
 
+
+//-----------------------------------
+// Attitude measurement calibration,...
+//-----------------------------------
+void gAttitudeSensors_Open(void);
+
+
 //-----------------------------------
 // Attitude measurement
 //-----------------------------------
