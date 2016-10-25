@@ -54,6 +54,9 @@ int main(void)
 	gMotors_Setup();
 	gMiscSensors_Setup();
 
+	//Tasks open
+	gAttitudeSensors_Open();
+
 	//Wait 1second after setup
 	UInt16 aDelayBoot = mDelay_GetDelay(kPit0, 1000);
 	while(mDelay_IsDelayDone(kPit0, aDelayBoot)==false);
