@@ -23,7 +23,7 @@
 #include "misc/PID.h"
 #include "misc/def.h"
 #include "userDefined.h"
-
+#include "lib/Fusion/Fusion.h"
 
 
 //-----------------------------------------------------------------------------
@@ -45,6 +45,9 @@ typedef struct
 	gIMUSensorStruct aSensorValuesEM7180;
 	gIMUSensorStruct aSensorValuesMPU6000;
 
+	//Quaternions
+	FusionAhrs aEM7180FusionAhrs;
+	FusionQuaternion aQuatMadgwickEM7180;
 
 	//Global values, which are fusioned using sensors choosen by user
 	float aHeading_rad;
