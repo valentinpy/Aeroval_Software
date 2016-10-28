@@ -33,7 +33,7 @@ void pid_ResetPID(PIDdata* aPID)
 	}
 }
 
-void pid_PID(float* aOutput, PIDdata* aPIDstruct, float aTarget, float aMeasured, UInt16 aTime)
+void pid_PID(float* aOutput, PIDdata* aPIDstruct, float aTarget, float aMeasured, UInt16 aTime, float *aErrorExport)
 {
 	float aDeltaTime;
 	float aError, aProportional, aDerivative;
@@ -62,7 +62,7 @@ void pid_PID(float* aOutput, PIDdata* aPIDstruct, float aTarget, float aMeasured
 
 	//Compute error
 	aError = (aTarget - aMeasured);
-	gFlightCompute.aError = aTarget; //DEBUG
+	*aErrorExport = aError;
 
 	//Compute separate terms
 	aProportional = (aError * aPIDstruct->aKp);
