@@ -103,6 +103,11 @@ void gFlightCompute_Run()
 	float aPIDPitchRateOutput;
 	float aPIDYawRateOutput;
 
+	float aPIDError_rateYaw; //DEBUG
+	float aPIDError_rateRoll;
+	float aPIDError_ratePitch;
+	float aPIDError_angleRoll;
+	float aPIDError_anglePitch;
 
 	//Check controls to arm/disarm the motors
 	if((gReceiver.aChannels[kReceiverThrottle] < kReceiverMIN) && (gReceiver.aChannels[kReceiverYaw] < kReceiverMIN))
@@ -169,10 +174,10 @@ void gFlightCompute_Run()
 				mDelay_ReStart(kPit0, gFlightCompute.aDelayAnglePID, kAngleLoopDelay_Ms);
 
 				//Call regulation for roll axis rate
-				pid_PID(&(gFlightCompute.aDesiredRate[kRoll]), &(gFlightCompute.aPIDAngle[kRoll]), gReceiver.aChannels_rad[kReceiverRoll], gAttitudeSensors.aRoll_rad, aTime);
+				pid_PID(&(gFlightCompute.aDesiredRate[kRoll]), &(gFlightCompute.aPIDAngle[kRoll]), gReceiver.aChannels_rad[kReceiverRoll], gAttitudeSensors.aRoll_rad, aTime, &aPIDError_angleRoll);
 
 				//Call regulation for pitch axis rate
-				pid_PID(&(gFlightCompute.aDesiredRate[kPitch]), &(gFlightCompute.aPIDAngle[kPitch]), -gReceiver.aChannels_rad[kReceiverPitch], gAttitudeSensors.aPitch_rad, aTime);
+				pid_PID(&(gFlightCompute.aDesiredRate[kPitch]), &(gFlightCompute.aPIDAngle[kPitch]), -gReceiver.aChannels_rad[kReceiverPitch], gAttitudeSensors.aPitch_rad, aTime, &aPIDError_anglePitch);
 			}
 
 			gFlightCompute.aDesiredRate[kYaw] = gReceiver.aChannels_radS[kReceiverYaw];
@@ -191,13 +196,13 @@ void gFlightCompute_Run()
 
 
 		//Call regulation for roll axis rate
-		pid_PID(&aPIDRollRateOutput, &(gFlightCompute.aPIDRate[kRoll]), gFlightCompute.aDesiredRate[kRoll], gAttitudeSensors.aGyro_X_rads, aTime);
+		pid_PID(&aPIDRollRateOutput, &(gFlightCompute.aPIDRate[kRoll]), gFlightCompute.aDesiredRate[kRoll], gAttitudeSensors.aGyro_X_rads, aTime, &aPIDError_rateRoll);
 
 		//Call regulation for pitch axis rate
-		pid_PID(&aPIDPitchRateOutput, &(gFlightCompute.aPIDRate[kPitch]), gFlightCompute.aDesiredRate[kPitch], gAttitudeSensors.aGyro_Y_rads, aTime);
+		pid_PID(&aPIDPitchRateOutput, &(gFlightCompute.aPIDRate[kPitch]), gFlightCompute.aDesiredRate[kPitch], gAttitudeSensors.aGyro_Y_rads, aTime, &aPIDError_ratePitch);
 
 		//Call regulation for yaw axis
-		pid_PID(&aPIDYawRateOutput, &(gFlightCompute.aPIDRate[kYaw]), gFlightCompute.aDesiredRate[kYaw], -gAttitudeSensors.aGyro_Z_rads, aTime);
+		pid_PID(&aPIDYawRateOutput, &(gFlightCompute.aPIDRate[kYaw]), gFlightCompute.aDesiredRate[kYaw], -gAttitudeSensors.aGyro_Z_rads, aTime, &aPIDError_rateYaw);
 	}
 
 	//Call motor mix
@@ -205,6 +210,10 @@ void gFlightCompute_Run()
 
 	//Constrain and send to motors
 	gFlightCompute_ConstrainSendMotorsValues(aToMotors, aThrottle);
+
+
+	//Debug: export errors
+	gFlightCompute.aError = aPIDError_rateRoll;
 }
 
 
