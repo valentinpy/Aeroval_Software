@@ -101,6 +101,11 @@ typedef struct
 	float aPitch_rad_offset;
 	float aRoll_rad_offset;
 
+	//Angular speed offsets to be transmitted to gAttitude
+	float aGyro_X_rads_offset;
+	float aGyro_Y_rads_offset;
+	float aGyro_Z_rads_offset;
+
 	//Delay for outter PID regulation
 	Int16 aDelayAnglePID;
 

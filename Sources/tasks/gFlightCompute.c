@@ -42,6 +42,13 @@ void gFlightCompute_Setup()
 	gFlightCompute.aPitch_rad_offset	= 0.0;
 	gFlightCompute.aRoll_rad_offset		= 0.0;
 
+	//Init angular speed offset
+	//offset to apply to angular speed
+	gFlightCompute.aGyro_X_rads_offset	= 0.0;
+	gFlightCompute.aGyro_Y_rads_offset	= 0.0;
+	gFlightCompute.aGyro_Z_rads_offset	= 0.0;
+
+
 	//Init state of motors
 	gFlightCompute.aState = kDisarmed;
 
@@ -137,6 +144,10 @@ void gFlightCompute_Run()
 	{
 		gFlightCompute.aPitch_rad_offset -= gAttitudeSensors.aPitch_rad;
 		gFlightCompute.aRoll_rad_offset	-= gAttitudeSensors.aRoll_rad;
+
+		gFlightCompute.aGyro_X_rads_offset -= gAttitudeSensors.aGyro_X_rads;
+		gFlightCompute.aGyro_X_rads_offset -= gAttitudeSensors.aGyro_Y_rads;
+		gFlightCompute.aGyro_X_rads_offset -= gAttitudeSensors.aGyro_Z_rads;
 	}
 
 	//Check controls to switch betwwen rate and angle mode

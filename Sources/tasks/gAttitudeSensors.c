@@ -156,4 +156,10 @@ else
 	//Add offset
 	gAttitudeSensors.aPitch_rad   += gFlightCompute.aPitch_rad_offset;
 	gAttitudeSensors.aRoll_rad    += gFlightCompute.aRoll_rad_offset;
+
+	//Add offset
+	gAttitudeSensors.aGyro_X_rads   += gFlightCompute.aGyro_X_rads_offset;
+	gAttitudeSensors.aGyro_Y_rads    += gFlightCompute.aGyro_Y_rads_offset;
+	gAttitudeSensors.aGyro_Z_rads    += gFlightCompute.aGyro_Z_rads_offset;
+
 }
