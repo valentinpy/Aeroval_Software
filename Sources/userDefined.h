@@ -147,8 +147,8 @@
 	//Convert time measured be receiver module to an angle or in angular velocity, depending on the flight mode (Rate/Angle)
 	//Used to convert roll & pitch commands to angle/angular velocity for PID
 
-	#define kReceiverUsToRadS		(float)0.0157
-	#define kReceiverMaxRate_radS	(float)(7.85)
+	#define kReceiverUsToRadS		(float)0.00785//0.0157
+	#define kReceiverMaxRate_radS	(float)3.925//(7.85)
 
 
 	//Currently limit between -45;+45� => -pi/8; +pi/8
