@@ -77,9 +77,17 @@ void gAttitudeSensors_Run()
 
 #ifdef USE_EM7180
 	//Copy gyro
-	gAttitudeSensors.aGyro_X_rads = kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroX));
-	gAttitudeSensors.aGyro_Y_rads   = kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroY));
-	gAttitudeSensors.aGyro_Z_rads    = kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroZ));
+
+	#ifndef GYRO_LP_FILTER
+		gAttitudeSensors.aGyro_X_rads = kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroX));
+		gAttitudeSensors.aGyro_Y_rads   = kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroY));
+		gAttitudeSensors.aGyro_Z_rads    = kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroZ));
+
+	#else
+		gAttitudeSensors.aGyro_X_rads = filter_lowPassFilter(kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroX)), gAttitudeSensors.aGyro_X_rads, 0.6);
+		gAttitudeSensors.aGyro_Y_rads = filter_lowPassFilter(kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroY)), gAttitudeSensors.aGyro_Y_rads, 0.6);
+		gAttitudeSensors.aGyro_Z_rads = filter_lowPassFilter(kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroZ)), gAttitudeSensors.aGyro_Z_rads, 0.6);
+	#endif
 
 	//Copy accel
 	gAttitudeSensors.aAccel_X = kEM7180_AccelToG * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawAccelX));
@@ -89,22 +97,17 @@ void gAttitudeSensors_Run()
 	#error "Not implemented"
 #endif
 
-#ifdef DEBUG_MODE
-	//Compute accel norm
-	float accelNorm =  sqrt((gAttitudeSensors.aAccel_X * gAttitudeSensors.aAccel_X)+
-							(gAttitudeSensors.aAccel_Y * gAttitudeSensors.aAccel_Y)+
-							(gAttitudeSensors.aAccel_Z * gAttitudeSensors.aAccel_Z));
-#endif
+//#ifdef DEBUG_MODE
+//	//Compute accel norm
+//	float accelNorm =  sqrt((gAttitudeSensors.aAccel_X * gAttitudeSensors.aAccel_X)+
+//							(gAttitudeSensors.aAccel_Y * gAttitudeSensors.aAccel_Y)+
+//							(gAttitudeSensors.aAccel_Z * gAttitudeSensors.aAccel_Z));
+//#endif
 
-//	MadgwickAHRSupdateIMU(	gAttitudeSensors.aHeadingRate_rads, gAttitudeSensors.aPitchRate_rads, gAttitudeSensors.aRollRate_rads,
-//							gAttitudeSensors.aAccel_X, gAttitudeSensors.aAccel_Y, gAttitudeSensors.aAccel_Z, &gAttitudeSensors.aQuatMadgwickEM7180);
-
-//TODO ERROR: implement madgwick
-
-	//UInt16
-	//TODO Warn: implement time difference: read old value and scale
-	//gAttitudeSensors.aDeltaTimeEuler_us = gAttitudeSensors.aSensorValuesEM7180.EulerDeltaTime_us;
-	//gAttitudeSensors.aDeltaTimeGyro_us = gAttitudeSensors.aSensorValuesEM7180.RawGyroDeltaTime;
+//UInt16
+//TODO Warn: implement time difference: read old value and scale
+//gAttitudeSensors.aDeltaTimeEuler_us = gAttitudeSensors.aSensorValuesEM7180.EulerDeltaTime_us;
+//gAttitudeSensors.aDeltaTimeGyro_us = gAttitudeSensors.aSensorValuesEM7180.RawGyroDeltaTime;
 
 
 //Choose sentral/orientation algorithm
@@ -122,8 +125,8 @@ if(mSwitches_Get(kMaskSwitch1))
 	};
 
 	//Extract HPR from madgwick's quaternion
+	//TODO warn: dynamic sample rate for madgwick
 	FusionAhrsUpdate(&gAttitudeSensors.aEM7180FusionAhrs, gyroscope, accelerometer, FUSION_VECTOR3_ZERO, 0.005); //Assume 200Hz sample rate, no magnetometers measurments
-
 	FusionEulerAngles angles_rad = FusionQuaternionToEulerAngles_rad(gAttitudeSensors.aEM7180FusionAhrs.quaternion);
 
 	gAttitudeSensors.aHeading_rad = angles_rad.angle.yaw;
@@ -139,19 +142,6 @@ else
 	gAttitudeSensors.aRoll_rad 	  = (float)(gAttitudeSensors.aSensorValuesEM7180.EulerRoll_urad)/1000000;
 }
 
-
-
-
-
-#ifdef GYRO_LP_FILTER
-	#error "Not implemented"
-	//Filter
-	//TODO Implement Gyro LP filter
-	//This won't work, because we need previous value, which is not stored at this time
-	//gAttitudeSensors.aHeadingRate_rads =  filter_lowPassFilter(kEM7180_GyroToRadS * ((float)(gAttitudeSensors.aSensorValuesEM7180.RawGyroX)), gAttitudeSensors.aHeadingRate_rads, 0.6);
-	//gAttitudeSensors.aPitchRate_rads =  filter_lowPassFilter(kEM7180_GyroToRadS * ((float)(gAttitudeSensors.aSensorValuesEM7180.RawGyroYX)), gAttitudeSensors.aPitchRate_rads, 0.6);
-	//gAttitudeSensors.aRollRate_rads =  filter_lowPassFilter(kEM7180_GyroToRadS * ((float)(gAttitudeSensors.aSensorValuesEM7180.RawGyroZ)), gAttitudeSensors.aRollRate_rads, 0.6);
-#endif
 
 	//Add offset
 	gAttitudeSensors.aPitch_rad   += gFlightCompute.aPitch_rad_offset;
