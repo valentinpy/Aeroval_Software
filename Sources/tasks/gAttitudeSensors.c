@@ -84,9 +84,9 @@ void gAttitudeSensors_Run()
 		gAttitudeSensors.aGyro_Z_rads    = kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroZ));
 
 	#else
-		gAttitudeSensors.aGyro_X_rads = filter_lowPassFilter(kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroX)), gAttitudeSensors.aGyro_X_rads, 0.6);
-		gAttitudeSensors.aGyro_Y_rads = filter_lowPassFilter(kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroY)), gAttitudeSensors.aGyro_Y_rads, 0.6);
-		gAttitudeSensors.aGyro_Z_rads = filter_lowPassFilter(kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroZ)), gAttitudeSensors.aGyro_Z_rads, 0.6);
+		gAttitudeSensors.aGyro_X_rads = filter_lowPassFilter(kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroX)), gAttitudeSensors.aGyro_X_rads, 0.4);
+		gAttitudeSensors.aGyro_Y_rads = filter_lowPassFilter(kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroY)), gAttitudeSensors.aGyro_Y_rads, 0.4);
+		gAttitudeSensors.aGyro_Z_rads = filter_lowPassFilter(kEM7180_GyroToRadS * ((float)((Int16)gAttitudeSensors.aSensorValuesEM7180.RawGyroZ)), gAttitudeSensors.aGyro_Z_rads, 0.4);
 	#endif
 
 	//Copy accel
