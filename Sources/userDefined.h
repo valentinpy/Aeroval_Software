@@ -132,14 +132,14 @@
 	//------------------------------------------------------
 
 	//PID Angle_Roll
-	#define kPIDRollAngle_Kp	(float)12//15
+	#define kPIDRollAngle_Kp	(float)2//15
 	#define kPIDRollAngle_Ki	(float)0//0.01
-	#define kPIDRollAngle_Kd	(float)0
+	#define kPIDRollAngle_Kd	(float)20
 
 	//PID Angle_Pitch
-	#define kPIDPitchAngle_Kp	(float)-12//-15
+	#define kPIDPitchAngle_Kp	(float)-2//-15
 	#define kPIDPitchAngle_Ki	(float)-0//-0.01
-	#define kPIDPitchAngle_Kd	(float)-0
+	#define kPIDPitchAngle_Kd	(float)0//-20
 
 	#define kWindupGuardAngle	(float)0.5
 	#define kAngleLoopDelay_Ms		(UInt32) 5 //ms
