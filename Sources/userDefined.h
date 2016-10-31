@@ -92,7 +92,7 @@
 // Set the min and max value for motors (in flight).
 // Idle value must be greater than 0 to prevent shutting down of motors in flight
 #define MOTOR_MAX_VALUE 	(UInt16)(1000)
-#define MOTOR_IDLE_VALUE	(UInt16)(110)
+#define MOTOR_IDLE_VALUE	(UInt16)(120)
 
 //#define MOTORS_NOMEDIANFILTER // The output of the motors are not median-filtered if defined (hide peaks)
 
@@ -111,14 +111,14 @@
 	//------------------------------------------------------
 
 	//PID Rate Roll
-	#define kPIDRollRate_Kp		(float)120
-	#define kPIDRollRate_Ki		(float)0//0.01//1
-	#define kPIDRollRate_Kd		(float)4500
+	#define kPIDRollRate_Kp		(float)110
+	#define kPIDRollRate_Ki		(float)0.03//0.01//1
+	#define kPIDRollRate_Kd		(float)4800
 
 	//PID Rate Pitch
-	#define kPIDPitchRate_Kp	(float)-120
-	#define kPIDPitchRate_Ki	(float)-0//-0.01//-1
-	#define kPIDPitchRate_Kd	(float)-4500
+	#define kPIDPitchRate_Kp	(float)-110
+	#define kPIDPitchRate_Ki	(float)-0.03//-0.01//-1
+	#define kPIDPitchRate_Kd	(float)-4800
 
 	//PID Rate Yaw
 	#define kPIDYawRate_Kp		(float)100
@@ -132,17 +132,17 @@
 	//------------------------------------------------------
 
 	//PID Angle_Roll
-	#define kPIDRollAngle_Kp	(float)2//15
+	#define kPIDRollAngle_Kp	(float)1.2//15
 	#define kPIDRollAngle_Ki	(float)0//0.01
-	#define kPIDRollAngle_Kd	(float)20
+	#define kPIDRollAngle_Kd	(float)10
 
 	//PID Angle_Pitch
-	#define kPIDPitchAngle_Kp	(float)-2//-15
+	#define kPIDPitchAngle_Kp	(float)-1.2	//-15
 	#define kPIDPitchAngle_Ki	(float)-0//-0.01
-	#define kPIDPitchAngle_Kd	(float)0//-20
+	#define kPIDPitchAngle_Kd	(float)-10//-20
 
 	#define kWindupGuardAngle	(float)0.5
-	#define kAngleLoopDelay_Ms		(UInt32) 5 //ms
+	#define kAngleLoopDelay_Ms		(UInt32) 20 //ms
 
 	//Convert time measured be receiver module to an angle or in angular velocity, depending on the flight mode (Rate/Angle)
 	//Used to convert roll & pitch commands to angle/angular velocity for PID
@@ -151,9 +151,9 @@
 	#define kReceiverMaxRate_radS	(float)1.9625//3.925//(7.85)
 
 
-	//Currently limit between -45;+45� => -pi/8; +pi/8
-	#define kReceiverUsToRad		(float)(0.000785)
-	#define kReceiverMaxAngle_rad	(float)(0.3925)
+	//Currently limit between -45;+45deg
+	#define kReceiverUsToRad		(float)(0.00157)
+	#define kReceiverMaxAngle_rad	(float)(0.785)
 
 
 #else //Aeroval ?
