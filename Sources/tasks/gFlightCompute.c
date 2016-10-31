@@ -179,8 +179,8 @@ void gFlightCompute_Run()
 		if(gFlightCompute.aFLightMode == kAngle)
 		{
 			//Angle PID (outter loop) must be executed at a lower frequency than the inner loop
-			if(mDelay_IsDelayDone(kPit0, gFlightCompute.aDelayAnglePID)==TRUE)
-			{
+			//if(mDelay_IsDelayDone(kPit0, gFlightCompute.aDelayAnglePID)==TRUE)
+			//{
 				//Restart delay
 				mDelay_ReStart(kPit0, gFlightCompute.aDelayAnglePID, kAngleLoopDelay_Ms);
 
@@ -189,7 +189,7 @@ void gFlightCompute_Run()
 
 				//Call regulation for pitch axis rate
 				pid_PID(&(gFlightCompute.aDesiredRate[kPitch]), &(gFlightCompute.aPIDAngle[kPitch]), -gReceiver.aChannels_rad[kReceiverPitch], gAttitudeSensors.aPitch_rad, aTime, &aPIDError_anglePitch);
-			}
+			//}
 
 			gFlightCompute.aDesiredRate[kYaw] = gReceiver.aChannels_radS[kReceiverYaw];
 
@@ -224,7 +224,7 @@ void gFlightCompute_Run()
 
 
 	//Debug: export errors
-	gFlightCompute.aError = aPIDError_rateRoll;
+	gFlightCompute.aError = aPIDError_anglePitch;
 }
 
 
