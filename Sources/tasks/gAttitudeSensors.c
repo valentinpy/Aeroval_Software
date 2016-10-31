@@ -128,7 +128,7 @@ if(mSwitches_Get(kMaskSwitch1))
 
 	gAttitudeSensors.aHeading_rad = angles_rad.angle.yaw;
 	gAttitudeSensors.aPitch_rad   = angles_rad.angle.pitch;
-	gAttitudeSensors.aRoll_rad 	  = angles_rad.angle.roll;
+	gAttitudeSensors.aRoll_rad 	  = -angles_rad.angle.roll;
 
 }
 else
