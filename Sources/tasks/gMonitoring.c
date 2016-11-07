@@ -23,6 +23,7 @@
 #include "gFlightCompute.h"
 #include "misc/string.h"
 #include "misc/maths.h"
+#include "modules/mGpio.h"
 
 static void gMonitoring_sendMonitoring(void);
 static void gMonitoring_receiveMonitoring(void);
@@ -36,6 +37,9 @@ static bool gMonitoring_getNumber(float* number, char * aReceived, UInt8 aReceiv
 //-----------------------------------
 void gMonitoring_Setup()
 {
+	// Release the XBee reset
+	mGpio_Write(kMaskGpio7, kGpioOn);
+
 	//Configure UART, as it's used to transmit datas
 	mRs232_Setup();
 
