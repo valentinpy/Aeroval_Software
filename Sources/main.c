@@ -41,7 +41,7 @@ int main(void)
 	mCpu_Setup();
 	mDelay_Setup();
 	mLeds_Setup();
-	mGpio_Setup();
+	mGpio_Setup(0x1<<8);
 	mSwitches_Setup();
 
 	//Tasks initialization

@@ -23,7 +23,7 @@
 // TODO implement: add GPIO as input
 
 //Configure the Gpios (enable port, direction, crossbar,...)
-void mGpio_Setup()
+void mGpio_Setup(UInt32 maskGpiosOutput)
 {
 	//set crossbar (GPIO: alternate 1)
 	iDio_PinConfig(kPortD, kPin8, kAlternate1);
@@ -36,8 +36,11 @@ void mGpio_Setup()
 	iDio_PinConfig(kPortD, kPin15, kAlternate1);
 
 
-	//set direction: output
-	iDio_SetPortDirection(kPortD, kMaskGpiosAll, kIoOutput);
+	//set direction: input for all
+	iDio_SetPortDirection(kPortD, 0xFFFFFFFF, kIoInput);
+
+	//set direction: output only the the ones that have been expressly specified as output
+	iDio_SetPortDirection(kPortD, maskGpiosOutput, kIoOutput);
 }
 
 //All Gpios on

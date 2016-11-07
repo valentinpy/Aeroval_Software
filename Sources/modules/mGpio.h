@@ -50,7 +50,7 @@ typedef enum {
 // Prototypes
 //---------------------------------------------------------------------------------
 //Configure the Gpios (enable port, direction, crossbar,...)
-void mGpio_Setup(void);
+void mGpio_Setup(UInt32 maskGpiosOutput);
 
 //All Gpios on
 void mGpio_AllOn(void);

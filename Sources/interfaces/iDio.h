@@ -141,7 +141,7 @@ void iDio_PinConfig(PortIOEnum aPort, PinNbEnum aPinNb,
 // aMask: choix des pins du port sur lesquelles on veut agir (si bit � 1)
 // aDir:  choix de la direction des pins s�lectionn�es avec aMask
 //-----------------------------------------------------------------------------
-void iDio_SetPortDirection(PortIOEnum aPort, IoMaskEnum aMask,
+void iDio_SetPortDirection(PortIOEnum aPort, UInt32 aMask,
 		IoDirectionEnum aDir);
 
 //-----------------------------------------------------------------------------
