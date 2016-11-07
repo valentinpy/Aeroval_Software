@@ -64,13 +64,13 @@ void mGpio_Write(GpioMaskEnum aGetMask, GpioStateEnum aState)
 {
 	IoMaskEnum aSendMask = 0;
 	aSendMask |= ((aGetMask & 0x1)<<15);
-	aSendMask |= ((aGetMask & 0x2)<<14);
-	aSendMask |= ((aGetMask & 0x4)<<13);
-	aSendMask |= ((aGetMask & 0x8)<<12);
-	aSendMask |= ((aGetMask & 0x10)<<11);
-	aSendMask |= ((aGetMask & 0x20)<<10);
-	aSendMask |= ((aGetMask & 0x40)<<9);
-	aSendMask |= ((aGetMask & 0x80)<<8);
+	aSendMask |= ((aGetMask & 0x2)<<13);
+	aSendMask |= ((aGetMask & 0x4)<<11);
+	aSendMask |= ((aGetMask & 0x8)<<9);
+	aSendMask |= ((aGetMask & 0x10)<<7);
+	aSendMask |= ((aGetMask & 0x20)<<5);
+	aSendMask |= ((aGetMask & 0x40)<<3);
+	aSendMask |= ((aGetMask & 0x80)<<1);
 
 	iDio_SetPort(kPortD, aSendMask, aState);
 }
