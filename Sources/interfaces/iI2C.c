@@ -39,7 +39,7 @@ static bool iI2C_ReadStatus(I2cEnum aI2c, I2CStatusEnum aStatus);
 //------------------------------------------------------------
 void iI2C_Config(void)
 {
-	//Send >8 clocks pulses to relesase the bus if the cpu crashed half-way through I2C communication
+	//Send >8 clocks pulses to release the bus if the cpu crashed half-way through I2C communication
 
 	//I2C0 & I2C2: SCL -> GPIO, output
 	PORTA_PCR12&=(~PORT_PCR_MUX_MASK);
@@ -57,9 +57,9 @@ void iI2C_Config(void)
 		//Toggles outputs
 		GPIOA_PTOR |= (0x1<<12);
 		GPIOE_PTOR |= (0x1<<24);
-		UInt8 j=0;
 
 		//Small delay
+		UInt8 j=0;
 		for(j=0; j<0x8F; j++)
 		{
 			__asm("NOP");
@@ -118,8 +118,6 @@ void iI2C_Enable(I2cEnum aI2c)
 		I2C2_C1 |= I2C_C1_IICEN_MASK;
 		break;
 	}
-
-
 }
 
 //------------------------------------------------------------
@@ -172,7 +170,7 @@ static void iI2C_SetRepeatedStartSate(I2cEnum aI2c)
 		break;
 
 	case kI2c2:
-		I2C0_C1 |= I2C_C1_RSTA_MASK;
+		I2C2_C1 |= I2C_C1_RSTA_MASK;
 		break;
 	}
 }
@@ -281,7 +279,7 @@ static void iI2C_SendData(I2cEnum aI2c, UInt8 aData)
 		break;
 
 	case kI2c2:
-		I2C0_D = aData;
+		I2C2_D = aData;
 		break;
 	}
 }
