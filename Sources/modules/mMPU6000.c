@@ -77,8 +77,8 @@ void mMPU6000_Close(void)
 }
 
 //-------------------------------------------------------------------
-// Read heading, pitch, roll and timestamp
-// *aResultStruct: pointer over a structure of type EM7180_DataStruct in which the values are stored (QX, QY, QZ, QTime)
+// Read gyro+accel XYZ
+// *aResultStruct: pointer over a structure of type gIMUSensorStruct in which the values are stored
 //-------------------------------------------------------------------
 void mMPU6000_GetValues(gIMUSensorStruct *aValuesStruct)
 {
