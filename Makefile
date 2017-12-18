@@ -1,7 +1,7 @@
 # Makefile to compile Aeroval manually
-# Valentin Py - Aeroval
-# 02.11.15
-# You need an arm-non-eabi toolchain (available with Kinetis-Design-Studio for example.)
+# Valentin Py - Aeroval : https://github.com/valentinpy/Aeroval_Software
+# 18.12.2017
+# You need an arm-none-eabi- toolchain (available with Kinetis-Design-Studio for example.)
 # The file you'll have to load to the microcontroller is the *.elf, fount in ./build/
 #
 # This makefile is inspired from https://github.com/phantax/stm32f4/blob/master/makefile
@@ -37,23 +37,23 @@ SRC_FILES = $(PROJ_DIR)Project_Settings/Startup_Code/startup_MK64F12.S
 SRC_FILES += $(PROJ_DIR)Project_Settings/Startup_Code/system_MK64F12.c
 SRC_FILES += $(PROJ_DIR)Sources/*.c
 SRC_FILES += $(PROJ_DIR)Sources/*/*.c
+SRC_FILES += $(PROJ_DIR)Sources/*/*/*.c
 
 #List of includes directories
 INC_DIRS  = $(PROJ_DIR)Includes
 INC_DIRS += $(PROJ_DIR)Sources
 INC_DIRS += $(PROJ_DIR)Sources/*
 
-#Prefix
+#Toolchain prefix
 C_PREFIX = arm-none-eabi-
 
-
-#Linker script
+#Linker script, specific for each processor, depending on chip-memory configuration
 LD_SCRIPT = $(PROJ_DIR)Project_settings/Linker_Files/MK64FN1M0xxx12_flash.ld
 
-#Build directory
+#Build directory (will be created at the root of the project)
 BUILD_DIR = build
 
-#
+#Name of toolchain tools
 CC 	= $(C_PREFIX)gcc
 CXX 	= $(C_PREFIX)g++
 OBJCOPY = $(C_PREFIX)objcopy
@@ -66,7 +66,7 @@ FLAGS	+= -mthumb
 FLAGS	+= -mfloat-abi=hard
 FLAGS	+= -mfpu=fpv4-sp-d16
 
-#
+#Flags for compilation
 CFLAGS	= $(FLAGS)
 CFLAGS	+= -c
 CFLAGS	+= -g3
@@ -92,15 +92,16 @@ CFLAGS  += -Wno-unused-parameter
 
 CFLAGS  += $(foreach d, $(INC_DIRS), -I$d)
 
-#
+#Flags for linker
 LDFLAGS= $(FLAGS)
 LDFLAGS += $(foreach d, $(LD_SCRIPT), -T$d)
 LDFLAGS += -Xlinker --gc-sections
 LDFLAGS += -Wl,-Map=$(BUILD_DIR)/$(PROJ_NAME).map
 LDFLAGS += --specs=nano.specs
 LDFLAGS += --specs=nosys.specs
+LDFLAGS += -lm
 
-#
+#Subfolders used during build phase
 OBJ_BASE_DIR  = $(BUILD_DIR)/obj
 PREP_BASE_DIR = $(BUILD_DIR)/prep
 ASM_BASE_DIR  = $(BUILD_DIR)/asm
